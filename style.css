@@ -1,6 +1,21 @@
  *{
     font-family: 'Courier New', Courier, monospace;
  }
+ #moneyID{
+    width: 100%;
+    text-align: right;
+ }
+ #hpID{
+    width: 100%;
+    text-align: center;
+ }
+ button{
+   height: 100px;
+   width: 500px;
+   position: absolute;
+   top: 50%;
+   left: 37%; 
+ }
  h1{
     width: 100%;
     text-align: center;
