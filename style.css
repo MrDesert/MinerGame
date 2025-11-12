@@ -1,11 +1,11 @@
  *{
     font-family: 'Courier New', Courier, monospace;
  }
- #moneyID, #moneyTitleID{
+#moneyTitleID{
     width: 100%;
     text-align: right;
  }
- #hpID, #hpTitleID, #profitTitleID, #profitID{
+ #hpTitleID, #profitTitleID{
     width: 100%;
     text-align: center;
  }
@@ -20,11 +20,11 @@
    height: 80px;
    width: 300px;
  }
- h1{
+ h1, h2{
     width: 100%;
     text-align: center;
  }
- #hitPlusOneCostID, #hpMinusOnePercentCostID{
+ #hitPlusOneCostID, #hpMinusOnePercentCostID, #depthLevelID, #moneyID, #hpID, #profitID{
     display: inline-block;
  }
  footer{

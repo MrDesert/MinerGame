@@ -5,6 +5,7 @@ var money = 0;
 var profit = 1;
 var hitPlusOneCost = 1;
 var hpMinusOnePercentCost = 1;
+var depthLevel = 0;
 
 function moneyChanges(m){
     money += m;
@@ -28,8 +29,10 @@ function hit_hp() {
         hp *= 2;
         profit *= 1.5; 
         hpCurrent = hp;
+        depthLevel++;
+        document.getElementById("profitID").innerHTML = Math.floor(profit);
+        document.getElementById("depthLevelID").innerHTML = depthLevel;
     }
-    document.getElementById("profitID").innerHTML = Math.floor(profit);
     document.getElementById("hpID").innerHTML = Math.floor(hpCurrent);
 }
 
