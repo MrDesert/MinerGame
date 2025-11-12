@@ -5,11 +5,20 @@ var money = 0;
 var profit = 1;
 var hitPlusOneCost = 1;
 
+function moneyChanges(m){
+    money += m;
+    document.getElementById("moneyID").innerHTML = money;
+    if (money >= hitPlusOneCost){
+        document.getElementById("hitPlusOneID").removeAttribute("disabled");
+    } else {
+        document.getElementById("hitPlusOneID").disabled="disabled";
+    }
+}
+
 function hit_hp() {
     hpCurrent -= hit;
     if (hpCurrent <= 0){
-        money += Math.floor(profit);
-        document.getElementById("moneyID").innerHTML = money;
+        moneyChanges(Math.floor(profit));
         hp *= 2;
         profit *= 1.5; 
         hpCurrent = hp;
@@ -20,10 +29,10 @@ function hit_hp() {
 
 function hitPlusOne() {
     if (money >= hitPlusOneCost){
-        money -= hitPlusOneCost;
+        moneyChanges(-hitPlusOneCost);
         hit++;
         hitPlusOneCost *= 2;
-        document.getElementById("moneyID").innerHTML = money;
-        document.getElementById("hitPlusOneCostID").innerHTML = hitPlusOneCost; 
+        document.getElementById("hitPlusOneCostID").innerHTML = hitPlusOneCost;
+        document.getElementById("hitID").innerHTML = "Удар " + hit; 
     }
 }
