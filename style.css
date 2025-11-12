@@ -1,0 +1,35 @@
+ *{
+    font-family: 'Courier New', Courier, monospace;
+ }
+#moneyTitleID{
+    width: 100%;
+    text-align: right;
+ }
+ #hpTitleID, #profitTitleID{
+    width: 100%;
+    text-align: center;
+ }
+ #hitID{
+   height: 100px;
+   width: 500px;
+   position: absolute;
+   top: 50%;
+   left: 37%; 
+ }
+  #hitPlusOneID, #hpMinusOnePercentID, #profitUpID{
+   height: 80px;
+   width: 300px;
+ }
+ h1, h2{
+    width: 100%;
+    text-align: center;
+ }
+ #hitPlusOneCostID, #hpMinusOnePercentCostID, #depthLevelID, #moneyID, #hpID, #profitID, #profitUpCostID{
+    display: inline-block;
+ }
+ footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+ }

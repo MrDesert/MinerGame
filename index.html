@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MinerGame</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>MinerGame</h1>
+        <h2>Текущая глубина: <div id="depthLevelID">0</div></h2>
+        <div id="moneyTitleID">Money: <div id="moneyID">0</div></div>
+        <div id="hpTitleID">Ударов до победы: <div id="hpID">5</div></div>
+        <div id="profitTitleID">Прибыль за победу: <div id="profitID">1</div></div>
+        <div id="hitPlusOneTitleID">Стоимость прокачки: <div id="hitPlusOneCostID">1</div></div>
+        <button id="hitPlusOneID" onclick="hitPlusOne()" disabled>+1 удару</button>
+        <div id="hpMinusOnePercentTitleID">Стоимость прокачки: <div id="hpMinusOnePercentCostID">1</div></div>
+        <button id="hpMinusOnePercentID" onclick="hpMinusOnePercent()" disabled>-1% прочности</button>
+        <div id="profitUpTitleID">Стоимость прокачки: <div id="profitUpCostID">1</div></div>
+        <button id="profitUpID" onclick="profitUp()" disabled>+ 1 к прибыле при победе</button>
+        <button id="hitID" onclick="hit_hp()">Удар 1</button>
+        <footer>© by MrDesert - alpha v0.10</footer>
+        <script src="script.js"></script>
+    </body>
+</html>
