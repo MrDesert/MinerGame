@@ -5,20 +5,27 @@
     width: 100%;
     text-align: right;
  }
- #hpID, #hpTitleID{
+ #hpID, #hpTitleID, #profitTitleID, #profitID{
     width: 100%;
     text-align: center;
  }
- button{
+ #hitID{
    height: 100px;
    width: 500px;
    position: absolute;
    top: 50%;
    left: 37%; 
  }
+  #hitPlusOneID{
+   height: 80px;
+   width: 300px;
+ }
  h1{
     width: 100%;
     text-align: center;
+ }
+ #hitPlusOneCostID{
+    display: inline-block;
  }
  footer{
     position: fixed;

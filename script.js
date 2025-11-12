@@ -1,8 +1,9 @@
 var hit = 1;
-var hp = 5;
+var hp = 4;
 var hpCurrent = hp;
 var money = 0;
 var profit = 1;
+var hitPlusOneCost = 1;
 
 function hit_hp() {
     hpCurrent -= hit;
@@ -13,5 +14,16 @@ function hit_hp() {
         profit *= 1.5; 
         hpCurrent = hp;
     }
+    document.getElementById("profitID").innerHTML = Math.floor(profit);
     document.getElementById("hpID").innerHTML = hpCurrent;
+}
+
+function hitPlusOne() {
+    if (money >= hitPlusOneCost){
+        money -= hitPlusOneCost;
+        hit++;
+        hitPlusOneCost *= 2;
+        document.getElementById("moneyID").innerHTML = money;
+        document.getElementById("hitPlusOneCostID").innerHTML = hitPlusOneCost; 
+    }
 }
