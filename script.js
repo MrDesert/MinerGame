@@ -12,20 +12,14 @@ var profitRatio = 2;
 function moneyChanges(m){
     money += m;
     document.getElementById("moneyID").innerHTML = money;
-    if (money >= hitPlusOneCost){
-        document.getElementById("hitPlusOneID").removeAttribute("disabled");
-    } else {
-        document.getElementById("hitPlusOneID").disabled="disabled";
-    }
-    if (money >= hpMinusOnePercentCost){
-        document.getElementById("hpMinusOnePercentID").removeAttribute("disabled");
-    } else {
-        document.getElementById("hpMinusOnePercentID").disabled="disabled";
-    }
-    if (money >= profitUpCost){
-        document.getElementById("profitUpID").removeAttribute("disabled");
-    } else {
-        document.getElementById("profitUpID").disabled="disabled";
+    var disabledIDs = ["hitPlusOneID", "hpMinusOnePercentID", "profitUpID"];    //ID которые надо включать и выключать в соответствии с количествой денег
+    var disabled = [hitPlusOneCost, hpMinusOnePercentCost, profitUpCost];       // переменные по которым отслеживать включение и выключение
+    for (let i = 0; i<disabled.length; i++){
+        if (money >= disabled[i]){
+            document.getElementById(disabledIDs[i]).removeAttribute("disabled");
+        } else {
+            document.getElementById(disabledIDs[i]).disabled="disabled";
+        }
     }
 }
 
@@ -37,10 +31,8 @@ function hit_hp() {
         profit *= profitRatio; 
         hpCurrent = hp;
         depthLevel++;
-        document.getElementById("profitID").innerHTML = Math.floor(profit);
-        document.getElementById("depthLevelID").innerHTML = depthLevel;
     }
-    document.getElementById("hpID").innerHTML = Math.floor(hpCurrent);
+    updateInfo();
 }
 
 function hitPlusOne() {
@@ -48,8 +40,7 @@ function hitPlusOne() {
         moneyChanges(-hitPlusOneCost);
         hit++;
         hitPlusOneCost *= 2;
-        document.getElementById("hitPlusOneCostID").innerHTML = hitPlusOneCost;
-        document.getElementById("hitID").innerHTML = "Удар " + hit; 
+        updateInfo();
     }
 }
 
@@ -59,8 +50,7 @@ function hpMinusOnePercent(){
         hp = hp*0.99;
         hpCurrent *= 0.99; 
         hpMinusOnePercentCost *= 2;
-        document.getElementById("hpMinusOnePercentCostID").innerHTML = hpMinusOnePercentCost;
-        document.getElementById("hpID").innerHTML = Math.floor(hpCurrent);
+        updateInfo();
     }
 }
 
@@ -70,7 +60,16 @@ function profitUp(){
         profitRatio = profitRatio*1.01;
         profit *= 1.01;
         profitUpCost *= 2;
-        document.getElementById("profitUpCostID").innerHTML = profitUpCost;
-        document.getElementById("profitID").innerHTML = Math.floor(profit);
+        updateInfo();
     }
+} 
+
+function updateInfo(){
+    document.getElementById("profitID").innerHTML = Math.floor(profit);
+    document.getElementById("depthLevelID").innerHTML = depthLevel;
+    document.getElementById("hpID").innerHTML = Math.floor(hpCurrent);
+    document.getElementById("hitPlusOneCostID").innerHTML = hitPlusOneCost;
+    document.getElementById("hitID").innerHTML = "Удар " + hit; 
+    document.getElementById("hpMinusOnePercentCostID").innerHTML = hpMinusOnePercentCost;
+    document.getElementById("profitUpCostID").innerHTML = profitUpCost;
 }
