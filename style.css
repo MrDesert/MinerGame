@@ -1,7 +1,7 @@
  *{
     font-family: 'Courier New', Courier, monospace;
  }
- #moneyID{
+ #moneyID, #moneyTitleID{
     width: 100%;
     text-align: right;
  }
