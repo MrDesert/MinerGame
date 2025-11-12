@@ -16,7 +16,7 @@
    top: 50%;
    left: 37%; 
  }
-  #hitPlusOneID{
+  #hitPlusOneID, #hpMinusOnePercentID{
    height: 80px;
    width: 300px;
  }
@@ -24,7 +24,7 @@
     width: 100%;
     text-align: center;
  }
- #hitPlusOneCostID{
+ #hitPlusOneCostID, #hpMinusOnePercentCostID{
     display: inline-block;
  }
  footer{
