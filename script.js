@@ -6,6 +6,8 @@ var profit = 1;
 var hitPlusOneCost = 1;
 var hpMinusOnePercentCost = 1;
 var depthLevel = 0;
+var profitUpCost = 1;
+var profitRatio = 2;
 
 function moneyChanges(m){
     money += m;
@@ -20,6 +22,11 @@ function moneyChanges(m){
     } else {
         document.getElementById("hpMinusOnePercentID").disabled="disabled";
     }
+    if (money >= profitUpCost){
+        document.getElementById("profitUpID").removeAttribute("disabled");
+    } else {
+        document.getElementById("profitUpID").disabled="disabled";
+    }
 }
 
 function hit_hp() {
@@ -27,7 +34,7 @@ function hit_hp() {
     if (hpCurrent <= 0){
         moneyChanges(Math.floor(profit));
         hp *= 2;
-        profit *= 1.5; 
+        profit *= profitRatio; 
         hpCurrent = hp;
         depthLevel++;
         document.getElementById("profitID").innerHTML = Math.floor(profit);
@@ -50,8 +57,20 @@ function hpMinusOnePercent(){
     if (money >= hpMinusOnePercentCost){
         moneyChanges(-hpMinusOnePercentCost);
         hp = hp*0.99;
+        hpCurrent *= 0.99; 
         hpMinusOnePercentCost *= 2;
         document.getElementById("hpMinusOnePercentCostID").innerHTML = hpMinusOnePercentCost;
         document.getElementById("hpID").innerHTML = Math.floor(hpCurrent);
+    }
+}
+
+function profitUp(){
+    if (money >= profitUpCost){
+        moneyChanges(-profitUpCost);
+        profitRatio = profitRatio*1.01;
+        profit *= 1.01;
+        profitUpCost *= 2;
+        document.getElementById("profitUpCostID").innerHTML = profitUpCost;
+        document.getElementById("profitID").innerHTML = Math.floor(profit);
     }
 }

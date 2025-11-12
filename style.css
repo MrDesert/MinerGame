@@ -16,7 +16,7 @@
    top: 50%;
    left: 37%; 
  }
-  #hitPlusOneID, #hpMinusOnePercentID{
+  #hitPlusOneID, #hpMinusOnePercentID, #profitUpID{
    height: 80px;
    width: 300px;
  }
@@ -24,7 +24,7 @@
     width: 100%;
     text-align: center;
  }
- #hitPlusOneCostID, #hpMinusOnePercentCostID, #depthLevelID, #moneyID, #hpID, #profitID{
+ #hitPlusOneCostID, #hpMinusOnePercentCostID, #depthLevelID, #moneyID, #hpID, #profitID, #profitUpCostID{
     display: inline-block;
  }
  footer{
