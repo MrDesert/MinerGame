@@ -3,6 +3,7 @@ var hp = 4;
 var hpCurrent = hp;
 var money = 0;
 var profit = 1;
+var profitCurrent = profit;
 var hitPlusOneCost = 1;
 var hpMinusOnePercentCost = 1;
 var depthLevel = 0;
@@ -30,11 +31,20 @@ function hit_hp() {
     hpCurrent -= hit;
     counter++;
     if (hpCurrent <= 0){
-        moneyChanges(Math.floor(profit));
+        moneyChanges(Math.floor(profitCurrent));
         hp *= 2;
-        profit *= profitRatio; 
+        profit *= profitRatio;
+        profitCurrent = profit; 
         hpCurrent = hp;
         depthLevel++;
+        var test = Math.floor(Math.random() * 4);
+        console.log(test);
+        if(test < 2){
+            profitCurrent *= 2;
+            document.getElementById("luckyID").innerHTML = "Удача!! х2 "
+        } else {
+            document.getElementById("luckyID").innerHTML = " "
+        }
     }
     updateInfo();
 }
@@ -81,7 +91,7 @@ function costOfPump(){
 }
 
 function updateInfo(){
-    document.getElementById("profitID").innerHTML = Math.floor(profit);
+    document.getElementById("profitID").innerHTML = Math.floor(profitCurrent);
     document.getElementById("depthLevelID").innerHTML = depthLevel;
     document.getElementById("hpID").innerHTML = Math.floor(hpCurrent);
     document.getElementById("hitPlusOneCostID").innerHTML = Math.floor(hitPlusOneCost);
