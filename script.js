@@ -1,7 +1,7 @@
 var hit = 1;
 var hp = 4;
 var hpCurrent = hp;
-var money = 0;
+var money = 10000;
 var profit = 1;
 var profitCurrent = profit;
 var hitPlusOneCost = 1;
@@ -12,6 +12,8 @@ var profitRatio = 2;
 var costOfPumpCost = 1;
 var costOfPumpRatio = 2;
 var counter = 0;
+var bossLevel = 1;
+var bossLevelRatio = 10;
 
 function moneyChanges(m){
     money += m;
@@ -44,6 +46,10 @@ function hit_hp() {
             document.getElementById("luckyID").innerHTML = "Удача!! х2 "
         } else {
             document.getElementById("luckyID").innerHTML = " "
+        }
+        if (bossLevel == depthLevel){
+            bossLevel += bossLevelRatio;
+            bossLevelBonus();
         }
     }
     updateInfo();
@@ -87,6 +93,24 @@ function costOfPump(){
         hpMinusOnePercentCost *= 0.99;
         hitPlusOneCost *= 0.99;
         updateInfo();
+    }
+}
+
+function bossLevelBonus(){
+    for (var i = 0; i < 3; i++){
+        var moneyBonus = Math.floor(Math.random()*((hitPlusOneCost + hpMinusOnePercentCost + profitUpCost + costOfPumpCost) / 1.5));
+        document.getElementById("bossLevelBonusID").append(
+            Object.assign(document.createElement('button'), {className: "bossLevelBonusCls", id: "bossLevelBonusID" + i,  innerHTML: "Приз №" + i + " " + moneyBonus + " Монет!", value: moneyBonus, onclick: function(){bossLevelBonusBtn(this);}})
+        )
+    }
+    document.getElementById("hitID").disabled = "disabled";
+}
+
+function bossLevelBonusBtn(bonus){
+    moneyChanges(Math.floor(bonus.value));
+    document.getElementById("hitID").removeAttribute("disabled");
+    for (var i = 0; i < 3; i++){
+        document.getElementById("bossLevelBonusID" + i).remove();
     }
 }
 
