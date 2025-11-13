@@ -1,7 +1,7 @@
  *{
     font-family: 'Courier New', Courier, monospace;
  }
-#moneyTitleID{
+#moneyTitleID, #counterTitleID{
     width: 100%;
     text-align: right;
  }
@@ -11,20 +11,22 @@
  }
  #hitID{
    height: 100px;
-   width: 500px;
+   width: 22%;
    position: absolute;
    top: 50%;
-   left: 37%; 
+   left: 39%;
+   min-width: 150px; 
  }
-  #hitPlusOneID, #hpMinusOnePercentID, #profitUpID, #costOfPumpID{
+ .pumpBtn{
    height: 80px;
-   width: 300px;
+   width: 15%;
+   min-width: 90px;
  }
  h1, h2{
     width: 100%;
     text-align: center;
  }
- #hitPlusOneCostID, #hpMinusOnePercentCostID, #depthLevelID, #moneyID, #hpID, #profitID, #profitUpCostID, #costOfPumpCostID{
+ .inline-block{
     display: inline-block;
  }
  footer{

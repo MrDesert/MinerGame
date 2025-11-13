@@ -6,22 +6,32 @@
     </head>
     <body>
         <h1>MinerGame</h1>
-        <h2>Текущая глубина: <div id="depthLevelID">0</div></h2>
-        <div id="moneyTitleID">Money: <div id="moneyID">0</div></div>
-        <div id="hpTitleID">Ударов до победы: <div id="hpID">5</div></div>
-        <div id="profitTitleID">Прибыль за победу: <div id="profitID">1</div></div>
-        <div id="hitPlusOneTitleID">Стоимость прокачки: <div id="hitPlusOneCostID">1</div></div>
-        <button id="hitPlusOneID" onclick="hitPlusOne()" disabled>+1 удару</button>
-        <div id="hpMinusOnePercentTitleID">Стоимость прокачки: <div id="hpMinusOnePercentCostID">1</div></div>
-        <button id="hpMinusOnePercentID" onclick="hpMinusOnePercent()" disabled>-1% прочности</button>
-        <div id="profitUpTitleID">Стоимость прокачки: <div id="profitUpCostID">1</div></div>
-        <button id="profitUpID" onclick="profitUp()" disabled>+ 1% к прибыле при победе</button>
 
-        <div id="costOfPumpTitleID">Стоимость прокачки: <div id="costOfPumpCostID">1</div></div>
-        <button id="costOfPumpID" onclick="costOfPump()" disabled>-1% цене всех прокачек</button>
+        <h2>Текущая глубина: <div id="depthLevelID" class="inline-block">0</div></h2>
+
+        <div id="moneyTitleID">Money: <div id="moneyID" class="inline-block">0</div></div>
+        <div id="counterTitleID">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
+
+        <div id="hpTitleID">Ударов до победы: <div id="hpID" class="inline-block">5</div></div>
+        <div id="profitTitleID">Прибыль за победу: <div id="profitID" class="inline-block">1</div></div>
+
+        <div>Стоимость прокачки: <div id="hitPlusOneCostID" class="inline-block">1</div>
+            </br><button id="hitPlusOneID" class="pumpBtn" onclick="hitPlusOne()" disabled>+1 удару</button>
+        </div>
+        <div>Стоимость прокачки: <div id="hpMinusOnePercentCostID" class="inline-block">1</div>
+            </br><button id="hpMinusOnePercentID" class="pumpBtn" onclick="hpMinusOnePercent()" disabled>-1% прочности</button>
+        </div>
+        <div>Стоимость прокачки: <div id="profitUpCostID" class="inline-block">1</div>
+            </br><button id="profitUpID" class="pumpBtn" onclick="profitUp()" disabled>+ 1% к прибыле при победе</button>
+        </div>
+        <div>Стоимость прокачки: <div id="costOfPumpCostID" class="inline-block">1</div>
+            </br><button id="costOfPumpID" class="pumpBtn" onclick="costOfPump()" disabled>-1% цене всех прокачек</button>
+        </div>
 
         <button id="hitID" onclick="hit_hp()">Удар 1</button>
-        <footer>© by MrDesert - alpha v0.13</footer>
+
+        <footer>© by MrDesert - alpha v0.14</footer>
+
         <script src="script.js"></script>
     </body>
 </html>

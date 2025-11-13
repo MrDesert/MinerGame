@@ -10,6 +10,7 @@ var profitUpCost = 1;
 var profitRatio = 2;
 var costOfPumpCost = 1;
 var costOfPumpRatio = 2;
+var counter = 0;
 
 function moneyChanges(m){
     money += m;
@@ -27,6 +28,7 @@ function moneyChanges(m){
 
 function hit_hp() {
     hpCurrent -= hit;
+    counter++;
     if (hpCurrent <= 0){
         moneyChanges(Math.floor(profit));
         hp *= 2;
@@ -87,4 +89,5 @@ function updateInfo(){
     document.getElementById("hpMinusOnePercentCostID").innerHTML = Math.floor(hpMinusOnePercentCost);
     document.getElementById("profitUpCostID").innerHTML = Math.floor(profitUpCost);
     document.getElementById("costOfPumpCostID").innerHTML = Math.floor(costOfPumpCost);
+    document.getElementById("counterID").innerHTML = counter;
 }
