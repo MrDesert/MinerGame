@@ -1,6 +1,7 @@
 var hit = 1;
 var hp = 4;
 var hpCurrent = hp;
+var hpRatio = 1.3;
 var money = 0;
 var profit = 1;
 var profitCurrent = profit;
@@ -8,7 +9,7 @@ var hitPlusOneCost = 1;
 var hpMinusOnePercentCost = 1;
 var depthLevel = 0;
 var profitUpCost = 1;
-var profitRatio = 2;
+var profitRatio = 1.3;
 var costOfPumpCost = 1;
 var costOfPumpRatio = 2;
 var counter = 0;
@@ -38,7 +39,7 @@ function hit_hp() {
     counter++;
     if (hpCurrent <= 0){
         moneyChanges(Math.floor(profitCurrent));
-        hp *= 2;
+        hp *= hpRatio;
         profit *= profitRatio;
         profitCurrent = profit; 
         hpCurrent = hp;
@@ -137,7 +138,7 @@ function autoHitUp(){
 
 function bossLevelBonus(){
     for (var i = 0; i < 3; i++){
-        var moneyBonus = Math.floor(Math.random()*((hitPlusOneCost + hpMinusOnePercentCost + profitUpCost + costOfPumpCost) / 1.5));
+        var moneyBonus = Math.floor(Math.random()*((hitPlusOneCost + hpMinusOnePercentCost + profitUpCost + costOfPumpCost + autoHitCost) / 5));
         document.getElementById("bossLevelBonusID").append(
             Object.assign(document.createElement('button'), {className: "bossLevelBonusCls", id: "bossLevelBonusID" + i,  innerHTML: "Приз №" + i + " " + moneyBonus + " Монет!", value: moneyBonus, onclick: function(){bossLevelBonusBtn(this);}})
         )
