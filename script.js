@@ -1,7 +1,7 @@
 var hit = 1;
 var hp = 4;
 var hpCurrent = hp;
-var money = 10000;
+var money = 0;
 var profit = 1;
 var profitCurrent = profit;
 var hitPlusOneCost = 1;
@@ -14,12 +14,16 @@ var costOfPumpRatio = 2;
 var counter = 0;
 var bossLevel = 1;
 var bossLevelRatio = 10;
+var autoHitCost = 100;
+var autoHitSecond = 0;
+
+setInterval(autoHit , (1000));
 
 function moneyChanges(m){
     money += m;
     document.getElementById("moneyID").innerHTML = money;
-    var disabledIDs = ["hitPlusOneID", "hpMinusOnePercentID", "profitUpID", "costOfPumpID"];    //ID которые надо включать и выключать в соответствии с количествой денег
-    var disabled = [hitPlusOneCost, hpMinusOnePercentCost, profitUpCost, costOfPumpCost];       // переменные по которым отслеживать включение и выключение
+    var disabledIDs = ["hitPlusOneID", "hpMinusOnePercentID", "profitUpID", "costOfPumpID", "autoHitID"];    //ID которые надо включать и выключать в соответствии с количествой денег
+    var disabled = [hitPlusOneCost, hpMinusOnePercentCost, profitUpCost, costOfPumpCost, autoHitCost];       // переменные по которым отслеживать включение и выключение
     for (let i = 0; i<disabled.length; i++){
         if (money >= disabled[i]){
             document.getElementById(disabledIDs[i]).removeAttribute("disabled");
@@ -33,6 +37,31 @@ function hit_hp() {
     hpCurrent -= hit;
     counter++;
     if (hpCurrent <= 0){
+        moneyChanges(Math.floor(profitCurrent));
+        hp *= 2;
+        profit *= profitRatio;
+        profitCurrent = profit; 
+        hpCurrent = hp;
+        depthLevel++;
+        var test = Math.floor(Math.random() * 5);
+        console.log(test);
+        if(test < 2){
+            profitCurrent *= 2;
+            document.getElementById("luckyID").innerHTML = "Удача!! х2 "
+        } else {
+            document.getElementById("luckyID").innerHTML = " "
+        }
+        if (bossLevel == depthLevel){
+            bossLevel += bossLevelRatio;
+            bossLevelBonus();
+        }
+    }
+    updateInfo();
+}
+
+function autoHit(){
+    hpCurrent -= autoHitSecond;
+        if (hpCurrent <= 0){
         moneyChanges(Math.floor(profitCurrent));
         hp *= 2;
         profit *= profitRatio;
@@ -92,6 +121,16 @@ function costOfPump(){
         profitUpCost *= 0.99;
         hpMinusOnePercentCost *= 0.99;
         hitPlusOneCost *= 0.99;
+        autoHitCost *= 0.99;
+        updateInfo();
+    }
+}
+
+function autoHitUp(){
+    if (money >= autoHitCost){
+        moneyChanges(-Math.floor(autoHitCost));
+        autoHitSecond++;
+        autoHitCost *= costOfPumpRatio;
         updateInfo();
     }
 }
@@ -123,5 +162,6 @@ function updateInfo(){
     document.getElementById("hpMinusOnePercentCostID").innerHTML = Math.floor(hpMinusOnePercentCost);
     document.getElementById("profitUpCostID").innerHTML = Math.floor(profitUpCost);
     document.getElementById("costOfPumpCostID").innerHTML = Math.floor(costOfPumpCost);
+    document.getElementById("autoHitCostID").innerHTML = Math.floor(autoHitCost);
     document.getElementById("counterID").innerHTML = counter;
 }
