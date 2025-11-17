@@ -43,3 +43,17 @@
     width: 100%;
     text-align: center;
  }
+ #hpBarID{
+    background-color: brown;
+    width: 100%;
+    height: 20px;
+ }
+ #hpBarBorderID {
+    background-color: rgb(253, 117, 117);
+    width: 30%;
+    height: 20px;
+    position: fixed;
+    left: 35%;
+    top: 13%;
+    border: solid 2px;
+ }

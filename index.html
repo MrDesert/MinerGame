@@ -13,18 +13,19 @@
         <div id="counterTitleID">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
 
         <div id="hpTitleID">Ударов до победы: <div id="hpID" class="inline-block">4</div></div>
+        <div id="hpBarBorderID"><div id="hpBarID"></div></div>
         <div id="profitTitleID"><div id="luckyID"> </div>Прибыль за победу: <div id="profitID" class="inline-block">1</div></div>
 
         <div id="pupmsTitle">Прокачки</div>
         <div>
             Стоимость:<div id="hitPlusOneCostID" class="inline-block">1</div>
             Уровень:<div id="hitPlusOneLevelID" class="inline-block">0</div>
-            </br><button id="hitPlusOneID" class="pumpBtn" onclick="hitPlusOne()" disabled>+1 удару</button>
+            </br><button id="hitPlusOneID" class="pumpBtn" onclick="hitPlusOneUp()" disabled>+1 удару</button>
         </div>
         <div>
             Стоимость:<div id="hpMinusOnePercentCostID" class="inline-block">1</div>
             Уровень:<div id="hpMinusOnePercentLevelID" class="inline-block">0</div>
-            </br><button id="hpMinusOnePercentID" class="pumpBtn" onclick="hpMinusOnePercent()" disabled>-1% прочности</button>
+            </br><button id="hpMinusOnePercentID" class="pumpBtn" onclick="hpMinusOnePercentUp()" disabled>-1% прочности</button>
         </div>
         <div>
             Стоимость:<div id="profitUpCostID" class="inline-block">1</div>
@@ -34,7 +35,7 @@
         <div>
             Стоимость:<div id="costOfPumpCostID" class="inline-block">1</div>
             Уровень:<div id="costOfPumpLevelID" class="inline-block">0</div>
-            </br><button id="costOfPumpID" class="pumpBtn" onclick="costOfPump()" disabled>-1% цене всех прокачек</button>
+            </br><button id="costOfPumpID" class="pumpBtn" onclick="costOfPump1()" disabled>-1% цене всех прокачек</button>
         </div>
         <div>
             Стоимость:<div id="autoHitCostID" class="inline-block">100</div>
@@ -45,7 +46,7 @@
         <button id="hitID" onclick="hit_hp()">Удар 1</button>
         <div id="bossLevelBonusID"></div>
 
-        <footer>© by MrDesert - alpha v0.27</footer>
+        <footer>© by MrDesert - alpha v0.3</footer>
 
         <script src="script.js"></script>
     </body>
