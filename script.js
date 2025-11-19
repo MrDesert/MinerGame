@@ -151,12 +151,10 @@ function bossLevelBonus(){
             Object.assign(document.createElement('button'), {className: "bossLevelBonusCls", id: "bossLevelBonusID" + i,  innerHTML: "Приз №" + i + " " + moneyBonus + " Монет!", value: moneyBonus, onclick: function(){bossLevelBonusBtn(this);}})
         )
     }
-    document.getElementById("hitID").disabled = "disabled";
 }
 
 function bossLevelBonusBtn(bonus){
     moneyChanges(Math.floor(bonus.value));
-    document.getElementById("hitID").removeAttribute("disabled");
     for (var i = 0; i < 3; i++){
         document.getElementById("bossLevelBonusID" + i).remove();
     }
@@ -167,7 +165,6 @@ function updateInfo(){
     document.getElementById("depthLevelID").innerHTML = layer.level;
     document.getElementById("hpID").innerHTML = Math.floor(layer.hpC);
     document.getElementById("hitPlusOneCostID").innerHTML = Math.floor(hitPlusOne.cost);
-    document.getElementById("hitID").innerHTML = "Удар " + hit; 
     document.getElementById("hpMinusOnePercentCostID").innerHTML = Math.floor(hpMinusOnePercent.cost);
     document.getElementById("profitUpCostID").innerHTML = Math.floor(prize.upCost);
     document.getElementById("costOfPumpCostID").innerHTML = Math.floor(costOfPumpCost);

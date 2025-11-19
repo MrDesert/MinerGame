@@ -3,12 +3,16 @@
     <head>
         <title>MinerGame</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="main.css">
     </head>
     <body>
+        <div style="position: absolute; height: 100%; width: 100%;" onclick="hit_hp()"></div>
         <h1>MinerGame</h1>
 
         <h2>Текущая глубина: <div id="depthLevelID" class="inline-block">0</div></h2>
 
+        <div id="restartID"><button>⟳</button></div>
+        <div id="menuID"><button>🕮</button></div>
         <div id="moneyTitleID">Money: <div id="moneyID" class="inline-block">0</div></div>
         <div id="counterTitleID">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
 
@@ -16,37 +20,38 @@
         <div id="hpBarBorderID"><div id="hpBarID"></div></div>
         <div id="profitTitleID"><div id="luckyID"> </div>Прибыль за победу: <div id="profitID" class="inline-block">1</div></div>
 
-        <div id="pupmsTitle">Прокачки</div>
-        <div>
-            Стоимость:<div id="hitPlusOneCostID" class="inline-block">1</div>
-            Уровень:<div id="hitPlusOneLevelID" class="inline-block">0</div>
-            </br><button id="hitPlusOneID" class="pumpBtn" onclick="hitPlusOneUp()" disabled>+1 удару</button>
-        </div>
-        <div>
-            Стоимость:<div id="hpMinusOnePercentCostID" class="inline-block">1</div>
-            Уровень:<div id="hpMinusOnePercentLevelID" class="inline-block">0</div>
-            </br><button id="hpMinusOnePercentID" class="pumpBtn" onclick="hpMinusOnePercentUp()" disabled>-1% прочности</button>
-        </div>
-        <div>
-            Стоимость:<div id="profitUpCostID" class="inline-block">1</div>
-            Уровень:<div id="profitUpLevelID" class="inline-block">0</div>
-            </br><button id="profitUpID" class="pumpBtn" onclick="profitUp()" disabled>+ 1% к прибыле при победе</button>
-        </div>
-        <div>
-            Стоимость:<div id="costOfPumpCostID" class="inline-block">1</div>
-            Уровень:<div id="costOfPumpLevelID" class="inline-block">0</div>
-            </br><button id="costOfPumpID" class="pumpBtn" onclick="costOfPump1()" disabled>-1% цене всех прокачек</button>
-        </div>
-        <div>
-            Стоимость:<div id="autoHitCostID" class="inline-block">100</div>
-            Уровень:<div id="autoHitLevelID" class="inline-block">0</div>
-            </br><button id="autoHitID" class="pumpBtn" onclick="autoHitUp()" disabled>+1 Автоудар раз в секунду</button>
+        <div class="sideMenuLeft" id="pumpMenu">
+            <div class="sideMenuTitle">Прокачки</div>
+            <div class="sideMenuElement">
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="hitPlusOneLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
+                <div class="sideMenuElementDescription">+1 удару</div>
+                <button class="sideMenuElementBtn" id="hitPlusOneID" onclick="hitPlusOneUp()" disabled>🪙<div id="hitPlusOneCostID" class="inline-block cost">1</div></button>
+            </div>
+            <div class="sideMenuElement">
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="hpMinusOnePercentLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
+                <div class="sideMenuElementDescription">-1% прочности</div>
+                <button class="sideMenuElementBtn" id="hpMinusOnePercentID" onclick="hpMinusOnePercentUp()" disabled>🪙<div id="hpMinusOnePercentCostID" class="inline-block cost">1</div></button>
+            </div>
+            <div class="sideMenuElement">
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="profitUpLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
+                <div class="sideMenuElementDescription">+ 1% к прибыле <br> при победе</div>
+                <button class="sideMenuElementBtn" id="profitUpID" onclick="profitUp()" disabled>🪙<div id="profitUpCostID" class="inline-block cost">1</div></button>
+            </div>
+            <div class="sideMenuElement">
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="costOfPumpLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
+                <div class="sideMenuElementDescription">-1% цене всех <br> прокачек</div>
+                <button class="sideMenuElementBtn" id="costOfPumpID" onclick="costOfPump1()" disabled>🪙<div id="costOfPumpCostID" class="inline-block cost">1</div></button>
+            </div>
+            <div class="sideMenuElement">
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="autoHitLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
+                <div class="sideMenuElementDescription">+1 Автоудар раз <br> в секунду</div>
+                <button class="sideMenuElementBtn" id="autoHitID" onclick="autoHitUp()" disabled>🪙<div id="autoHitCostID" class="inline-block cost">1</div></button>
+            </div>
         </div>
 
-        <button id="hitID" onclick="hit_hp()">Удар 1</button>
-        <div id="bossLevelBonusID"></div>
+        <div id="bossLevelBonusID" style="z-index: 2;"></div>
 
-        <footer>© by MrDesert - alpha v0.3</footer>
+        <footer>© by MrDesert - alpha v0.35</footer>
 
         <script src="script.js"></script>
     </body>
