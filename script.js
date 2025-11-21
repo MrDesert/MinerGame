@@ -2,11 +2,12 @@ var ratio = 1.3;
 var hit = 1;
 var counter = 0;
 var money = 0;
+var exp = 10000;
 //C-Current(текущий) R-Ratio(коэффициент)
-var layer = {hp: 4, hpC: 4, hpR: ratio, level: 0};
+var layer = {hp: 4, hpC: 4, hpR: ratio, hardness: 1, level: 0};
 var prize = {profit: 1, profitC: 1, upCost: 1, upLevel: 0, upRatio: ratio};
 var hitPlusOne = {cost: 1, level: 0};
-var hpMinusOnePercent = {cost: 1, level: 0};
+var hpMinusOnePercent = {cost: 10, level: 0};
 
 var costOfPumpCost = 1;
 var costOfPumpLevel = 0;
@@ -34,6 +35,9 @@ function moneyChanges(m){
         money >= disVar[i] ? disBtn.removeAttribute("disabled") : disBtn.disabled="disabled";
     }
     updateInfo();
+}
+function expChanges(e){
+    exp += e;
 }
 
 function colorNumders(id, color){
@@ -92,11 +96,20 @@ function hitPlusOneUp() {
 }
 
 function hpMinusOnePercentUp(){
-    if (money >= hpMinusOnePercent.cost){
-        moneyChanges(-Math.floor(hpMinusOnePercent.cost));
+    if (exp >= hpMinusOnePercent.cost){
+        expChanges(-Math.floor(hpMinusOnePercent.cost));
         hpMinusOnePercent.level++;
-        layer.hp = layer.hp * 0.99;
-        layer.hpCurr *= 0.99; 
+        if (hpMinusOnePercent.level < 10){
+            layer.hardness -= 0.01;
+            layer.hp = layer.hp * layer.hardness;
+            layer.hpCurr *= layer.hardness; 
+        } else {
+            document.getElementById("hardnessID").style.backgroundColor = "rgb(200, 80, 80)";
+            document.getElementById("hardnessBtnID").style.backgroundColor = "rgb(129, 51, 51)";
+            document.getElementById("hardnessBtnID").style.filter = "blur";
+            document.getElementById("hardnessBtnID").disabled = "disabled";
+        }
+
         hpMinusOnePercent.cost *= costOfPumpRatio;
         document.getElementById("hpMinusOnePercentLevelID").innerHTML = hpMinusOnePercent.level;
         updateInfo();
@@ -160,14 +173,22 @@ function bossLevelBonusBtn(bonus){
     }
 }
 
+function menuTreePumpClose(){
+    document.getElementById("menuTreePumpID").hidden = "hidden";
+}
+function menuTreePumpOpen(){
+    document.getElementById("menuTreePumpID").removeAttribute("hidden");
+}
+
 function updateInfo(){
     document.getElementById("profitID").innerHTML = Math.floor(prize.profitC);
     document.getElementById("depthLevelID").innerHTML = layer.level;
-    document.getElementById("hpID").innerHTML = Math.floor(layer.hpC);
+    document.getElementById("layerHardnessID").innerHTML = Math.floor(layer.hardness * 100) + "%";
     document.getElementById("hitPlusOneCostID").innerHTML = Math.floor(hitPlusOne.cost);
     document.getElementById("hpMinusOnePercentCostID").innerHTML = Math.floor(hpMinusOnePercent.cost);
     document.getElementById("profitUpCostID").innerHTML = Math.floor(prize.upCost);
     document.getElementById("costOfPumpCostID").innerHTML = Math.floor(costOfPumpCost);
     document.getElementById("autoHitCostID").innerHTML = Math.floor(autoHitCost);
     document.getElementById("counterID").innerHTML = counter;
+    document.getElementById("expID").innerHTML = exp;
 }

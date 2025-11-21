@@ -1,4 +1,4 @@
-.sideMenuLeft{
+.sideMenuLeft{      /* Боковое левое меню */
 	position: fixed;
 	margin: 0px; 
 	padding: 10px;
@@ -15,6 +15,7 @@
 	border-radius: 0px 30px 30px 0px;
     overflow: auto;
     direction: rtl;
+    border: 3px outset rgb(150, 150, 150);
 }
 .sideMenuLeft > *{
     direction: ltr;
@@ -64,7 +65,7 @@
     padding: 5px;
     display: inline-block;
 }
-.sideMenuElementBtn {
+.sideMenuElementBtn{
     position: absolute;
     right: 0px;
     bottom: 0px;
@@ -73,4 +74,96 @@
     min-height: 15px;
     width: 25%;
     min-width: 50px;
+}
+.centralMenuBackground{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0%;
+    left: 0%;
+    background: rgba(0, 0, 0, 0.5);
+    filter: blur();
+}
+.centralMenu{
+    position: absolute;
+    padding: 20px;
+    padding-top: 70px;
+    height: 80%;
+    width: 80%;
+    top: 10%;
+    left: 10%;
+    background: rgb(41, 41, 41);
+    border: 3px outset rgb(150, 150, 150);
+    border-radius: 40px;
+}
+.btnCloseCircule{
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    font-size: 15pt;
+    font-weight: bold;
+    color: white;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background: rgba(0, 0, 0, 0.7);
+}
+.moneyTopRight{
+    position: absolute;
+    right: 40px;
+    top: 30px;
+    font-size: 20pt;
+    font-weight: bold;
+}
+.moneyTopRightNum{
+    display: inline-block;
+}
+.centralMenuInfo{
+    margin: 10px;
+    padding: 20px;
+    color: white;
+    font-size: 12pt;
+    font-weight: bold;
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 10px;
+}
+.centralMenuElement{
+    margin: 10px;
+    padding: 10px;
+    position: relative;
+    white-space: nowrap;
+    border: 3px outset rgb(150, 150, 150);
+    border-radius: 10px;
+    background-color: #202020;
+    width: 40%;
+}
+.centralMenuElementTitle{
+    font-size: 16pt;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+.centralMenuElementDescription{
+    position: relative;
+    padding: 5px;
+    min-height: 60px; 
+    color: white;
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: center;
+    z-index: 0;
+}
+.centralMenuElementBtn{
+    position:relative;
+    height: 30%;
+    width: 30%;
+    bottom: 5%;
+    left: 35%;
+    color: white;
+    font-size: 14pt;
+    font-weight: bold;
+    background: rgb(41, 41, 41);
+    border: 3px outset rgb(150, 150, 150);
+    border-radius: 40px;
+    z-index: 2;
 }

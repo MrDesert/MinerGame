@@ -11,9 +11,26 @@
 
         <h2>Текущая глубина: <div id="depthLevelID" class="inline-block">0</div></h2>
 
-        <div id="restartID"><button>⟳</button></div>
-        <div id="menuID"><button>🕮</button></div>
-        <div id="moneyTitleID">Money: <div id="moneyID" class="inline-block">0</div></div>
+        <div id="restartID" style="position: relative; z-index: 1;"><button>⟳</button></div>
+        <div id="menuTreePumpID" class="centralMenuBackground" style="z-index: 2;" hidden="hidden">
+            <div class="centralMenu">
+                <button class="btnCloseCircule" onclick="menuTreePumpClose()">X</button>
+                <div class="moneyTopRight"><div class="moneyTopRightTitle"></div>🟢<div id="expID" class="moneyTopRightNum">0</div></div>
+                <div class="centralMenuInfo">
+                    <div class="centralMenuInfoElement">Твёрдость слоёв: <div id="layerHardnessID" class="centralMenuInfoElementValue inline-block">100%</div></div>
+                    <div class="centralMenuInfoElement"></div>
+                </div>
+                <div id="hardnessID" class="centralMenuElement">
+                    <div class="centralMenuElementTitle">-1% к твёрдости</div>
+                    <div id="hpMinusOnePercentLevelID" class="btnCloseCircule">0</div>
+                    <div class="centralMenuElementDescription">Твёрдость каждого слоя становится ниже </div>
+                    <button id="hardnessBtnID" class="centralMenuElementBtn" onclick="hpMinusOnePercentUp()">🟢<div id="hpMinusOnePercentCostID" class="inline-block cost">10</div></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="menuID" style="position: relative; z-index: 1;" onclick="menuTreePumpOpen()"><button>🕮</button></div>
+        <div id="moneyTitleID">🪙<div id="moneyID" class="inline-block">0</div></div>
         <div id="counterTitleID">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
 
         <div id="hpTitleID">Ударов до победы: <div id="hpID" class="inline-block">4</div></div>
@@ -30,7 +47,7 @@
             <div class="sideMenuElement">
                 <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="hpMinusOnePercentLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
                 <div class="sideMenuElementDescription">-1% прочности</div>
-                <button class="sideMenuElementBtn" id="hpMinusOnePercentID" onclick="hpMinusOnePercentUp()" disabled>🪙<div id="hpMinusOnePercentCostID" class="inline-block cost">1</div></button>
+                <button class="sideMenuElementBtn" id="hpMinusOnePercentID" onclick="hpMinusOnePercentUp()" disabled>🪙<div class="inline-block cost">1</div></button>
             </div>
             <div class="sideMenuElement">
                 <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="profitUpLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
@@ -49,9 +66,9 @@
             </div>
         </div>
 
-        <div id="bossLevelBonusID" style="z-index: 2;"></div>
+        <div id="bossLevelBonusID" style="position: relative; z-index: 1;"></div>
 
-        <footer>© by MrDesert - alpha v0.35</footer>
+        <footer>© by MrDesert - alpha v0.4</footer>
 
         <script src="script.js"></script>
     </body>
