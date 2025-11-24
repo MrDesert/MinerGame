@@ -18,20 +18,33 @@
                 <div class="moneyTopRight"><div class="moneyTopRightTitle"></div>🟢<div id="expID" class="moneyTopRightNum">0</div></div>
                 <div class="centralMenuInfo">
                     <div class="centralMenuInfoElement">Твёрдость слоёв: <div id="layerHardnessID" class="centralMenuInfoElementValue inline-block">100%</div></div>
-                    <div class="centralMenuInfoElement"></div>
+                    <div class="centralMenuInfoElement">Прибыль добычи: <div id="layerProfitID" class="centralMenuInfoElementValue inline-block">100%</div></div>
                 </div>
-                <div id="hardnessID" class="centralMenuElement">
+                <div id="hardnessID" class="centralMenuElement inline-block">
                     <div class="centralMenuElementTitle">-1% к твёрдости</div>
                     <div id="hpMinusOnePercentLevelID" class="btnCloseCircule">0</div>
                     <div class="centralMenuElementDescription">Твёрдость каждого слоя становится ниже </div>
                     <button id="hardnessBtnID" class="centralMenuElementBtn" onclick="hpMinusOnePercentUp()">🟢<div id="hpMinusOnePercentCostID" class="inline-block cost">10</div></button>
                 </div>
+                <div id="profitID2" class="centralMenuElement inline-block">
+                    <div class="centralMenuElementTitle">+ 1% к прибыле</div>
+                    <div id="profitUpLevelID" class="btnCloseCircule">0</div>
+                    <div class="centralMenuElementDescription">При каждой добыче вы будете получать больше прибыли </div>
+                    <button id="profitUpID" class="centralMenuElementBtn" onclick="profitUp()">🟢<div id="profitUpCostID" class="inline-block cost">10</div></button>
+                </div>
+                <div id="pumpsUpID" class="centralMenuElement inline-block">
+                    <div class="centralMenuElementTitle">-1% к цене улучшений</div>
+                    <div id="costOfPumpLevelID" class="btnCloseCircule">0</div>
+                    <div class="centralMenuElementDescription">Стоимость всех улучшений за монеты снизиться на 1% </div>
+                    <button id="costOfPumpID" class="centralMenuElementBtn" onclick="costOfPump1()">🟢<div id="costOfPumpCostID" class="inline-block cost">10</div></button>
+                </div>
             </div>
         </div>
 
         <div id="menuID" style="position: relative; z-index: 1;" onclick="menuTreePumpOpen()"><button>🕮</button></div>
-        <div id="moneyTitleID">🪙<div id="moneyID" class="inline-block">0</div></div>
-        <div id="counterTitleID">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
+        <div class="rightText">🪙<div id="moneyID" class="inline-block">0</div></div>
+        <div class="rightText">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
+        <div class="rightText">Сила удара: <div id="hitID" class="inline-block">1</div></div>
 
         <div id="hpTitleID">Ударов до победы: <div id="hpID" class="inline-block">4</div></div>
         <div id="hpBarBorderID"><div id="hpBarID"></div></div>
@@ -42,22 +55,12 @@
             <div class="sideMenuElement">
                 <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="hitPlusOneLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
                 <div class="sideMenuElementDescription">+1 удару</div>
-                <button class="sideMenuElementBtn" id="hitPlusOneID" onclick="hitPlusOneUp()" disabled>🪙<div id="hitPlusOneCostID" class="inline-block cost">1</div></button>
+                <button class="sideMenuElementBtn" id="hitPlusOneID" onclick="hitPlusOneUp(1)" disabled>🪙<div id="hitPlusOneCostID" class="inline-block cost">1</div></button>
             </div>
             <div class="sideMenuElement">
-                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="hpMinusOnePercentLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
-                <div class="sideMenuElementDescription">-1% прочности</div>
-                <button class="sideMenuElementBtn" id="hpMinusOnePercentID" onclick="hpMinusOnePercentUp()" disabled>🪙<div class="inline-block cost">1</div></button>
-            </div>
-            <div class="sideMenuElement">
-                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="profitUpLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
-                <div class="sideMenuElementDescription">+ 1% к прибыле <br> при победе</div>
-                <button class="sideMenuElementBtn" id="profitUpID" onclick="profitUp()" disabled>🪙<div id="profitUpCostID" class="inline-block cost">1</div></button>
-            </div>
-            <div class="sideMenuElement">
-                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="costOfPumpLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
-                <div class="sideMenuElementDescription">-1% цене всех <br> прокачек</div>
-                <button class="sideMenuElementBtn" id="costOfPumpID" onclick="costOfPump1()" disabled>🪙<div id="costOfPumpCostID" class="inline-block cost">1</div></button>
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="hitPlusTenLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
+                <div class="sideMenuElementDescription">+10 удару</div>
+                <button class="sideMenuElementBtn" id="hitPlusTenID" onclick="hitPlusOneUp(10)" disabled>🪙<div id="hitPlusTenCostID" class="inline-block cost">10</div></button>
             </div>
             <div class="sideMenuElement">
                 <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="autoHitLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
@@ -68,7 +71,7 @@
 
         <div id="bossLevelBonusID" style="position: relative; z-index: 1;"></div>
 
-        <footer>© by MrDesert - alpha v0.4</footer>
+        <footer>© by MrDesert - alpha v0.5</footer>
 
         <script src="script.js"></script>
     </body>

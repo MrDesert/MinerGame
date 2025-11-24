@@ -1,7 +1,7 @@
  *{
     font-family: 'Courier New', Courier, monospace;
  }
-#moneyTitleID, #counterTitleID{
+.rightText{
     width: 100%;
     text-align: right;
  }
@@ -60,6 +60,6 @@
  #expID{
     color: white;
  }
- #hpMinusOnePercentLevelID {
+ #hpMinusOnePercentLevelID, #profitUpLevelID, #costOfPumpLevelID {
     background-color: rgba(0, 0, 0, 0);
  }

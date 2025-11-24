@@ -5,18 +5,20 @@ var money = 0;
 var exp = 10000;
 //C-Current(текущий) R-Ratio(коэффициент)
 var layer = {hp: 4, hpC: 4, hpR: ratio, hardness: 1, level: 0};
-var prize = {profit: 1, profitC: 1, upCost: 1, upLevel: 0, upRatio: ratio};
-var hitPlusOne = {cost: 1, level: 0};
+var prize = {profit: 1, profitC: 1, upCost: 10, upLevel: 0, upRatio: ratio};
+var hitPlusOne = {cost: 1, costC: 1, level: 0};
+var hitPlusTen = {cost: 100, level: 0};
 var hpMinusOnePercent = {cost: 10, level: 0};
 
-var costOfPumpCost = 1;
+var costOfPumpCost = 10;
 var costOfPumpLevel = 0;
-var costOfPumpRatio = ratio;
+var costOfPumpRatioDown = 1;
+var costOfPumpRatio = ratio * costOfPumpRatioDown;
 
 var bossLevel = 1;
 var bossLevelRatio = 10;
 
-var autoHitCost = 100;
+var autoHitCost = 10;
 var autoHitSecond = 0;
 var autoHitLevel = 0;
 
@@ -28,8 +30,8 @@ function moneyChanges(m){
     colorNumders("moneyID", m < 0 ? "red" : "green");
     money += m;
     document.getElementById("moneyID").innerHTML = money;
-    var disIDs = ["hitPlusOneID", "hpMinusOnePercentID", "profitUpID", "costOfPumpID", "autoHitID"];    //ID которые надо включать и выключать в соответствии с количествой денег
-    var disVar = [hitPlusOne.cost, hpMinusOnePercent.cost, prize.upCost, costOfPumpCost, autoHitCost];       // переменные по которым отслеживать включение и выключение
+    var disIDs = ["hitPlusOneID", "hitPlusTenID", "costOfPumpID", "autoHitID"];    //ID которые надо включать и выключать в соответствии с количествой денег
+    var disVar = [hitPlusOne.costC, hitPlusTen.cost, costOfPumpCost, autoHitCost];       // переменные по которым отслеживать включение и выключение
     for (let i = 0; i<disVar.length; i++){
         let disBtn = document.getElementById(disIDs[i]);
         money >= disVar[i] ? disBtn.removeAttribute("disabled") : disBtn.disabled="disabled";
@@ -53,7 +55,7 @@ function hit_hp() {
     layer.hpC -= hit;
     counter++;
     document.getElementById("hpBarID").style.width = 100/layer.hp *layer.hpC + "%";
-    console.log(100/layer.hp *layer.hpC);
+    // console.log(100/layer.hp *layer.hpC);
     finishLevel();
     updateInfo();
 }
@@ -82,17 +84,45 @@ function finishLevel(){
     }
 }
 
-function hitPlusOneUp() {
-    if (money >= hitPlusOne.cost){
-        moneyChanges(-Math.floor(hitPlusOne.cost));
-        hit++;
+function hitPlusOneUp(hitPlus) {
+    if (money >= hitPlusTen.cost && hitPlus > 1){
+        moneyChanges(-Math.floor(hitPlusTen.cost));
+        hit += hitPlus;
+        hitPlusTen.level++;
+        hitPlusTen.cost *= costOfPumpRatio;
+        colorNumders("hitPlusTenCostID", "red");
+        colorNumders("hitPlusTenLevelID", "green");
+    } else if (money >= hitPlusOne.costC) {
+        moneyChanges(-Math.floor(hitPlusOne.costC));
+        hit += hitPlus;
         hitPlusOne.level++;
         hitPlusOne.cost *= costOfPumpRatio;
+        if (Math.round(hitPlusOne.cost) <= hitPlusOne.costC){
+            hitPlusOne.costC++;
+            console.log("true");
+        } else {
+            hitPlusOne.costC = Math.round(hitPlusOne.cost);
+            console.log("false");
+        }
+        let lengthCost = hitPlusOne.costC.toString().length;
+        lengthCost = 10**(lengthCost - 1);
+        if (hitPlusOne.costC/lengthCost >= 3){
+            hitPlusOne.costC = Math.round(hitPlusOne.costC/lengthCost)*lengthCost;
+        } else if (hitPlusOne.costC/Math.sqrt(lengthCost) >= 3 && lengthCost > 10){
+            hitPlusOne.costC = Math.round(hitPlusOne.costC/Math.sqrt((lengthCost)))*Math.sqrt(lengthCost);
+        }
+
+        
+
         colorNumders("hitPlusOneCostID", "red");
         colorNumders("hitPlusOneLevelID", "green");
-        document.getElementById("hitPlusOneLevelID").innerHTML = hitPlusOne.level;
-        updateInfo();
     }
+    document.getElementById("hitPlusTenLevelID").innerHTML = hitPlusTen.level;
+    document.getElementById("hitPlusOneLevelID").innerHTML = hitPlusOne.level;
+    updateInfo();
+    console.log(hitPlusOne.cost + " Cost");
+    console.log(hitPlusOne.costC + " CostC");
+    console.log(money + " money");
 }
 
 function hpMinusOnePercentUp(){
@@ -104,9 +134,7 @@ function hpMinusOnePercentUp(){
             layer.hp = layer.hp * layer.hardness;
             layer.hpCurr *= layer.hardness; 
         } else {
-            document.getElementById("hardnessID").style.backgroundColor = "rgb(200, 80, 80)";
-            document.getElementById("hardnessBtnID").style.backgroundColor = "rgb(129, 51, 51)";
-            document.getElementById("hardnessBtnID").style.filter = "blur";
+            document.getElementById("hardnessID").classList.add('disabled');
             document.getElementById("hardnessBtnID").disabled = "disabled";
         }
 
@@ -117,30 +145,31 @@ function hpMinusOnePercentUp(){
 }
 
 function profitUp(){
-    if (money >= prize.upCost){
-        moneyChanges(-Math.floor(prize.upCost));
+    if (exp >= prize.upCost){
+        expChanges(-Math.floor(prize.upCost));
         prize.upLevel++;
-        prize.upRatio = prize.upRatio*1.01;
-        prize.profit *= 1.01;
+        prize.upRatio += 0.01;
+        prize.profit += 0.01;
         prize.upCost *= costOfPumpRatio;
         document.getElementById("profitUpLevelID").innerHTML = prize.upLevel;
         updateInfo();
+        if (prize.upLevel >= 10){
+            document.getElementById("profitID2").classList.add('disabled');
+            document.getElementById("profitUpID").disabled = "disabled";
+        }
     }
 } 
 
 function costOfPump1(){
-    if (money >= costOfPumpCost){
-        moneyChanges(-Math.floor(costOfPumpCost));
+    if (exp >= costOfPumpCost){
+        expChanges(-Math.floor(costOfPumpCost));
         costOfPumpLevel++;
-        costOfPumpRatio = costOfPumpRatio - 0.01;
-        if(costOfPumpRatio <= 1){
-            document.getElementById("costOfPumpLevelID").disabled = "disabled";
-        }
-        costOfPumpCost *= (1 + costOfPumpRatio);
-        prize.upCost *= 0.99;
-        hpMinusOnePercent.cost *= 0.99;
-        hitPlusOne.cost = hitPlusOne.cost/(costOfPumpRatio + 0.01) * costOfPumpRatio;
-        autoHitCost *= 0.99;
+        costOfPumpRatioDown -= 0.01;
+        costOfPumpCost *= 2;
+        hitPlusOne.cost *= costOfPumpRatioDown;
+        hitPlusOne.costC = Math.round(hitPlusOne.cost);
+        hitPlusTen.cost *= costOfPumpRatioDown;
+        autoHitCost *= costOfPumpRatioDown;
         document.getElementById("costOfPumpLevelID").innerHTML = costOfPumpLevel;
         updateInfo();
     }
@@ -184,11 +213,16 @@ function updateInfo(){
     document.getElementById("profitID").innerHTML = Math.floor(prize.profitC);
     document.getElementById("depthLevelID").innerHTML = layer.level;
     document.getElementById("layerHardnessID").innerHTML = Math.floor(layer.hardness * 100) + "%";
-    document.getElementById("hitPlusOneCostID").innerHTML = Math.floor(hitPlusOne.cost);
+    document.getElementById("layerProfitID").innerHTML = Math.floor(prize.profit * 100) + "%";
+    document.getElementById("hitPlusOneCostID").innerHTML = hitPlusOne.costC;
+    document.getElementById("hitPlusTenCostID").innerHTML = Math.floor(hitPlusTen.cost);
     document.getElementById("hpMinusOnePercentCostID").innerHTML = Math.floor(hpMinusOnePercent.cost);
     document.getElementById("profitUpCostID").innerHTML = Math.floor(prize.upCost);
     document.getElementById("costOfPumpCostID").innerHTML = Math.floor(costOfPumpCost);
     document.getElementById("autoHitCostID").innerHTML = Math.floor(autoHitCost);
     document.getElementById("counterID").innerHTML = counter;
     document.getElementById("expID").innerHTML = exp;
+    document.getElementById("hitID").innerHTML = hit;
+    document.getElementById("hpID").innerHTML = Math.floor(layer.hpC);
+
 }
