@@ -45,6 +45,7 @@
         <div class="rightText">🪙<div id="moneyID" class="inline-block">0</div></div>
         <div class="rightText">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
         <div class="rightText">Сила удара: <div id="hitID" class="inline-block">1</div></div>
+        <div class="rightText">Сила автоудара: <div id="autoHitInfoID" class="inline-block">0</div></div>
 
         <div id="hpTitleID">Ударов до победы: <div id="hpID" class="inline-block">4</div></div>
         <div id="hpBarBorderID"><div id="hpBarID"></div></div>
@@ -53,30 +54,35 @@
         <div class="sideMenuLeft" id="pumpMenu">
             <div class="sideMenuTitle">Прокачки</div>
             <div class="sideMenuElement">
-                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="hitPlusOneLevelID">0</div><img src="img/kirka52.png" alt="Кирка"></div>
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="hitPlusOneLevelID">0</div><img src="img/kirka52.png" height="80px" alt="Кирка"></div>
                 <div class="sideMenuElementDescription">+1 удару</div>
                 <button class="sideMenuElementBtn" id="hitPlusOneID" onclick="hitPlusOneUp(1)" disabled>🪙<div id="hitPlusOneCostID" class="inline-block cost">1</div></button>
             </div>
-            <div class="sideMenuElement">
-                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="hitPlusTenLevelID">0</div><img src="img/drill5.png" height="80px" alt="Кирка"></div>
+            <div id="hitPlusTenID2" class="sideMenuElement disabled">
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="hitPlusTenLevelID">0</div><img src="img/drill5.png" height="80px" alt="Бур"></div>
                 <div class="sideMenuElementDescription">+10 удару</div>
                 <button class="sideMenuElementBtn" id="hitPlusTenID" onclick="hitPlusOneUp(10)" disabled>🪙<div id="hitPlusTenCostID" class="inline-block cost">10</div></button>
             </div>
-            <div class="sideMenuElement">
-                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="autoHitLevelID">0</div><img src="img/helmet5.png" height="80px" alt="Кирка"></div>
+            <div id="autoHitID2" class="sideMenuElement disabled">
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="autoHitLevelID">0</div><img src="img/helmet5.png" height="80px" alt="Каска"></div>
                 <div class="sideMenuElementDescription">+1 Автоудар раз <br> в секунду</div>
-                <button class="sideMenuElementBtn" id="autoHitID" onclick="autoHitUp()" disabled>🪙<div id="autoHitCostID" class="inline-block cost">1</div></button>
+                <button class="sideMenuElementBtn" id="autoHitID" onclick="autoHitUp(1)" disabled>🪙<div id="autoHitCostID" class="inline-block cost">1</div></button>
             </div>
-            <div class="sideMenuElement">
-                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="autoHitTenLevelID">0</div><img src="img/helmetDrill.png" height="80px" alt="Кирка"></div>
+            <div id="autoHitTenID2" class="sideMenuElement disabled">
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="autoHitTenLevelID">0</div><img src="img/helmetDrill.png" height="80px" alt="Каска с буром"></div>
                 <div class="sideMenuElementDescription">+10 Автоударов <br> в секунду</div>
-                <button class="sideMenuElementBtn" id="autoHitTenID" onclick="autoHitTenUp()" disabled>🪙<div id="autoHitTenCostID" class="inline-block cost">1</div></button>
+                <button class="sideMenuElementBtn" id="autoHitTenID" onclick="autoHitUp(10)" disabled>🪙<div id="autoHitTenCostID" class="inline-block cost">1000</div></button>
+            </div>
+            <div id="autoHitOneHundredID2" class="sideMenuElement disabled">
+                <div class="sideMenuElementIconLeft"><div class="sideMenuElementIconParametrTopLeft level" id="autoHitOneHundredLevelID">0</div><img src="img/helmetDrill.png" height="80px" alt="Каска с буром"></div>
+                <div class="sideMenuElementDescription">+100 Автоударов <br> в секунду</div>
+                <button class="sideMenuElementBtn" id="autoHitOneHundredID" onclick="autoHitUp(100)" disabled>🪙<div id="autoHitOneHundredCostID" class="inline-block cost">10000</div></button>
             </div>
         </div>
 
         <div id="bossLevelBonusID" style="position: relative; z-index: 1;"></div>
 
-        <footer>© by MrDesert - alpha v0.57</footer>
+        <footer>© by MrDesert - alpha v0.65</footer>
 
         <script src="main.js"></script>
         <script src="script.js"></script>
