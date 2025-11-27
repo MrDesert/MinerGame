@@ -29,23 +29,29 @@ var bossLevelRatio = 10;
 
 var costOfPump = [1, 1, 1];
 
-var disIDs = ["hitPlusOneID", "costOfPumpID"];    //ID которые надо включать и выключать в соответствии с количествой денег
-var disVar = [hitPlusOne.costC, costOfPumpCost];       // переменные по которым отслеживать включение и выключение
+var disIDs = ["hitPlusOneID"];    //ID которые надо включать и выключать в соответствии с количествой денег
+var disVar = [hitPlusOne];       // переменные по которым отслеживать включение и выключение
 
 setInterval(autoHit , (1000));
 moneyChanges(0)
+
 
 function moneyChanges(m){
     // console.log(m + " - Денег"); //Количество денег на трату
     colorNumders("moneyID", m < 0 ? "red" : "green");
     money += m;
     document.getElementById("moneyID").innerHTML = toCompactNotation(money);
-    for (let i = 0; i<disVar.length; i++){
-        let disBtn = document.getElementById(disIDs[i]);
-        money >= disVar[i] ? disBtn.removeAttribute("disabled") : disBtn.disabled="disabled";
-    }
     updateInfo();
 }
+
+function onOffBtn(){
+    for (let i = 0; i<disVar.length; i++){
+        console.log(i);
+        let disBtn = document.getElementById(disIDs[i]);
+        money >= disVar[i].costC ? disBtn.removeAttribute("disabled") : disBtn.disabled="disabled";
+    }
+}
+
 function expChanges(e){
     exp += e;
 }
@@ -82,26 +88,27 @@ function finishLevel(){
             bossLevelBonus();
         }
         document.getElementById("hpBarID").style.width = "100%";
-        if (layer.level > 150){
+        if (layer.level == 150){
             document.getElementById("autoHitOneHundredID2").classList.remove("disabled");
             document.getElementById("autoHitOneHundredID").removeAttribute("disabled");
             disIDs.push("autoHitOneHundredID");
-            disVar.push(autoHitOneHundred.costC);
-        } else if (layer.level > 100){
+            disVar.push(autoHitOneHundred);
+        } else if (layer.level == 100){
             document.getElementById("autoHitTenID2").classList.remove("disabled");
             document.getElementById("autoHitTenID").removeAttribute("disabled");
             disIDs.push("autoHitTenID");
-            disVar.push(autoHitTen.costC);
-        } else if (layer.level > 30){
+            disVar.push(autoHitTen);
+        } else if (layer.level == 30){
             document.getElementById("autoHitID2").classList.remove("disabled");
             document.getElementById("autoHitID").removeAttribute("disabled");
             disIDs.push("autoHitID");
-            disVar.push(autoHitOne.costC);
-        } else if (layer.level > 10){
+            disVar.push(autoHitOne);
+            
+        } else if (layer.level == 10){ 
             document.getElementById("hitPlusTenID2").classList.remove("disabled");
             document.getElementById("hitPlusTenID").removeAttribute("disabled");
             disIDs.push("hitPlusTenID");
-            disVar.push(hitPlusTen.costC);
+            disVar.push(hitPlusTen);
         }
         updateInfo();
     }
@@ -262,6 +269,7 @@ function menuTreePumpOpen(){
 }
 
 function updateInfo(){
+    onOffBtn();
     document.getElementById("profitID").innerHTML = toCompactNotation(prize.profitC * doubleMoney);
     document.getElementById("depthLevelID").innerHTML = toCompactNotation(layer.level);
     document.getElementById("layerHardnessID").innerHTML = Math.floor(layer.hardness * 100) + "%";
