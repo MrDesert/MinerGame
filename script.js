@@ -3,19 +3,20 @@ var hit = 1;
 var autoHitSecond = 0;
 var counter = 0;
 var money = 0;
-var exp = 10000;
+var moneyExp = 0.001;
+var exp = 0;
 var doubleMoney = 1;
 
 
 //C-Current(текущий) R-Ratio(коэффициент)
-var layer = {hp: 4, hpC: 4, hpR: ratio, hardness: 1, level: 0};
+var layer = {hp: 4, hpC: 4, hpR: ratio, hardness: 1, level: 0, expBonus: 0.1};
 var prize = {profit: 1, profitC: 1, upCost: 10, upLevel: 0, upRatio: ratio};
-var hitPlusOne = {cost: 1, costC: 1, level: 0};
-var hitPlusTen = {cost: 100, costC: 100, level: 0};
-var profitPlusOne = {cost: 10, costC: 10, level: 0};
-var autoHitOne = {cost: 10, costC: 10, level: 0};
-var autoHitTen = {cost: 1000, costC: 1000, level: 0};
-var autoHitOneHundred = {cost: 10000, costC: 10000, level: 0};
+var hitPlusOne = {cost: 1, costC: 1, level: 0, expBonus: 0.1};
+var hitPlusTen = {cost: 100, costC: 100, level: 0, expBonus: 0.2};
+var profitPlusOne = {cost: 10, costC: 10, level: 0, expBonus: 0.1};
+var autoHitOne = {cost: 10, costC: 10, level: 0, expBonus: 0.2};
+var autoHitTen = {cost: 1000, costC: 1000, level: 0, expBonus: 0.3};
+var autoHitOneHundred = {cost: 10000, costC: 10000, level: 0, expBonus: 0.4};
 
 var hpMinusOnePercent = {cost: 10, level: 0};
 
@@ -54,6 +55,13 @@ function onOffBtn(){
 
 function expChanges(e){
     exp += e;
+}
+
+function expBonus(){
+    var expProfit = money * moneyExp + layer.level * layer.expBonus;
+    console.log(expProfit);
+    expChanges(expProfit);
+    updateInfo;
 }
 
 function hit_hp() {
