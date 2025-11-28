@@ -63,6 +63,10 @@ function expBonus(){
     console.log(money*moneyExp + " + " + layer.level*layer.expBonus + " + " + hitPlusOne.level*hitPlusOne.expBonus + " + " + profitPlusOne.level*profitPlusOne.expBonus + " + " + autoHitOne.level*autoHitOne.expBonus + " + " + hitPlusTen.level*hitPlusTen.expBonus + " + " + autoHitTen.level*autoHitTen.expBonus + " + " + autoHitOneHundred.level*autoHitOneHundred.expBonus + " = " + expProfit);
     expChanges(expProfit);
     money = 0;
+    layer.hp = 4;
+    layer.hpC = 4;
+    prize.profit = 1;
+    prize.profitC = 1;
     hit = 1;
     autoHitSecond = 0;
     layer.level = 0;
