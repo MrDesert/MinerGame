@@ -53,6 +53,9 @@
     padding: 5px;
     display: inline-block;
 }
+.sideMenuElementIconLeftIMG{
+    height: 80px;
+}
 .sideMenuElementIconParametrTopLeft{
     position: absolute;
     top: 6px;

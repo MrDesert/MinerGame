@@ -63,3 +63,17 @@
  #hpMinusOnePercentLevelID, #profitUpLevelID, #costOfPumpLevelID {
     background-color: rgba(0, 0, 0, 0);
  }
+ #layerID {
+   position: absolute;
+   bottom: 0%;
+   height: 33%;
+ }
+#layerImgID {
+   position: relative;
+   left: 15%;
+   width: 70%;
+}
+body {
+   background-image: linear-gradient(rgba(50,50,50,0.8), rgba(50,50,50,0.8)), url(img/background-4x.png);
+   background-size: 1500px;
+}

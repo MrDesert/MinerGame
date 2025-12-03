@@ -9,7 +9,7 @@ function toCompactNotation(number){
     return shortNumber;
 }
 
-function colorNumders(id, color){
+function colorNumbers(id, color){
     document.getElementById(id).style.color = color;
     document.getElementById(id).style.filter = "blur(0.3px)"
     setTimeout(function(){
@@ -29,4 +29,35 @@ function toRoundoff(number){
     // console.log(magnitude + " - Приведение к кратным числам");
     // console.log(number/magnitude + " - Число делим на разряды");
     return roundNumber;
+}
+
+const consoleBold = "font-weight: bold;";
+const consoleNormal = "font-weight: normal;";
+
+//Родитель: Селектор и имя; Ребёнок: Тэг, ID, классы, текст; Тех. Инфо: Код поиска.
+function toCreateTag(typeSelector, name, tag, ID, classes, text, trackCode){
+    if (!trackCode){trackCode = "Не указан кода для отслеживания!"}             //Если код поиска пустой, то он заполняеться об этом
+    switch (typeSelector){
+        case "id": 
+        // console.log(ID);                                                             //Создаёт элемент на основе ID родителя - Всегда 1 шт
+            document.querySelector("#" + name).append(
+		        Object.assign(document.createElement(tag), {id: ID, className: classes, innerHTML: text})
+	        );
+            break;
+        case "class":                                                           //Создаёт элемент на основе class родителя - создаёт во всех элементах с этим классом
+            document.querySelectorAll("." + name).forEach(element => {element.append(
+		        Object.assign(document.createElement(tag), {id: ID, className: classes, innerHTML: text})
+            )});
+            break;
+        case "tag":                                                             //Создаёт элемент на основе tag родителя - создаёт во всех элементах с этим классом
+            document.querySelectorAll(name).forEach(element => {element.append(
+		        Object.assign(document.createElement(tag), {id: ID, className: classes, innerHTML: text})
+            )});
+            break;
+        default: 
+            console.log("Ошибка данный тип селектора: %c" + typeSelector + "%c не соответствет ни одному из этих: id, class, tag. Необходимо указать правильный тип. " + "Код поиска: %c" + trackCode, consoleBold, consoleNormal, consoleBold);
+    }
+
+    
+
 }
