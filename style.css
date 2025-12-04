@@ -78,3 +78,6 @@ body {
    background-position: 0% 0%;
    background-size: 1500px;
 }
+#layerImgID {
+  box-shadow: 0px 0px 25px 25px rgba(0, 0, 0, 0.3);
+}
