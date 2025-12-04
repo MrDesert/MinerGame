@@ -10,16 +10,18 @@ var exp = 0;
 var doubleMoney = 1;
 
 
-//C-Current(текущий) R-Ratio(коэффициент)
+//C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое)
 var layer = {name: "layer", hp: 4, hpC: 4, hpR: ratio, hardness: 1, level: 0, expBonus: 0.1};
 var prize = {name: "prize", profit: 1, profitC: 1, upCost: 10, upLevel: 0, upRatio: ratio};
 
-var hitPlusOne = {name: "hitPlusOne", cost: 1, costC: 1, level: 0, openingLayer: 1, switch: "off", expBonus: 0.1};
-var profitPlusOne = {name: "profitPlusOne", cost: 10, costC: 10, level: 0, openingLayer: 10, switch: "off", expBonus: 0.1};
-var autoHitOne = {name: "autoHitOne", cost: 10, costC: 10, level: 0, openingLayer: 25, switch: "off", expBonus: 0.2};
-var hitPlusTen = {name: "hitPlusTen", cost: 100, costC: 100, level: 0, openingLayer: 50, switch: "off", expBonus: 0.2};
-var autoHitTen = {name: "autoHitTen", cost: 1000, costC: 1000, level: 0, openingLayer: 100, switch: "off", expBonus: 0.3};
-var autoHitOneHundred = {name: "autoHitOneHundred", cost: 10000, costC: 10000, level: 0, openingLayer: 150, switch: "off", expBonus: 0.4};
+var hitPlusOne = {name: "hitPlusOne", costS: 1, cost: 1, costC: 1, level: 0, openingLayer: 1, switch: "off", expBonus: 0.1, img: "pickaxe_transparent_390x390.png", imgGS: "pickaxe_transparent_grayscale_390x390.png"};
+var profitPlusOne = {name: "profitPlusOne", costS: 10, cost: 10, costC: 10, level: 0, openingLayer: 10, switch: "off", expBonus: 0.1, img: "helmet5.png", imgGS: "helmet5_transparent_grayscale_310x310.png"};
+var autoHitOne = {name: "autoHitOne", costS: 10, cost: 10, costC: 10, level: 0, openingLayer: 25, switch: "off", expBonus: 0.2, img: "helmet-pickaxe_transparent_450x450.png", imgGS: "helmet-pickaxe_transparent_grayscale_450x450.png"};
+var hitPlusTen = {name: "hitPlusTen", costS: 100, cost: 100, costC: 100, level: 0, openingLayer: 50, switch: "off", expBonus: 0.2, img: "drill_transparent_450x450.png", imgGS: "drill_transparent_grayscale_450x450.png"};
+var autoHitTen = {name: "autoHitTen", costS: 1000, cost: 1000, costC: 1000, level: 0, openingLayer: 100, switch: "off", expBonus: 0.3, img: "helmetDrill.png", imgGS: "helmetDrill_transparent_grayscale_450x450.png"};
+var autoHitOneHundred = {name: "autoHitOneHundred", costS: 10000, cost: 10000, costC: 10000, level: 0, openingLayer: 150, switch: "off", expBonus: 0.4, img: "helmet5.png", imgGS: "helmet5_transparent_grayscale_310x310.png"};
+
+var upgrades = [hitPlusOne, profitPlusOne, autoHitOne, hitPlusTen, autoHitTen, autoHitOneHundred];
 
 var hpMinusOnePercent = {cost: 10, level: 0};
 
@@ -38,12 +40,12 @@ var switchIDs = ["hitPlusOne", "profitPlusOne", "autoHitOne", "hitPlusTen", "aut
 var switchVar = [hitPlusOne, profitPlusOne, autoHitOne, hitPlusTen, autoHitTen, autoHitOneHundred];       // переменные по которым отслеживать включение и выключение
 
     let menuForCoins = [
-        ["hitPlusOne", "pickaxe_transparent_390x390.png", "+1 удару", () => hitPlusOneUp(1)], 
-        ["profitPlusOne", "helmet5.png", "+1🪙 к прибыли", () => profitPlusOne2()], 
-        ["autoHitOne", "helmet-pickaxe_transparent_450x450.png", "+1 Автоудар раз <br> в секунду", () => autoHitUp(1)], 
-        ["hitPlusTen", "drill_transparent_450x450.png", "+10 удару", () => hitPlusOneUp(10)], 
-        ["autoHitTen", "helmetDrill.png", "+10 Автоударов <br> в секунду", () => autoHitUp(10)], 
-        ["autoHitOneHundred", "helmet5.png", "+100 Автоударов <br> в секунду", () => autoHitUp(100)]
+        ["hitPlusOne", "pickaxe_transparent_grayscale_390x390.png", "+1 удару", () => hitPlusOneUp(1)], 
+        ["profitPlusOne", "helmet5_transparent_grayscale_310x310.png", "+1🪙 к прибыли", () => profitPlusOne2()], 
+        ["autoHitOne", "helmet-pickaxe_transparent_grayscale_450x450.png", "+1 Автоудар раз <br> в секунду", () => autoHitUp(1)], 
+        ["hitPlusTen", "drill_transparent_grayscale_450x450.png", "+10 удару", () => hitPlusOneUp(10)], 
+        ["autoHitTen", "helmetDrill_transparent_grayscale_450x450.png", "+10 Автоударов <br> в секунду", () => autoHitUp(10)], 
+        ["autoHitOneHundred", "helmet5_transparent_grayscale_310x310.png", "+100 Автоударов <br> в секунду", () => autoHitUp(100)]
     ];
 
 startingCreationGUI();
@@ -90,68 +92,47 @@ function expBonus(){
     console.log(money*moneyExp + " + " + layer.level*layer.expBonus + " + " + hitPlusOne.level*hitPlusOne.expBonus + " + " + profitPlusOne.level*profitPlusOne.expBonus + " + " + autoHitOne.level*autoHitOne.expBonus + " + " + hitPlusTen.level*hitPlusTen.expBonus + " + " + autoHitTen.level*autoHitTen.expBonus + " + " + autoHitOneHundred.level*autoHitOneHundred.expBonus + " = " + expProfit);
     expChanges(expProfit);
     money = 0;
-    layer.hp = 4;
-    layer.hpC = 4;
-    prize.profit = 1;
-    prize.profitC = 1;
+    layer.hpC = layer.hp = 4;
+    prize.profitC = prize.profit = 1;
     hit = 1;
     autoHitSecond = 0;
     layer.level = 0;
-    hitPlusOne.level = 0;
-    hitPlusOne.cost = 1;
-    hitPlusOne.costC = 1;
-    profitPlusOne.level = 0;
-    profitPlusOne.cost = 10;
-    profitPlusOne.costC = 10;
-    autoHitOne.level = 0;
-    autoHitOne.cost = 10;
-    autoHitOne.costC = 10;
-    hitPlusTen.level = 0;
-    hitPlusTen.cost = 100;
-    hitPlusTen.costC = 100;
-    autoHitTen.level = 0;
-    autoHitTen.cost = 1000; 
-    autoHitTen.costC = 1000;
-    autoHitOneHundred.level = 0;
-    autoHitOneHundred.cost = 10000;
-    autoHitOneHundred.costC = 10000;
 
-    document.getElementById("profitPlusOneID").classList.add("disabled");
-    document.getElementById("profitPlusOneBtnID").disabled = "disabled";
-    document.getElementById("autoHitOneID").classList.add("disabled");
-    document.getElementById("autoHitOneBtnID").disabled = "disabled";
-    document.getElementById("hitPlusTenID").classList.add("disabled");
-    document.getElementById("hitPlusTenBtnID").disabled = "disabled";
-    document.getElementById("autoHitTenID").classList.add("disabled");
-    document.getElementById("autoHitTenBtnID").disabled = "disabled";
-    document.getElementById("autoHitOneHundredID").classList.add("disabled");
-    document.getElementById("autoHitOneHundredBtnID").disabled = "disabled";
+    for (let i = 0; i < upgrades.length; i++){
+        upgrades[i].level = 0;
+        upgrades[i].costC = upgrades[i].cost = upgrades[i].costS;
+        switchingElementMenu("disable", upgrades[i]);
+    }
     moneyChanges(0);
     counterReboot++;
     document.getElementById("counterRebootID").innerHTML = counterReboot;
     updateInfo;
 }
 
+
 function hit_hp() {
-    let trmblingH = Math.floor(Math.random()*2);
-    let trmblingV = Math.floor(Math.random()*2);
-    document.getElementById("layerID").style.left = trmblingH > 0 ? "0.5%" : "-0.5%";
-    document.getElementById("layerID").style.bottom = trmblingV > 0 ? "0.5%" : "-0.5%";
-    console.log(trmblingH + " " + trmblingV)
+    trembling();
     layer.hpC -= hit;
     counter++;
     document.getElementById("hpBarID").style.width = 100/layer.hp *layer.hpC + "%";
     // console.log(100/layer.hp *layer.hpC);
     finishLevel();
     updateInfo();
-    setTimeout(hit_hp2, 50);
 }
-function hit_hp2(){
+function trembling(){
+    let tremblingH = Math.floor(Math.random()*2);
+    let tremblingV = Math.floor(Math.random()*2);
+    document.getElementById("layerID").style.left = tremblingH > 0 ? "0.5%" : "-0.5%";
+    document.getElementById("layerID").style.bottom = tremblingV > 0 ? "0.5%" : "-0.5%";
+    setTimeout(trembling2, 50);
+}
+function trembling2(){
     document.getElementById("layerID").style.left = "0%";
     document.getElementById("layerID").style.bottom = "0%";
 }
 
 function autoHit(){
+    autoHitSecond > 0 ? trembling() : updateInfo();
     layer.hpC -= autoHitSecond;
     document.getElementById("hpBarID").style.width = 100/layer.hp *layer.hpC + "%";
     finishLevel();
@@ -210,10 +191,12 @@ function switchingElementMenu(switchType, btn){
         case "enable":
             btn.switch = "on"
             document.getElementById(btn.name+"ID").classList.remove("disabled");
+            document.getElementById(btn.name+"ImgID").src = "img/" + btn.img;
             break;
         case "disable":
             btn.switch = "off"
             document.getElementById(btn.name+"ID").classList.add("disabled");
+            document.getElementById(btn.name+"ImgID").src = "img/" + btn.imgGS;
             break;
     }
     onOffBtn();
@@ -224,12 +207,9 @@ function requiredUp(original, result){
     // console.log(result + " result");
     if (Math.round(original + (original*1.1)) <= result){
         result++;
-        // console.log("result++");
     } else{
         result = Math.round(original + (original*1.1));
-        // console.log("Math.round");
     }
-    // console.log(result);
     return result;
 }
 
