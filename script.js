@@ -14,12 +14,12 @@ var doubleMoney = 1;
 var layer = {name: "layer", hp: 4, hpC: 4, hpR: ratio, hardness: 1, level: 0, expBonus: 0.1};
 var prize = {name: "prize", profit: 1, profitC: 1, upCost: 10, upLevel: 0, upRatio: ratio};
 
-var hitPlusOne = {name: "hitPlusOne", costS: 1, cost: 1, costC: 1, level: 0, openingLayer: 1, switch: "off", expBonus: 0.1, img: "pickaxe_transparent_390x390.png", imgGS: "pickaxe_transparent_grayscale_390x390.png"};
-var profitPlusOne = {name: "profitPlusOne", costS: 10, cost: 10, costC: 10, level: 0, openingLayer: 10, switch: "off", expBonus: 0.1, img: "helmet5.png", imgGS: "helmet5_transparent_grayscale_310x310.png"};
-var autoHitOne = {name: "autoHitOne", costS: 10, cost: 10, costC: 10, level: 0, openingLayer: 25, switch: "off", expBonus: 0.2, img: "helmet-pickaxe_transparent_450x450.png", imgGS: "helmet-pickaxe_transparent_grayscale_450x450.png"};
-var hitPlusTen = {name: "hitPlusTen", costS: 100, cost: 100, costC: 100, level: 0, openingLayer: 50, switch: "off", expBonus: 0.2, img: "drill_transparent_450x450.png", imgGS: "drill_transparent_grayscale_450x450.png"};
-var autoHitTen = {name: "autoHitTen", costS: 1000, cost: 1000, costC: 1000, level: 0, openingLayer: 100, switch: "off", expBonus: 0.3, img: "helmetDrill.png", imgGS: "helmetDrill_transparent_grayscale_450x450.png"};
-var autoHitOneHundred = {name: "autoHitOneHundred", costS: 10000, cost: 10000, costC: 10000, level: 0, openingLayer: 150, switch: "off", expBonus: 0.4, img: "helmet5.png", imgGS: "helmet5_transparent_grayscale_310x310.png"};
+var hitPlusOne = {name: "hitPlusOne", costS: 1, cost: 1, costC: 1, level: 0, openingLayer: 1, switch: "off", expBonus: 0.1, img: "pickaxe_transparent_390x390.png", imgGS: "pickaxe_transparent_grayscale_390x390.png", text: "+1 удару"};
+var profitPlusOne = {name: "profitPlusOne", costS: 10, cost: 10, costC: 10, level: 0, openingLayer: 10, switch: "off", expBonus: 0.1, img: "helmet5.png", imgGS: "helmet5_transparent_grayscale_310x310.png", text: "+1🪙 к прибыли"};
+var autoHitOne = {name: "autoHitOne", costS: 10, cost: 10, costC: 10, level: 0, openingLayer: 25, switch: "off", expBonus: 0.2, img: "helmet-pickaxe_transparent_450x450.png", imgGS: "helmet-pickaxe_transparent_grayscale_450x450.png", text: "+1 Автоудар раз <br> в секунду"};
+var hitPlusTen = {name: "hitPlusTen", costS: 100, cost: 100, costC: 100, level: 0, openingLayer: 50, switch: "off", expBonus: 0.2, img: "drill_transparent_450x450.png", imgGS: "drill_transparent_grayscale_450x450.png", text: "+10 удару"};
+var autoHitTen = {name: "autoHitTen", costS: 1000, cost: 1000, costC: 1000, level: 0, openingLayer: 100, switch: "off", expBonus: 0.3, img: "helmetDrill.png", imgGS: "helmetDrill_transparent_grayscale_450x450.png", text: "+10 Автоударов <br> в секунду"};
+var autoHitOneHundred = {name: "autoHitOneHundred", costS: 10000, cost: 10000, costC: 10000, level: 0, openingLayer: 150, switch: "off", expBonus: 0.4, img: "helmet5.png", imgGS: "helmet5_transparent_grayscale_310x310.png", text: "+100 Автоударов <br> в секунду"};
 
 var upgrades = [hitPlusOne, profitPlusOne, autoHitOne, hitPlusTen, autoHitTen, autoHitOneHundred];
 
@@ -139,8 +139,11 @@ function autoHit(){
     updateInfo();
 }
 
+let layerUpIntervalID;
 function finishLevel(){
     if (layer.hpC <= 0){
+        document.getElementById("layerImgID").style.bottom = "-90%";
+        layerUpIntervalID = setInterval(layerUp, 4);
         moneyChanges(Math.floor(prize.profitC * doubleMoney));
         layer.hpC = layer.hp *= layer.hpR;
         prize.profit *= prize.upRatio;
@@ -178,6 +181,18 @@ function finishLevel(){
         updateInfo();
     }
 } 
+
+let percent = -90;
+function layerUp(){
+    percent++;
+    document.getElementById("layerImgID").style.bottom = percent+ "%";
+    document.getElementById("ret").style.backgroundPosition = "0% " + percent/2 + "%";
+    if (percent == 0){
+        clearInterval(layerUpIntervalID);
+        percent = -100;
+        document.getElementById("ret").style.backgroundImage = "linear-gradient(rgba(50,50,50,0.8), rgba(50,50,50,0.8)), url(img/background-4x.png)";
+    }
+}
 
 function onOffBtn(){
     for (let i = 0; i < switchVar.length; i++){
