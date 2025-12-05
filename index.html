@@ -9,15 +9,15 @@
         <div id="layerID">
             <img id="layerImgID" src="img/layer.png" alt="">
         </div>
-        <div style="position: absolute; height: 100%; width: 100%;" onclick="hit_hp()"></div>
+        <div style="position: fixed; height: 100%; width: 100%;" onclick="hit_hp()"></div>
         <h1>MinerGame</h1>
 
         <h2>Текущая глубина: <div id="depthLevelID" class="inline-block">0</div></h2>
 
-        <div id="restartID" style="position: relative; z-index: 1;"><button onclick="expBonus()">⟳</button></div>
+        <div id="restartID" style="position: relative; z-index: 1;"><button onclick="expBonus()" style="cursor: pointer;">⟳</button></div>
         <div id="menuTreePumpID" class="centralMenuBackground" style="z-index: 2;" hidden="hidden">
             <div class="centralMenu">
-                <button class="btnCloseCircule" onclick="menuTreePumpClose()">X</button>
+                <button class="btnCloseCircule" onclick="menuTreePumpClose()" style="cursor: pointer;">X</button>
                 <div class="moneyTopRight"><div class="moneyTopRightTitle"></div>🟢<div id="expID" class="moneyTopRightNum">0</div></div>
                 <div class="centralMenuInfo">
                     <div class="centralMenuInfoElement">Твёрдость слоёв: <div id="layerHardnessID" class="centralMenuInfoElementValue inline-block">100%</div></div>
@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div id="menuID" style="position: relative; z-index: 1;" onclick="menuTreePumpOpen()"><button>🕮</button></div>
+        <div id="menuID" style="position: relative; z-index: 1;" onclick="menuTreePumpOpen()"><button style="cursor: pointer;">🕮</button></div>
         <div class="rightText">🪙<div id="moneyID" class="inline-block">0</div></div>
         <div class="rightText">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
         <div class="rightText">Счётчик перезапусков: <div id="counterRebootID" class="inline-block">0</div></div>
@@ -60,7 +60,7 @@
 
 
 
-        <footer>© by MrDesert - alpha v0.865</footer>
+        <footer>© by MrDesert - alpha v0.95</footer>
 
         <script src="main.js"></script>
         <script src="script.js"></script>

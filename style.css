@@ -1,5 +1,6 @@
  *{
     font-family: 'Courier New', Courier, monospace;
+    touch-action: manipulation; /*  отключить двойной тап на сенсорных устройствах для увеличения  */
  }
 .rightText{
     width: 100%;
@@ -14,6 +15,10 @@
     height: 50px;
     margin: 10px;
     z-index: 1;
+    cursor: pointer;
+    color: white;
+    background-color: #606060;
+    border-radius: 3px;
  }
  #pupmsTitle{
     font-size: 25pt;
@@ -66,18 +71,20 @@
  #layerID {
    position: absolute;
    bottom: 0%;
+   width: 100%; 
    height: 33%;
  }
 #layerImgID {
    position: relative;
-   left: 15%;
-   width: 70%;
+   margin-left: auto;
+   margin-right: auto;
+   width: 100%;
+   min-width: 70%;
+   box-shadow: 0px 0px 25px 25px rgba(0, 0, 0, 0.3);
 }
 body {
-   background-image: linear-gradient(rgba(50,50,50,0.8), rgba(50,50,50,0.8)), url(img/background-4x.png);
+   background-image: linear-gradient(rgba(70,70,70,0.8), rgba(70,70,70,0.8)), url(img/background-4x.png);
    background-position: 0% 0%;
-   background-size: 1500px;
-}
-#layerImgID {
-  box-shadow: 0px 0px 25px 25px rgba(0, 0, 0, 0.3);
+   background-size: 2000px;
+   height: 100%;
 }

@@ -8,18 +8,20 @@ var money = 0;
 var moneyExp = 0.0001;
 var exp = 0;
 var doubleMoney = 1;
+var switchHit = true;
+var bossBonus = false;
 
 
-//C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое)
-var layer = {name: "layer", hp: 4, hpC: 4, hpR: ratio, hardness: 1, level: 0, expBonus: 0.1};
+//C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое) P-Previos(Предыдующий)
+var layer = {name: "layer", hp: 4, hpC: 4, hpP: 4, hpS: 4, hpR: 1.01, hardness: 1, level: 0, expBonus: 0.1};
 var prize = {name: "prize", profit: 1, profitC: 1, upCost: 10, upLevel: 0, upRatio: ratio};
 
-var hitPlusOne = {name: "hitPlusOne", costS: 1, cost: 1, costC: 1, level: 0, openingLayer: 1, switch: "off", expBonus: 0.1, img: "pickaxe_transparent_390x390.png", imgGS: "pickaxe_transparent_grayscale_390x390.png", text: "+1 удару"};
-var profitPlusOne = {name: "profitPlusOne", costS: 10, cost: 10, costC: 10, level: 0, openingLayer: 10, switch: "off", expBonus: 0.1, img: "helmet5.png", imgGS: "helmet5_transparent_grayscale_310x310.png", text: "+1🪙 к прибыли"};
-var autoHitOne = {name: "autoHitOne", costS: 10, cost: 10, costC: 10, level: 0, openingLayer: 25, switch: "off", expBonus: 0.2, img: "helmet-pickaxe_transparent_450x450.png", imgGS: "helmet-pickaxe_transparent_grayscale_450x450.png", text: "+1 Автоудар раз <br> в секунду"};
-var hitPlusTen = {name: "hitPlusTen", costS: 100, cost: 100, costC: 100, level: 0, openingLayer: 50, switch: "off", expBonus: 0.2, img: "drill_transparent_450x450.png", imgGS: "drill_transparent_grayscale_450x450.png", text: "+10 удару"};
-var autoHitTen = {name: "autoHitTen", costS: 1000, cost: 1000, costC: 1000, level: 0, openingLayer: 100, switch: "off", expBonus: 0.3, img: "helmetDrill.png", imgGS: "helmetDrill_transparent_grayscale_450x450.png", text: "+10 Автоударов <br> в секунду"};
-var autoHitOneHundred = {name: "autoHitOneHundred", costS: 10000, cost: 10000, costC: 10000, level: 0, openingLayer: 150, switch: "off", expBonus: 0.4, img: "helmet5.png", imgGS: "helmet5_transparent_grayscale_310x310.png", text: "+100 Автоударов <br> в секунду"};
+var hitPlusOne = {name: "hitPlusOne", costS: 1, cost: 1, costC: 1, level: 0, openingLayer: 1, switch: "off", expBonus: 0.1, func: () => hitPlusOneUp(1), freeUp: false, img: "pickaxe_transparent_390x390.png", imgGS: "pickaxe_transparent_grayscale_390x390.png", text: "+1 удару"};
+var profitPlusOne = {name: "profitPlusOne", costS: 10, cost: 10, costC: 10, level: 0, openingLayer: 10, switch: "off", expBonus: 0.1, func: () => profitPlusOne2(), freeUp: false, img: "helmet5.png", imgGS: "helmet5_transparent_grayscale_310x310.png", text: "+1🪙 к прибыли"};
+var autoHitOne = {name: "autoHitOne", costS: 10, cost: 10, costC: 10, level: 0, openingLayer: 25, switch: "off", expBonus: 0.2, func: () => autoHitUp(1), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", imgGS: "helmet-pickaxe_transparent_grayscale_450x450.png", text: "+1 Автоудар раз <br> в секунду"};
+var hitPlusTen = {name: "hitPlusTen", costS: 100, cost: 100, costC: 100, level: 0, openingLayer: 50, switch: "off", expBonus: 0.2, func: () => hitPlusOneUp(10), freeUp: false, img: "drill_transparent_450x450.png", imgGS: "drill_transparent_grayscale_450x450.png", text: "+10 удару"};
+var autoHitTen = {name: "autoHitTen", costS: 1000, cost: 1000, costC: 1000, level: 0, openingLayer: 100, switch: "off", expBonus: 0.3, func: () => () => autoHitUp(10), freeUp: false, img: "helmetDrill.png", imgGS: "helmetDrill_transparent_grayscale_450x450.png", text: "+10 Автоударов <br> в секунду"};
+var autoHitOneHundred = {name: "autoHitOneHundred", costS: 10000, cost: 10000, costC: 10000, level: 0, openingLayer: 150, switch: "off", expBonus: 0.4, func: () => autoHitUp(100), freeUp: false, img: "helmet5.png", imgGS: "helmet5_transparent_grayscale_310x310.png", text: "+100 Автоударов <br> в секунду"};
 
 var upgrades = [hitPlusOne, profitPlusOne, autoHitOne, hitPlusTen, autoHitTen, autoHitOneHundred];
 
@@ -111,13 +113,15 @@ function expBonus(){
 
 
 function hit_hp() {
-    trembling();
-    layer.hpC -= hit;
-    counter++;
-    document.getElementById("hpBarID").style.width = 100/layer.hp *layer.hpC + "%";
-    // console.log(100/layer.hp *layer.hpC);
-    finishLevel();
-    updateInfo();
+    if (switchHit){
+        trembling();
+        layer.hpC -= hit;
+        counter++;
+        document.getElementById("hpBarID").style.width = 100/layer.hpP *layer.hpC + "%";
+        // console.log(100/layer.hp *layer.hpC);
+        finishLevel();
+        updateInfo();
+    }
 }
 function trembling(){
     let tremblingH = Math.floor(Math.random()*2);
@@ -132,20 +136,33 @@ function trembling2(){
 }
 
 function autoHit(){
-    autoHitSecond > 0 ? trembling() : updateInfo();
-    layer.hpC -= autoHitSecond;
-    document.getElementById("hpBarID").style.width = 100/layer.hp *layer.hpC + "%";
-    finishLevel();
-    updateInfo();
+    if (switchHit){
+        autoHitSecond > 0 ? trembling() : updateInfo();
+        layer.hpC -= autoHitSecond;
+        document.getElementById("hpBarID").style.width = 100/layer.hpP *layer.hpC + "%";
+        finishLevel();
+        updateInfo();
+    }
+}
+
+function switchsHit(bool){;
+    if (!bossBonus){
+        switchHit = bool;
+    }
 }
 
 let layerUpIntervalID;
 function finishLevel(){
     if (layer.hpC <= 0){
-        document.getElementById("layerImgID").style.bottom = "-90%";
-        layerUpIntervalID = setInterval(layerUp, 4);
+        document.getElementById("layerImgID").style.bottom = "-80%";
+        switchsHit(false)
+        layerUpIntervalID = setInterval(layerUp, 8);
         moneyChanges(Math.floor(prize.profitC * doubleMoney));
-        layer.hpC = layer.hp *= layer.hpR;
+        layer.hp *= layer.hpR;
+        console.log(Math.round(layer.hp) + " Math.round(layer.hp)");
+        console.log(layer.hpP + " layer.hpP");
+        layer.hpC = Math.round(layer.hp) <= layer.hpP ? requiredUp(layer.hp, layer.hpP) : Math.round(layer.hp);
+        layer.hpP = layer.hpC;
         prize.profit *= prize.upRatio;
         prize.profitC = Math.round(prize.profit) <= prize.profitC ? requiredUp(prize.profit, prize.profitC) : Math.round(prize.profit);
         // console.log(prize.profitC + "  prize.profitC");
@@ -182,15 +199,16 @@ function finishLevel(){
     }
 } 
 
-let percent = -90;
+let percent = -80;
 function layerUp(){
-    percent++;
-    document.getElementById("layerImgID").style.bottom = percent+ "%";
+    percent += 2;
+    document.getElementById("layerImgID").style.bottom = percent + "%";
     document.getElementById("ret").style.backgroundPosition = "0% " + percent/2 + "%";
-    if (percent == 0){
+    if (percent >= 0){
         clearInterval(layerUpIntervalID);
-        percent = -100;
-        document.getElementById("ret").style.backgroundImage = "linear-gradient(rgba(50,50,50,0.8), rgba(50,50,50,0.8)), url(img/background-4x.png)";
+        percent = -80;
+        // document.getElementById("ret").style.backgroundImage = "linear-gradient(rgba(50,50,50,0.8), rgba(50,50,50,0.8)), url(img/background-4x.png)";
+        switchsHit(true);
     }
 }
 
@@ -218,26 +236,29 @@ function switchingElementMenu(switchType, btn){
 }
 
 function requiredUp(original, result){
-    // console.log(original + (original*1.1) + " original");
-    // console.log(result + " result");
-    if (Math.round(original + (original*1.1)) <= result){
+
+    console.log(Math.round(original*1.1) + " original");
+    console.log(result + " result");
+    if (Math.round(original*1.1) <= result){
         result++;
     } else{
-        result = Math.round(original + (original*1.1));
+        result = Math.round(original*1.1);
     }
     return result;
 }
 
 function profitPlusOne2(){
     if (money >= profitPlusOne.costC){
+        if(!profitPlusOne.freeUp){
+            moneyChanges(-Math.floor(profitPlusOne.costC));
+            profitPlusOne.cost *= costOfPumpRatio;
+            profitPlusOne.costC = toRoundoff(profitPlusOne.cost);
+            colorNumbers("profitPlusOneCostID", "red");
+        }
+        profitPlusOne.freeUp = false;
         prize.profit++;
         prize.profitC++;
-        moneyChanges(-Math.floor(profitPlusOne.costC));
         profitPlusOne.level++;
-        profitPlusOne.cost *= costOfPumpRatio;
-        profitPlusOne.costC = toRoundoff(profitPlusOne.cost);
-            console.log(profitPlusOne.costC + " profitPlusOne.costC");
-        colorNumbers("profitPlusOneCostID", "red");
         colorNumbers("profitPlusOneLevelID", "green");
     }
     updateInfo();
@@ -245,20 +266,28 @@ function profitPlusOne2(){
 
 function hitPlusOneUp(hitPlus) {
     if (money >= hitPlusTen.cost && hitPlus > 1){
-        moneyChanges(-Math.floor(hitPlusTen.costC));
+        if(!hitPlusTen.freeUp){
+            moneyChanges(-Math.floor(hitPlusTen.costC));
+            hitPlusTen.cost *= costOfPumpRatio;
+            hitPlusTen.costC = toRoundoff(hitPlusTen.cost);
+            colorNumbers("hitPlusTenCostID", "red");
+        }
+        hitPlusTen.freeUp = false;
         hit += hitPlus;
         hitPlusTen.level++;
-        hitPlusTen.cost *= costOfPumpRatio;
-        hitPlusTen.costC = toRoundoff(hitPlusTen.cost);
-        colorNumbers("hitPlusTenCostID", "red");
         colorNumbers("hitPlusTenLevelID", "green");
     } else if (money >= hitPlusOne.costC) {
-        moneyChanges(-Math.floor(hitPlusOne.costC));
+        if (!hitPlusOne.freeUp){
+            moneyChanges(-Math.floor(hitPlusOne.costC));
+            hitPlusOne.cost *= costOfPumpRatio;
+            hitPlusOne.costC = Math.round(hitPlusOne.cost) <= hitPlusOne.costC ? requiredUp(hitPlusOne.cost, hitPlusOne.costC) : Math.round(hitPlusOne.cost);
+            hitPlusOne.costC = toRoundoff(hitPlusOne.costC);
+            colorNumbers("hitPlusOneCostID", "red");
+        }
+        hitPlusOne.freeUp = false;
         hit += hitPlus;
         hitPlusOne.level++;
-        hitPlusOne.cost *= costOfPumpRatio;
-        hitPlusOne.costC = Math.round(hitPlusOne.cost) <= hitPlusOne.costC ? requiredUp(hitPlusOne.cost, hitPlusOne.costC) : Math.round(hitPlusOne.cost);
-        hitPlusOne.costC = toRoundoff(hitPlusOne.costC);
+
         // let lengthCost = hitPlusOne.costC.toString().length;
         // let lengthCost2 = hitPlusOne.costC.toString().length;
         // lengthCost = 10**(lengthCost - 1);
@@ -267,9 +296,8 @@ function hitPlusOneUp(hitPlus) {
         // } else if (hitPlusOne.costC/Math.sqrt(lengthCost) >= 3 && lengthCost > 10){
         //     hitPlusOne.costC = Math.round(hitPlusOne.costC/(10**(lengthCost2-2)))*(lengthCost/10);
         // }
-        colorNumbers("hitPlusOneCostID", "red");
         colorNumbers("hitPlusOneLevelID", "green");
-    }
+    } 
     updateInfo();
     // console.log(hitPlusOne.cost + " Cost");
     // console.log(hitPlusOne.costC + " CostC");
@@ -327,55 +355,96 @@ function costOfPump1(){
 
 function autoHitUp(autoHitUp){
     if(money >= autoHitOneHundred.cost && autoHitUp > 10){
-        moneyChanges(-Math.floor(hitPlusTen.costC));
+        if(!autoHitOneHundred.freeUp){
+            moneyChanges(-Math.floor(hitPlusTen.costC));
+            autoHitOneHundred.cost *= costOfPumpRatio;
+            autoHitOneHundred.costC = toRoundoff(autoHitOneHundred.cost);
+            colorNumbers("autoHitOneHundredCostID", "red");
+        }
+        autoHitOneHundred.freeUp = false;
         autoHitSecond += autoHitUp;
         autoHitOneHundred.level++;
-        autoHitOneHundred.cost *= costOfPumpRatio;
-        autoHitOneHundred.costC = toRoundoff(autoHitOneHundred.cost);
-        colorNumbers("autoHitOneHundredCostID", "red");
         colorNumbers("autoHitOneHundredLevelID", "green");
     } else if (money >= autoHitTen.costC && autoHitUp > 1){
-        moneyChanges(-Math.floor(autoHitTen.costC));
+        if(!autoHitTen.freeUp){
+            moneyChanges(-Math.floor(autoHitTen.costC));
+            autoHitTen.cost *= costOfPumpRatio;
+            autoHitTen.costC = toRoundoff(autoHitTen.cost);
+            colorNumbers("autoHitTenCostID", "red");
+        }
+        autoHitTen.freeUp = false;
         autoHitTen.level++;
         autoHitSecond += autoHitUp;
-        autoHitTen.cost *= costOfPumpRatio;
-        autoHitTen.costC = toRoundoff(autoHitTen.cost);
-        colorNumbers("autoHitTenCostID", "red");
         colorNumbers("autoHitTenLevelID", "green");
     }
     else if (money >= autoHitOne.costC){
-        moneyChanges(-Math.floor(autoHitOne.costC));
+        if(!autoHitOne.freeUp){
+            moneyChanges(-Math.floor(autoHitOne.costC));
+            autoHitOne.cost *= costOfPumpRatio;
+            autoHitOne.costC = toRoundoff(autoHitOne.cost);
+            colorNumbers("autoHitOneCostID", "red");
+        }
+        autoHitOne.freeUp = false;
         autoHitOne.level++;
         autoHitSecond++;
-        autoHitOne.cost *= costOfPumpRatio;
-        autoHitOne.costC = toRoundoff(autoHitOne.cost);
-        colorNumbers("autoHitOneCostID", "red");
         colorNumbers("autoHitOneLevelID", "green");
     }
     updateInfo();
 }
 
+var moneyBonus;
+let trw;
 function bossLevelBonus(){
-    for (var i = 0; i < 3; i++){
-        var moneyBonus = 0;
-        // console.log(disVar.length);
-        for (var j = 0; j < switchVar.length; j++){
-            if(switchVar[j].switch == "on"){
-                moneyBonus += switchVar[j].costC;
-            }
+    moneyBonus = 0;
+    trw = [];
+    var switchsOn = 0;
+    for (var i = 0; i < upgrades.length; i++){
+        if(upgrades[i].switch == "on"){
+            moneyBonus += upgrades[i].costC;
+            switchsOn++;
         }
-        moneyBonus = toRoundoff(Math.floor(Math.random()*(moneyBonus / switchVar.length))+1);
+    }
+    moneyBonus = toRoundoff(Math.ceil(Math.random()*(moneyBonus / switchsOn)) * 2 + 1);
+    let bonus2 = upgrades[Math.floor(Math.random()*switchsOn)];
+    trw.push(toCompactNotation(moneyBonus));
+    trw.push(bonus2);
+    let bonus3 = upgrades[Math.floor(Math.random()*switchsOn)];
+    if (bonus3 != bonus2){
+        trw.push(bonus3);
+    }
+
+    for (var i = 0; i < trw.length; i++){
+        let valueBtn = trw[i].name;
+        let text = trw[i].text;
+        if (i == 0){
+            valueBtn = "moneyBonus";
+            text = trw[i] + " Монет!";
+        }
+        // console.log(disVar.length);
         document.getElementById("bossLevelBonusID").append(
-            Object.assign(document.createElement('button'), {className: "bossLevelBonusCls", id: "bossLevelBonusID" + i,  innerHTML: "Приз №" + i + " " + toCompactNotation(moneyBonus) + " Монет!", value: moneyBonus, onclick: function(){bossLevelBonusBtn(this);}})
+            Object.assign(document.createElement('button'), {className: "bossLevelBonusCls", id: "bossLevelBonusID" + i,  innerHTML: "Приз №" + (i+1) + " " + text, value: valueBtn, onclick: function(){bossLevelBonusBtn(this);}})
         )
     }
+    switchsHit(false);
+    bossBonus = true;
 }
 
 function bossLevelBonusBtn(bonus){
-    moneyChanges(Math.floor(bonus.value));
-    for (var i = 0; i < 3; i++){
+    if(bonus.value == "moneyBonus"){
+        moneyChanges(Math.floor(moneyBonus));
+    } else {
+        for (let i = 0; i < upgrades.length; i++){
+            if (bonus.value == upgrades[i].name){
+                upgrades[i].freeUp = true;
+                upgrades[i].func();
+            }
+        }
+    }
+    for (var i = 0; i < trw.length; i++){
         document.getElementById("bossLevelBonusID" + i).remove();
     }
+    bossBonus = false;
+    switchsHit(true);
 }
 
 function menuTreePumpClose(){
@@ -393,23 +462,10 @@ function updateInfo(){
     document.getElementById("layerProfitID").innerHTML = Math.floor(prize.profit * 100) + "%";
     document.getElementById("costProfitID").innerHTML = Math.floor(costOfPumpRatioDown*100)+ "%";
 
-    document.getElementById("profitPlusOneCostID").innerHTML = toCompactNotation(profitPlusOne.costC);
-    document.getElementById("profitPlusOneLevelID").innerHTML = profitPlusOne.level;
-    
-    document.getElementById("hitPlusOneCostID").innerHTML = toCompactNotation(hitPlusOne.costC);
-    document.getElementById("hitPlusOneLevelID").innerHTML = hitPlusOne.level;
-
-    document.getElementById("hitPlusTenCostID").innerHTML = toCompactNotation(hitPlusTen.costC);
-    document.getElementById("hitPlusTenLevelID").innerHTML = hitPlusTen.level;
-
-    document.getElementById("autoHitOneHundredCostID").innerHTML = toCompactNotation(autoHitOneHundred.costC);
-    document.getElementById("autoHitOneHundredLevelID").innerHTML = autoHitOneHundred.level;
-
-    document.getElementById("autoHitOneCostID").innerHTML = toCompactNotation(autoHitOne.costC);
-    document.getElementById("autoHitOneLevelID").innerHTML = autoHitOne.level; 
-
-    document.getElementById("autoHitTenCostID").innerHTML = toCompactNotation(autoHitTen.costC);
-    document.getElementById("autoHitTenLevelID").innerHTML = autoHitTen.level;  
+    for(let i = 0; i < upgrades.length; i++){
+        document.getElementById(upgrades[i].name + "CostID").innerHTML = toCompactNotation(upgrades[i].costC);
+        document.getElementById(upgrades[i].name + "LevelID").innerHTML = upgrades[i].level;
+    } 
 
     document.getElementById("hpMinusOnePercentCostID").innerHTML = Math.floor(hpMinusOnePercent.cost);
     document.getElementById("profitUpCostID").innerHTML = Math.floor(prize.upCost);
