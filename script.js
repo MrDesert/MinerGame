@@ -1,5 +1,5 @@
 
-var ratio = 1.1;
+var ratio = 1.08;
 var hit = 1;
 var autoHitSecond = 0;
 var counter = 0;
