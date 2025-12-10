@@ -57,7 +57,19 @@ function toCreateTag(typeSelector, name, tag, ID, classes, text, trackCode){
         default: 
             console.log("Ошибка данный тип селектора: %c" + typeSelector + "%c не соответствет ни одному из этих: id, class, tag. Необходимо указать правильный тип. " + "Код поиска: %c" + trackCode, consoleBold, consoleNormal, consoleBold);
     }
+}
 
-    
+function simulateClick(selector){
+    const element = document.querySelector(selector);
+    if (element) {
+         element.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    }
+    // simulateClick('#bossLevelBonusID' + Math.round(Math.random()*trw.length)); // пример использования
+}
 
+function softProgress (original, rate){
+    // console.log(original + " original")
+    let lenght = original.toString().length;
+    let result = original + 2**(lenght-rate);
+    return result;
 }

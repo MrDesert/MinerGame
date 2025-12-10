@@ -10,8 +10,18 @@
     width: 100%;
     text-align: center;
  }
+ #bossLevelBonusID{
+   position: absolute;
+   left: 30%;
+   background: rgba(41, 41, 41, 0.8);
+    border: 3px outset rgb(150, 150, 150);
+    border-radius: 25px;
+    width: 40%;
+    /* height: 90px; */
+    min-width: 100px;
+ }
  .bossLevelBonusCls{
-    width: 10%;
+    width: 25%;
     height: 50px;
     margin: 10px;
     z-index: 1;
@@ -83,7 +93,7 @@
    box-shadow: 0px 0px 25px 25px rgba(0, 0, 0, 0.3);
 }
 body {
-   background-image: linear-gradient(rgba(70,70,70,0.8), rgba(70,70,70,0.8)), url(img/background-4x.png);
+   background-image: url(img/background-4x2.png);
    background-position: 0% 0%;
    background-size: 2000px;
    height: 100%;
