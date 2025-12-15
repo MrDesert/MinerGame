@@ -9,8 +9,8 @@ var exp = 1000;
 var doubleMoney = 1;
 var switchHit = true;
 var bossBonus = false;
-var autoUpgrade = true;
-var autoUpgradeTime = 10;
+var autoBonusVar = true;
+var autoBonusTime = 10;
 
 
 //C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое) P-Previos(Предыдующий)
@@ -29,8 +29,9 @@ var upgrades = [hitPlusOne, profitPlusOne, autoHitOne, hitPlusTen, autoHitTen, a
 var hardness = {name: "hardness", value: 1, cost: 10, level: 0, func: () => upgradesExpFunc("hardness"), text: "Твёрдость слоёв: ", title: "-1% к твёрдости", description: "Твёрдость каждого слоя становится ниже "};
 var profit = {name: "profit", value: 1, cost: 10, level: 0, func: () => upgradesExpFunc("profit"), text: "Прибыль добычи: ", title: "+1% к прибыле", description: "При каждой добыче вы будете получать больше прибыли "};
 var costPump = {name: "costPump", value: 1, cost: 10, level: 0, func: () => upgradesExpFunc("costPump"), text: "Цена улучшений: ", title: "-1% к цене улучшений", description: "Стоимость всех улучшений за монеты снизиться на 1% "};
+var autoBonus = {name: "autoBonus", value: 10, cost: 10, level: 0, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса", title: "-1s ко времени автобонуса", description: "Автоматическое получение <br> бонуса по истечению времени"};
 
-var upgradesExp = [hardness, profit, costPump];
+var upgradesExp = [hardness, profit, costPump, autoBonus];
 
 
 
@@ -171,7 +172,7 @@ let layerUpIntervalID;
 function finishLevel(){
     if (layer.hpC <= 0){
         switchsHit(false)
-        document.getElementById("layerImgID").style.top = "400px";
+        document.getElementById("layerImgID").style.top = "100%";
         document.getElementById("layerImgID").style.transition = "none";
         document.getElementById("cracksID").style.height = "0%";
         layerUpIntervalID = setTimeout(layerUp, 100);
@@ -358,8 +359,8 @@ function bossLevelBonus(){
     for (var i = 0; i < upgrades.length; i++){
         document.getElementById(upgrades[i].name + "BtnID").disabled = "disabled";
     }
-    if (autoUpgrade){
-        timer = setTimeout(function(){document.getElementById("bossLevelBonusID" + Math.floor(Math.random()*trw.length)).click()}, autoUpgradeTime*1000);
+    if (autoBonusVar){
+        timer = setTimeout(function(){document.getElementById("bossLevelBonusID" + Math.floor(Math.random()*trw.length)).click()}, autoBonusTime*1000);
     }
 }
 
