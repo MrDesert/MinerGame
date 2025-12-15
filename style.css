@@ -1,6 +1,7 @@
  *{
     font-family: 'Courier New', Courier, monospace;
     touch-action: manipulation; /*  отключить двойной тап на сенсорных устройствах для увеличения  */
+    user-select: none;
  }
 .rightText{
     width: 100%;
@@ -69,32 +70,55 @@
     font-size: 16pt;
     font-weight:bold;
  }
- body {
-    overflow: hidden;
- }
  #expID{
     color: white;
  }
- #hpMinusOnePercentLevelID, #profitUpLevelID, #costOfPumpLevelID {
+ #hardnessLevelID, #profitLevelID, #costPumpLevelID {
     background-color: rgba(0, 0, 0, 0);
  }
  #layerID {
    position: absolute;
-   bottom: 0%;
+   top: 60%;
    width: 100%; 
-   height: 33%;
+   height: 40%;
+   
  }
-#layerImgID {
-   position: relative;
+#layerImgID{
+   box-shadow: 1px 0px 35px 35px rgba(0, 0, 0, 0.3);
+   top: 0px;
+   background: url("img/layer.png");
+   background: rgba(0, 0, 0, 0.3); 
+   position: absolute;
    margin-left: auto;
    margin-right: auto;
+   /* height: 100%; */
+   height: 100%;
    width: 100%;
    min-width: 70%;
-   box-shadow: 0px 0px 25px 25px rgba(0, 0, 0, 0.3);
+   visibility: visible;
+   object-fit: cover;
+   object-position: top;
+}
+#cracksID{
+   top: 0px;
+   margin-left: auto;
+   margin-right: auto;
+   position: relative;
+   height: 0%;
+   width: 100%;
+   min-width: 70%;
+   visibility: visible;
+   object-fit: cover;
+   object-position: top;
 }
 body {
+   overflow: hidden;
+   height: 100vh;
+   width: 100vw;
    background-image: url(img/background-4x2.png);
    background-position: 0% 0%;
    background-size: 2000px;
    height: 100%;
+   transition: background-position 1.4s linear;
+   backdrop-filter: grayscale(60%);
 }

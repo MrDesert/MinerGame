@@ -1,3 +1,19 @@
+function toDefineSelector(name){
+    let selector = name.substring(0, 1);
+    let type;
+    switch (selector){
+        case "#":
+            type = "id";
+            break;
+        case ".":
+            type = "class";
+            break;
+        default:
+            type = "tag";
+    }
+    return type;
+}
+
 function toCompactNotation(number){
     let units = ['', 'k', 'M', 'B', 'T'];
     let alphabet = ['A', 'B', 'C'];
@@ -34,18 +50,19 @@ function toRoundoff(number){
 const consoleBold = "font-weight: bold;";
 const consoleNormal = "font-weight: normal;";
 
-//Родитель: Селектор и имя; Ребёнок: Тэг, ID, классы, текст; Тех. Инфо: Код поиска.
-function toCreateTag(typeSelector, name, tag, ID, classes, text, trackCode){
+//Родитель: имя с селектором; Ребёнок: Тэг, ID, классы, текст; Тех. Инфо: Код поиска.
+function toCreateTag(name, tag, ID, classes, text, trackCode){
+    let typeSelector = toDefineSelector(name);
     if (!trackCode){trackCode = "Не указан кода для отслеживания!"}             //Если код поиска пустой, то он заполняеться об этом
     switch (typeSelector){
         case "id": 
         // console.log(ID);                                                             //Создаёт элемент на основе ID родителя - Всегда 1 шт
-            document.querySelector("#" + name).append(
+            document.querySelector(name).append(
 		        Object.assign(document.createElement(tag), {id: ID, className: classes, innerHTML: text})
 	        );
             break;
         case "class":                                                           //Создаёт элемент на основе class родителя - создаёт во всех элементах с этим классом
-            document.querySelectorAll("." + name).forEach(element => {element.append(
+            document.querySelectorAll(name).forEach(element => {element.append(
 		        Object.assign(document.createElement(tag), {id: ID, className: classes, innerHTML: text})
             )});
             break;
@@ -72,4 +89,16 @@ function softProgress (original, rate){
     let lenght = original.toString().length;
     let result = original + 2**(lenght-rate);
     return result;
+}
+
+function toChangeText(id, text){
+    document.getElementById(id).innerHTML = text;
+}
+
+function toHide(id){
+    document.getElementById(id).hidden = "hidden";
+}
+
+function toSeeable(id){
+    document.getElementById(id).removeAttribute("hidden");
 }

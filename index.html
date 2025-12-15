@@ -5,47 +5,20 @@
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="main.css">
     </head>
-    <body id="ret">
+    <body id="ret" style="height: 100vh;">
         <div id="layerID">
-            <img id="layerImgID" src="img/layer2.png" alt="">
+            
+            <img id="layerImgID" src="img/layer.png" alt=""> 
+            <img id="cracksID" src="img/cracks.png" alt="">
         </div>
-        <div style="position: fixed; height: 100%; width: 100%;" onclick="hit_hp()"></div>
+        <div style="position: fixed; height: 100%; width: 100%;" onclick="hit(handHit, 'hand')"></div>
         <h1>MinerGame</h1>
 
         <h2>Текущая глубина: <div id="depthLevelID" class="inline-block">0</div></h2>
 
         <div id="restartID" style="position: relative; z-index: 1;"><button onclick="expBonus()" style="cursor: pointer;">⟳</button></div>
-        <div id="menuTreePumpID" class="centralMenuBackground" style="z-index: 2;" hidden="hidden">
-            <div class="centralMenu">
-                <button class="btnCloseCircule" onclick="menuTreePumpClose()" style="cursor: pointer;">X</button>
-                <div class="moneyTopRight"><div class="moneyTopRightTitle"></div>🟢<div id="expID" class="moneyTopRightNum">0</div></div>
-                <div class="centralMenuInfo">
-                    <div class="centralMenuInfoElement">Твёрдость слоёв: <div id="layerHardnessID" class="centralMenuInfoElementValue inline-block">100%</div></div>
-                    <div class="centralMenuInfoElement">Прибыль добычи: <div id="layerProfitID" class="centralMenuInfoElementValue inline-block">100%</div></div>
-                    <div class="centralMenuInfoElement">Цена улучшений: <div id="costProfitID" class="centralMenuInfoElementValue inline-block">100%</div></div>
-                </div>
-                <div id="hardnessID" class="centralMenuElement inline-block">
-                    <div class="centralMenuElementTitle">-1% к твёрдости</div>
-                    <div id="hpMinusOnePercentLevelID" class="btnCloseCircule">0</div>
-                    <div class="centralMenuElementDescription">Твёрдость каждого слоя становится ниже </div>
-                    <button id="hardnessBtnID" class="centralMenuElementBtn" onclick="hpMinusOnePercentUp()">🟢<div id="hpMinusOnePercentCostID" class="inline-block cost">10</div></button>
-                </div>
-                <div id="profitID2" class="centralMenuElement inline-block">
-                    <div class="centralMenuElementTitle">+ 1% к прибыле</div>
-                    <div id="profitUpLevelID" class="btnCloseCircule">0</div>
-                    <div class="centralMenuElementDescription">При каждой добыче вы будете получать больше прибыли </div>
-                    <button id="profitUpID" class="centralMenuElementBtn" onclick="profitUp()">🟢<div id="profitUpCostID" class="inline-block cost">10</div></button>
-                </div>
-                <div id="pumpsUpID" class="centralMenuElement inline-block">
-                    <div class="centralMenuElementTitle">-1% к цене улучшений</div>
-                    <div id="costOfPumpLevelID" class="btnCloseCircule">0</div>
-                    <div class="centralMenuElementDescription">Стоимость всех улучшений за монеты снизиться на 1% </div>
-                    <button id="costOfPumpID" class="centralMenuElementBtn" onclick="costOfPump1()">🟢<div id="costOfPumpCostID" class="inline-block cost">10</div></button>
-                </div>
-            </div>
-        </div>
+        <div id="menuID" style="position: relative; z-index: 1;" onclick="menuTreePump(true)"><button style="cursor: pointer;">🕮</button></div>
 
-        <div id="menuID" style="position: relative; z-index: 1;" onclick="menuTreePumpOpen()"><button style="cursor: pointer;">🕮</button></div>
         <div class="rightText">🪙<div id="moneyID" class="inline-block">0</div></div>
         <div class="rightText">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
         <div class="rightText">Счётчик перезапусков: <div id="counterRebootID" class="inline-block">0</div></div>
@@ -54,11 +27,11 @@
 
         <div id="hpTitleID">Ударов до победы: <div id="hpID" class="inline-block">4</div></div>
         <div id="hpBarBorderID"><div id="hpBarID"></div></div>
-        <div id="profitTitleID"><div id="luckyID"> </div>Прибыль за победу: <div id="profitID" class="inline-block">1</div></div>
+        <div id="profitTitleID"><div id="luckyID"> </div>Прибыль за победу: <div id="prizeID" class="inline-block">1</div></div>
 
-        <div id="bossLevelBonusID" style="position: relative; z-index: 1;" hidden="hidden"></div>
+        <div id="bossLevelBonusID" style="position: absolute; z-index: 1;" hidden="hidden"></div>
 
-        <footer>© by MrDesert - beta v0.01</footer>
+        <footer>© by MrDesert - beta v0.10</footer>
 
         <script src="main.js"></script>
         <script src="script.js"></script>

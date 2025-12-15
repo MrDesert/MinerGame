@@ -95,6 +95,7 @@
     left: 0%;
     background: rgba(0, 0, 0, 0.5);
     filter: blur();
+    z-index: 2;
 }
 .centralMenu{
     position: absolute;
@@ -173,14 +174,19 @@
     width: 30%;
     bottom: 5%;
     left: 35%;
-    color: white;
     font-size: 14pt;
     font-weight: bold;
-    background: rgb(41, 41, 41);
-    border: 3px outset rgb(150, 150, 150);
-    border-radius: 40px;
+    background: rgb(60, 60, 60);
     z-index: 2;
-    cursor: pointer;
+    color: white;
+    border: 3px outset rgb(160, 160, 160);
+    border-radius: 40px;
+    cursor: pointer; 
+}
+.centralMenuElementBtn:disabled{
+    color:#707070;
+    border: 3px inset rgb(150, 150, 150);
+    background-color: #202020;
 }
 
 .disabled, .disabled > *{
