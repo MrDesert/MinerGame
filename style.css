@@ -4,7 +4,7 @@
     user-select: none;
  }
 .rightText{
-    width: 100%;
+    width: 99%;
     text-align: right;
  }
  #hpTitleID, #profitTitleID, #bossLevelBonusID{
@@ -26,7 +26,7 @@
     height: 50px;
     margin: 10px;
     z-index: 1;
-    /* cursor: pointer; */
+    cursor: pointer;
     color: white;
     background-color: #606060;
     border-radius: 3px;
@@ -48,7 +48,7 @@
  }
  footer{
     position: fixed;
-    bottom: 0;
+    bottom: 20px;
     width: 100%;
     text-align: center;
  }
@@ -128,4 +128,7 @@ body {
    height: 100%;
    transition: background-position 1.4s linear;
    backdrop-filter: grayscale(60%);
+}
+#bossLevelBonusID {
+   color: white;
 }

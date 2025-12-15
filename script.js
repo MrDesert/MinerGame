@@ -5,16 +5,14 @@ var counter = 0;
 var counterReboot = 0;
 
 var moneyExp = 0.0001;
-var exp = 1000;
+var exp = 100;
 var doubleMoney = 1;
 var switchHit = true;
 var bossBonus = false;
-var autoBonusVar = true;
-var autoBonusTime = 10;
 
 
 //C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое) P-Previos(Предыдующий)
-var layer = {name: "layer", hp: 4, hpC: 4, hpP: 4, hpS: 4, hpR: 1.01, level: 0, expBonus: 0.1};
+var layer = {name: "layer", hp: 4, hpC: 4, hpP: 4, hpS: 4, hpR: 1.01, level: 0, expBonus: 0.01};
 var prize = {name: "prize", profit: 1, profitC: 1, upRatio: ratio};
 
 var hitPlusOne = {name: "hitPlusOne", costS: 1, cost: 1, costC: 1, level: 0, typeValue: "hit", value: 1, openingLayer: 1, switch: "off", expBonus: 0.1, func: () => upgradesFunc("hitPlusOne"), freeUp: false, img: "pickaxe_transparent_390x390.png", text: "+1 удару"};
@@ -29,11 +27,12 @@ var upgrades = [hitPlusOne, profitPlusOne, autoHitOne, hitPlusTen, autoHitTen, a
 var hardness = {name: "hardness", value: 1, cost: 10, level: 0, func: () => upgradesExpFunc("hardness"), text: "Твёрдость слоёв: ", title: "-1% к твёрдости", description: "Твёрдость каждого слоя становится ниже "};
 var profit = {name: "profit", value: 1, cost: 10, level: 0, func: () => upgradesExpFunc("profit"), text: "Прибыль добычи: ", title: "+1% к прибыле", description: "При каждой добыче вы будете получать больше прибыли "};
 var costPump = {name: "costPump", value: 1, cost: 10, level: 0, func: () => upgradesExpFunc("costPump"), text: "Цена улучшений: ", title: "-1% к цене улучшений", description: "Стоимость всех улучшений за монеты снизиться на 1% "};
-var autoBonus = {name: "autoBonus", value: 10, cost: 10, level: 0, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса", title: "-1s ко времени автобонуса", description: "Автоматическое получение <br> бонуса по истечению времени"};
+var autoBonus = {name: "autoBonus", value: 11, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение <br> бонуса по истечению времени"};
 
 var upgradesExp = [hardness, profit, costPump, autoBonus];
 
-
+let currentSecondsStart;
+let currentSeconds;
 
 // var costOfPump = {cost: 10, costC: 10};
 var costOfPumpRatio = (ratio + 0.01) * costPump.value;
@@ -133,6 +132,8 @@ function expBonus(){
 
     document.getElementById("ret").style.backgroundPositionY = "0%"
     document.getElementById("ret").style.transition = "none";
+    document.getElementById("hpBarID").style.width = 100/layer.hpP *layer.hpC + "%";
+    document.getElementById("cracksID").style.height = 100-(100/layer.hpP *layer.hpC) + "%";
 
     toChangeText("counterRebootID", counterReboot);
     updateInfo();
@@ -148,6 +149,13 @@ function hit(damage, type) {
         finishLevel();
         updateInfo();
     }
+    if (!document.getElementById("bossLevelBonusID").hidden && autoBonus.enabled == true){
+        currentSeconds = new Date().getSeconds();
+        let raznica = autoBonus.value - (currentSeconds - currentSecondsStart);
+        toChangeText("timeID", "Автовыбор через: " + raznica + " секунд")
+    }
+    
+
 }
 
 function trembling(){
@@ -307,6 +315,9 @@ function upgradesExpFunc(upgrade){
                 hitPlusOne.costC = Math.round(hitPlusOne.cost);
                 hitPlusTen.cost *= costPump.value;
                 autoHitOne.cost *= costPump.value;
+            } else if (upgrade == "autoBonus"){
+                autoBonus.value -= 1;
+                if (!autoBonus.enabled){ autoBonus.enabled = true};
             }
         } 
         if (upgradesExp[i].level >= 9){
@@ -359,8 +370,9 @@ function bossLevelBonus(){
     for (var i = 0; i < upgrades.length; i++){
         document.getElementById(upgrades[i].name + "BtnID").disabled = "disabled";
     }
-    if (autoBonusVar){
-        timer = setTimeout(function(){document.getElementById("bossLevelBonusID" + Math.floor(Math.random()*trw.length)).click()}, autoBonusTime*1000);
+    if (autoBonus.enabled){
+        currentSecondsStart = new Date().getSeconds();
+        timer = setTimeout(function(){document.getElementById("bossLevelBonusID" + Math.floor(Math.random()*trw.length)).click()}, autoBonus.value*1000);
     }
 }
 
@@ -396,6 +408,7 @@ function menuTreePump(open){
 function updateInfo(){
     toChangeText("prizeID", toCompactNotation(prize.profitC * doubleMoney));
     toChangeText("depthLevelID", layer.level);
+
 
     for(let i = 0; i < upgrades.length; i++){
         toChangeText(upgrades[i].name+"CostID", toCompactNotation(upgrades[i].costC));
