@@ -4,7 +4,6 @@
     user-select: none;
  }
 .rightText{
-    width: 99%;
     text-align: right;
  }
  #hpTitleID, #profitTitleID, #bossLevelBonusID{
@@ -42,15 +41,17 @@
  h1, h2{
     width: 100%;
     text-align: center;
+    margin: 0;
  }
  .inline-block{
     display: inline-block;
  }
  footer{
     position: fixed;
-    bottom: 20px;
+    bottom: 0px;
     width: 100%;
     text-align: center;
+    color: white;
  }
  #hpBarID{
     background-color: brown;
@@ -128,6 +129,7 @@ body {
    height: 100%;
    transition: background-position 1.4s linear;
    backdrop-filter: grayscale(60%);
+   margin: 0%;
 }
 #bossLevelBonusID {
    color: white;
