@@ -147,7 +147,7 @@
     margin-right: 3.8%;
     padding: 10px;
     position: relative;
-    white-space: nowrap;
+    white-space: normal;
     border: 3px outset rgb(150, 150, 150);
     border-radius: 10px;
     background-color: #202020;
@@ -167,6 +167,7 @@
     font-size: 12pt;
     font-weight: bold;
     text-align: center;
+    hyphens: auto;
     z-index: 0;
 }
 .centralMenuElementBtn{

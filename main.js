@@ -85,8 +85,9 @@ function simulateClick(selector){
 }
 
 function softProgress (original, rate){
+
     // console.log(original + " original")
-    let lenght = original.toString().length;
+    let lenght = Math.floor(original).toString().length; //Округляем что бы не считались знаки после запятой
     let result = original + 2**(lenght-rate);
     return result;
 }

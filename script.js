@@ -5,14 +5,24 @@ var counter = 0;
 var counterReboot = 0;
 
 var moneyExp = 0.0001;
-var exp = 900;
+var exp = 0;
 var doubleMoney = 1;
 var switchHit = true;
 var bossBonus = false;
 
 
 //C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое) P-Previos(Предыдующий)
-var layer = {name: "layer", hp: 4, hpC: 4, hpP: 4, hpS: 4, hpR: 1.01, level: 0, expBonus: 0.01};
+var layer = {
+    name: "layer", 
+    hp: {
+        base: 4, // Базовое
+        calc: 4, // Расчётное 
+        round: 4, // На начало раунда
+        current: 4, // Текущее 
+    },
+    level: 0, 
+    expBonus: 0.01
+};
 var prize = {name: "prize", profit: 1, profitC: 1};
 
 var hitPlusOne = {name: "hitPlusOne", costS: 1, cost: 1, costC: 1, level: 0, typeValue: "hit", value: 1, openingLayer: 1, switch: "off", expBonus: 0.05, func: () => upgradesFunc("hitPlusOne"), freeUp: false, img: "pickaxe_transparent_390x390.png", text: "+1 удару"};
@@ -27,20 +37,17 @@ var upgrades = [hitPlusOne, profitPlusOne, autoHitOne, hitPlusTen, autoHitTen, a
 var hardness = {name: "hardness", value: 1, parametr: 100, typeParametr: "%", cost: 10, level: 0, func: () => upgradesExpFunc("hardness"), text: "Твёрдость слоёв: ", title: "-1% к твёрдости", description: "Твёрдость каждого слоя становится ниже "};
 var profit = {name: "profit", value: 1, parametr: 100, typeParametr: "%", cost: 10, level: 0, func: () => upgradesExpFunc("profit"), text: "Прибыль добычи: ", title: "+1% к прибыле", description: "При каждой добыче вы будете получать больше прибыли "};
 var costPump = {name: "costPump", value: 1, parametr: 100, typeParametr: "%", cost: 10, level: 0, func: () => upgradesExpFunc("costPump"), text: "Цена улучшений: ", title: "-1% к цене улучшений", description: "Стоимость всех улучшений за монеты снизиться на 1% "};
-var autoBonus = {name: "autoBonus", value: 11, parametr: 10, typeParametr: "s", cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение <br> бонуса по истечению времени"};
+var autoBonus = {name: "autoBonus", value: 11, parametr: 10, typeParametr: "s", cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение бонуса по истечению времени"};
 
 var upgradesExp = [hardness, profit, costPump, autoBonus];
 
 let currentSecondsStart;
 let currentSeconds;
 
-// var costOfPump = {cost: 10, costC: 10};
 var costOfPumpRatio = (ratio + 0.01) * costPump.value;
 
 var bossLevel = 1;
 var bossLevelRatio = 10;
-
-var costOfPump = [1, 1, 1];
 
 startingCreationGUI();
 startingValues();
@@ -85,7 +92,7 @@ function startingCreationGUI(){
             toCreateTag("#menuForExp", "div", id+"ID", "centralMenuElement inline-block", "", errorCode);
                 toCreateTag("#"+id+"ID", "div", id+"TitleID", "centralMenuElementTitle", upgradesExp[i].title, errorCode); 
                 toCreateTag("#"+id+"ID", "div", id+"LevelID", "btnCloseCircule", "0", errorCode);
-                toCreateTag("#"+id+"ID", "div", id+"DescriptionID", "centralMenuElementDescription", upgradesExp[i].description, errorCode);  
+                toCreateTag("#"+id+"ID", "p", id+"DescriptionID", "centralMenuElementDescription", upgradesExp[i].description, errorCode);  
                 toCreateTag("#"+id+"ID", "button", id+"BtnID", "centralMenuElementBtn", "🟢", errorCode);
                     document.getElementById(id+"BtnID").onclick = function(){upgradesExp[i].func();};
                     toCreateTag("#"+id+"BtnID", "div", id+"CostID", "inline-block cost", "", errorCode);
@@ -106,8 +113,8 @@ function expChanges(e){
 }
 
 function startingValues(){
-    money = 0;
-    layer.hpP = layer.hpC = layer.hp = layer.hpS;
+    money = 100000000;
+    layer.hp.calc = layer.hp.current = layer.hp.round = layer.hp.base;
     prize.profitC = prize.profit = 1 * profit.value;
     handHit = 1;
     autoHit = 0;
@@ -132,8 +139,8 @@ function expBonus(){
 
     document.getElementById("ret").style.backgroundPositionY = "0%"
     document.getElementById("ret").style.transition = "none";
-    document.getElementById("hpBarID").style.width = 100/layer.hpP *layer.hpC + "%";
-    document.getElementById("cracksID").style.height = 100-(100/layer.hpP *layer.hpC) + "%";
+    document.getElementById("hpBarID").style.width = 100/layer.hp.round * layer.hp.current+ "%";
+    document.getElementById("cracksID").style.height = 100-(100/layer.hp.round * layer.hp.current) + "%";
 
     toChangeText("counterRebootID", counterReboot);
     updateInfo();
@@ -143,9 +150,9 @@ function hit(damage, type) {
     if (switchHit){
         if(type == "hand"){counter++;} 
         if(damage > 0){trembling();}
-        layer.hpC -= damage;
-        document.getElementById("hpBarID").style.width = 100/layer.hpP *layer.hpC + "%";
-        document.getElementById("cracksID").style.height = 100-(100/layer.hpP *layer.hpC) + "%";
+        layer.hp.current -= damage;
+        document.getElementById("hpBarID").style.width = 100/layer.hp.round * layer.hp.current + "%";
+        document.getElementById("cracksID").style.height = 100-(100/layer.hp.round * layer.hp.current) + "%";
         finishLevel();
         updateInfo();
     }
@@ -178,17 +185,17 @@ function switchsHit(bool){;
 
 let layerUpIntervalID;
 function finishLevel(){
-    if (layer.hpC <= 0){
+    if (layer.hp.current <= 0){
         switchsHit(false)
         document.getElementById("layerImgID").style.top = "100%";
         document.getElementById("layerImgID").style.transition = "none";
         document.getElementById("cracksID").style.height = "0%";
         layerUpIntervalID = setTimeout(layerUp, 100);
         moneyChanges(Math.floor(prize.profitC * doubleMoney));
-        console.log(hardness.value);
-        layer.hpP = layer.hpC = softProgress(layer.hpP, 1);
-        prize.profit = prize.profitC * profit.value;
-        prize.profitC = Math.round(softProgress(Math.floor(prize.profit), 2));
+        layer.hp.calc = softProgress(layer.hp.calc, 1);
+        layer.hp.round = layer.hp.current = Math.floor(layer.hp.calc * hardness.value);
+        prize.profitC = Math.round(softProgress(prize.profit, 2));
+        prize.profit = Math.floor(prize.profitC * profit.value);
         layer.level++;
         document.getElementById("hpBarID").style.width = "100%";
         for (let i = 0; i < upgrades.length; i++){
@@ -243,14 +250,16 @@ function switchingElementMenu(switchType, btn){
 }
 
 function requiredUp(original, result){
-    // console.log(Math.round(original*1.1) + " original");
-    // console.log(result + " result");
+    console.log(Math.round(original*1.1) + " original");
+    console.log(result + " result");
     if (Math.round(original*1.1) <= result){
+        console.log("if")
         result++;
     } else{
+        console.log("else")
         result = Math.round(original*1.1);
     }
-    // console.log(result + " result"); 
+    console.log(result + " result"); 
     return result;
 }
 
@@ -272,7 +281,10 @@ function upgradesFunc(upgrade) {
                 up = true;
                 moneyChanges(-Math.floor(costC));
                 upgrades[i].cost *= costOfPumpRatio;
-                upgrades[i].costC = toRoundoff(Math.round(cost) <= costC ? requiredUp(cost, costC) : Math.round(cost));
+                console.log(upgrades[i].cost + " upgrades[i].cost")
+                console.log(upgrades[i].costC + " upgrades[i].costC")
+                upgrades[i].costC = Math.round(softProgress(upgrades[i].costC, 1))+i;
+                // upgrades[i].costC = toRoundoff(Math.round(cost) <= costC ? requiredUp(cost, costC) : Math.round(cost));
                 colorNumbers(name+"CostID", "red");
             }
             if(up){
@@ -307,18 +319,15 @@ function upgradesExpFunc(upgrade){
             if(upgrade == "hardness"){
                 hardness.value -= 0.01;
                 hardness.parametr -= 1;
-                layer.hp *= hardness.value;
-                layer.hpC *= hardness.value; 
             } else if(upgrade == "profit"){
                 profit.value += 0.01;
                 profit.parametr += 1;
             } else if(upgrade == "costPump"){
                 costPump.value -= 0.01;
                 costPump.parametr -= 1;
-                hitPlusOne.cost *= costPump.value;
-                hitPlusOne.costC = Math.round(hitPlusOne.cost);
-                hitPlusTen.cost *= costPump.value;
-                autoHitOne.cost *= costPump.value;
+                for(let i = 0; i < upgrades.length; i++){
+                    upgrades[i].costC = Math.round(upgrades[i].cost * costPump.value);
+                }
             } else if (upgrade == "autoBonus"){
                 autoBonus.parametr = autoBonus.value -= 1;
                 if (!autoBonus.enabled){ autoBonus.enabled = true};
@@ -341,13 +350,18 @@ function bossLevelBonus(){
     moneyBonus = 0;
     trw = [];
     var switchsOn = 0;
+    var lowCost;
     for (var i = 0; i < upgrades.length; i++){
         if(upgrades[i].switch == "on"){
             moneyBonus += upgrades[i].costC;
+            if (!lowCost || lowCost > upgrades[i].costC){
+                lowCost = upgrades[i].costC;
+            }
             switchsOn++;
         }
     }
     moneyBonus = toRoundoff(Math.ceil(Math.random()*(moneyBonus / switchsOn)) * 2 + 1);
+    if(moneyBonus < lowCost){moneyBonus = lowCost + moneyBonus};
     let bonus2 = upgrades[Math.floor(Math.random()*switchsOn)];
     trw.push(toCompactNotation(moneyBonus));
     trw.push(bonus2);
@@ -363,7 +377,6 @@ function bossLevelBonus(){
             valueBtn = "moneyBonus";
             text = trw[i] + " Монет!";
         }
-        // console.log(disVar.length);
         document.getElementById("bossLevelBonusID").append(
             Object.assign(document.createElement('button'), {className: "bossLevelBonusCls", id: "bossLevelBonusID" + i,  innerHTML: "Приз №" + (i+1) + " " + text, value: valueBtn, onclick: function(){bossLevelBonusBtn(this);}})
         )
@@ -436,5 +449,5 @@ function updateInfo(){
     toChangeText("expID", toCompactNotation(exp));
     toChangeText("hitID", handHit);
     toChangeText("autoHitInfoID", autoHit);
-    toChangeText("hpID", Math.floor(layer.hpC));
+    toChangeText("hpID", Math.floor(layer.hp.current));
 }
