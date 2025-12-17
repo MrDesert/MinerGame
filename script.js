@@ -113,7 +113,7 @@ function expChanges(e){
 }
 
 function startingValues(){
-    money = 100000000;
+    money = 0;
     layer.hp.calc = layer.hp.current = layer.hp.round = layer.hp.base;
     prize.profitC = prize.profit = 1 * profit.value;
     handHit = 1;
