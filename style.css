@@ -74,7 +74,7 @@
  #expID{
     color: white;
  }
- #hardnessLevelID, #profitLevelID, #costPumpLevelID, #autoBonusLevelID {
+ #hardnessLevelID, #profitLevelID, #costPumpLevelID, #autoBonusLevelID, #percentMoneyLevelID, #speedAutoHitLevelID, #expPlusLevelID {
     background-color: rgba(0, 0, 0, 0);
  }
  #layerID {
@@ -127,7 +127,7 @@ body {
    background-position: 0% 0%;
    background-size: 2000px;
    height: 100%;
-   transition: background-position 1.4s linear;
+   transition: background-position 0.7s ease-out;
    backdrop-filter: grayscale(60%);
    margin: 0%;
 }

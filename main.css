@@ -99,6 +99,7 @@
     z-index: 2;
 }
 .centralMenu{
+    overflow-y: auto;
     position: absolute;
     padding: 1%;
     padding-top: 70px;
@@ -143,15 +144,15 @@
 }
 .centralMenuElement{
     margin: 20px;
-    margin-left: 3.8%;
-    margin-right: 3.8%;
+    margin-left: 2%;
+    margin-right: 2%;
     padding: 10px;
     position: relative;
     white-space: normal;
     border: 3px outset rgb(150, 150, 150);
     border-radius: 10px;
     background-color: #202020;
-    width: 40%;
+    width: 27%;
 }
 .centralMenuElementTitle{
     font-size: 16pt;
