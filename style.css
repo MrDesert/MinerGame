@@ -134,3 +134,21 @@ body {
 #bossLevelBonusID {
    color: white;
 }
+#infoExpID{
+   position: relative;
+   display: flex;
+   height: 6%;
+   width: 50%;
+   margin: 0px;
+}
+#rebootExpBtnID {
+   position: absolute;
+   width: 10%;
+   height: 40%;
+   bottom: 5%;
+   margin: 0px;
+}
+#rebootExpDesID {
+   width: 100%;
+   margin: 0px;
+}

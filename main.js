@@ -97,38 +97,8 @@ function toChangeText(id, text){
 
 function toStyle(name, typeValue, value){
     name = toDefineSelector(name) == "id" ? document.querySelector(name) : document.querySelectorAll(name);
-    switch (typeValue){
-        case "width":
-            name.style.width = value;
-            break;
-        case "height":
-            name.style.height = value;
-            break;
-        case "top":
-            name.style.top = value;
-            break;
-        case "bottom":
-            name.style.bottom = value;
-            break;
-        case "left":
-            name.style.left = value;
-            break;
-        case "right":
-            name.style.right = value;
-            break;
-        case "filter":
-            name.style.filter = value;
-            break;
-        case "transition":
-            name.style.transition = value;
-            break;
-        case "transform":
-            name.style.transform = value;
-            break;
-        case "backgroundPositionY":
-            name.style.backgroundPositionY = value;
-            break;
-    }
+    name.style[typeValue] = value;
+    // console.log(typeValue+ " такого свойства нет! ");
 }
 
 function toHide(id){

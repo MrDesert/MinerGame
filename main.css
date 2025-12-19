@@ -46,17 +46,17 @@
 .sideMenuElement {
     background: rgba(140, 140, 140, 0.3);
     position: relative;
-    white-space: nowrap;
+    white-space: normal;
     border: 3px outset rgb(150, 150, 150);
     border-radius: 10px;
     margin-bottom: 10px;
+    display: flex;
 }
 .sideMenuElementIconLeft{
     position: relative;
     width: 30%;
     height: 100%;
     padding: 5px;
-    display: inline-block;
 }
 .sideMenuElementIconLeftIMG{
     height: 80px;
@@ -70,9 +70,8 @@
 .sideMenuElementDescription{
     vertical-align: top;
     top: 0px;
-    overflow-wrap: break-word;
+    hyphens: auto;
     padding: 5px;
-    display: inline-block;
 }
 .sideMenuElementBtn{
     position: absolute;
@@ -141,6 +140,12 @@
     font-weight: bold;
     border: 1px solid rgb(100, 100, 100);
     border-radius: 10px;
+}
+.centralMenuInfoElement{
+    width: 30%;
+    margin-top: 5px;
+    margin-left: 10px;
+    display: inline-block;
 }
 .centralMenuElement{
     margin: 20px;
