@@ -89,9 +89,9 @@ moneyChanges(0);
 
 var autoIntervalOne, autoIntervalTen, autoInterval100;
 function interval(){
-    autoIntervalOne = setInterval(() => hit(autoHitOne) , (3000*speedAutoHit.value));
-    autoIntervalTen = setInterval(() => hit(autoHitTen) , (4500*speedAutoHit.value));
-    autoInterval100 = setInterval(() => hit(autoHit100) , (7500*speedAutoHit.value));
+    autoIntervalOne = setInterval(() => hit(autoHitOne) , (1000*speedAutoHit.value));
+    autoIntervalTen = setInterval(() => hit(autoHitTen) , (1500*speedAutoHit.value));
+    autoInterval100 = setInterval(() => hit(autoHit100) , (2500*speedAutoHit.value));
 }
 
 function startingCreationGUI(){
