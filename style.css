@@ -123,12 +123,15 @@ body {
    min-height: 300px;
    height: 100vh;
    width: 100vw;
-   background-image: url(img/background-4x2.png);
+   background-image: url(img/background.png);
    background-position: 0% 0%;
-   background-size: 2000px;
+   background-size: 1200px;
    height: 100%;
    transition: background-position 0.7s ease-out;
-   backdrop-filter: grayscale(60%);
+   backdrop-filter: grayscale(70%);
+   backdrop-filter: saturate(30%);
+   /* backdrop-filter: hue-rotate(10deg); */
+   backdrop-filter: blur(1px);
    margin: 0%;
 }
 #bossLevelBonusID {
@@ -151,4 +154,18 @@ body {
 #rebootExpDesID {
    width: 100%;
    margin: 0px;
+}
+
+.imgAutoHit{
+   position: absolute;
+   height: 10%;
+   top: -10%;
+   opacity: 100%;
+   /* transform: rotate(180deg); */
+   /* transform: translateY(100px); */
+   transition: top 3s linear, transform 3s linear, opacity 3s ease-in;
+}
+
+#menuForCoins{
+   z-index: 2;
 }

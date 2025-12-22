@@ -8,6 +8,7 @@ var exp = 10 + 20+ 40+80+160+320+640+1280+2560+5120;
 var doubleMoney = 1;
 var switchHit = true;
 var bossBonus = false;
+let countAutoHit = 0;
 
 
 //C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое) P-Previos(Предыдующий)
@@ -42,10 +43,10 @@ var hitPlusOne = {name: "hitPlusOne",
     text: "+1 удару"
 };
 
-var autoHitOne = {name: "autoHitOne", cost: {base: 30, calc: 30, current: 30}, level: 0, typeValue: "auto", value: 1, openingLayer: 25, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", text: "+1 Автоудар раз в секунду"};
+var autoHitOne = {name: "autoHitOne", cost: {base: 30, calc: 30, current: 30}, level: 0, typeValue: "auto", value: 1, openingLayer: 25, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", text: "+1 Автоудар раз в секунду"};
 var profitPlusOne = {name: "profitPlusOne", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "profit", value: 1, openingLayer: 75, switch: "off", expBonus: 0.05, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
 var hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 10, openingLayer: 150, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "drill_transparent_450x450.png", text: "+10 удару"};
-var autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", value: 10, openingLayer: 300, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmetDrill.png", text: "+10 Автоударов в секунду"};
+var autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", value: 10, openingLayer: 300, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", text: "+10 Автоударов в секунду"};
 var autoHit100 = {name: "autoHitOneHundred", cost: {base: 20000, calc: 20000, current: 20000}, level: 0, typeValue: "auto", value: 100, openingLayer: 750, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHitOneHundred"), freeUp: false, img: "helmet5.png", text: "+100 Автоударов в секунду"};
 
 var upgrades = [hitPlusOne, autoHitOne, profitPlusOne, hitPlusTen, autoHitTen, autoHit100]; //массив с объектами улучшений;
@@ -86,9 +87,11 @@ startingValues();
 interval();
 moneyChanges(0);
 
-var autoInterval;
+var autoIntervalOne, autoIntervalTen, autoInterval100;
 function interval(){
-    autoInterval = setInterval(() => hit(autoHit,"auto") , (1000*speedAutoHit.value));
+    autoIntervalOne = setInterval(() => hit(autoHitOne) , (3000*speedAutoHit.value));
+    autoIntervalTen = setInterval(() => hit(autoHitTen) , (4500*speedAutoHit.value));
+    autoInterval100 = setInterval(() => hit(autoHit100) , (7500*speedAutoHit.value));
 }
 
 function startingCreationGUI(){
@@ -196,14 +199,17 @@ function expBonus(){
     updateInfo();
 }
 
-function hit(damage, type) {
+function hit(object) {
     if (switchHit){
-        if(type == "hand"){counter++;} 
-        if(damage > 0){trembling();}
-        layer.hp.current -= damage;
-        toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
-        toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
-        finishLevel();
+        if(object.typeValue == "hit"){counter++; damage(object);}
+        else {
+            if(object.level > 0){
+                animationAutoHit(object);
+            }
+        } 
+
+        
+
         updateInfo();
     }
     if (!document.getElementById("bossLevelBonusID").hidden && autoBonus.enabled == true){
@@ -211,6 +217,36 @@ function hit(damage, type) {
         let raznica = autoBonus.value - (currentSeconds - currentSecondsStart);
         toChangeText("timeID", "Автовыбор через: " + raznica + " секунд")
     }
+}
+
+function damage(object){
+    trembling();
+    if (object.typeValue == "hit"){
+        layer.hp.current -= handHit;
+    } else {
+        layer.hp.current -= object.value * object.level;
+    }
+    toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
+    toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
+    finishLevel();
+    updateInfo();
+}
+
+function animationAutoHit(autoDamage){
+    let id = countAutoHit++;
+    toCreateTag("body", "img", "imgID"+id, "imgAutoHit", "", "hit-function");
+        toStyle("#imgID"+id, "left", Math.floor(Math.random()*100)+"%")
+        document.getElementById("imgID"+id).src = "img/"+autoDamage.autoImg;
+        setTimeout(function(){
+            let rotate = Math.floor(Math.random()*50)+1075;
+            toStyle("#imgID"+id, "transform", "rotate("+rotate+"deg)");
+            toStyle("#imgID"+id, "top", "60%");
+            setTimeout(function(){
+                toStyle("#imgID"+id, "opacity", "0%");
+                    damage(autoDamage);
+                    setTimeout(function(){document.getElementById("imgID"+id).remove()}, 3000);
+            }, 3010);
+        }, 200);
 }
 
 function trembling(){
@@ -350,7 +386,9 @@ function upgradesExpFunc(upgrade){
             } else if (upgrade == "autoBonus"){
                 if (!autoBonus.enabled){autoBonus.enabled = true};
             } else if (upgrade == "speedAutoHit"){
-                clearInterval(autoInterval);
+                clearInterval(autoIntervalOne);
+                clearInterval(autoIntervalTen);
+                clearInterval(autoInterval100);
                 interval();
             }
         } 
