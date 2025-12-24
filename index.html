@@ -16,10 +16,9 @@
 
         <h2>Текущая глубина: <div id="depthLevelID" class="inline-block">0</div></h2>
 
-        <div id="restartID" style="position: relative; z-index: 1;"><button onclick="expBonus()" style="cursor: pointer;">⟳</button></div>
-        <div id="menuID" style="position: relative; z-index: 1;" onclick="menuTreePump(true)"><button style="cursor: pointer;">🕮</button></div>
+        <div id="menuID" style="position: relative; z-index: 1;  width: 80px;" onclick="menuTreePump(true)"><img id="bookID" class="sideMenuElementIconLeftIMG" src="img/book.png" alt=""></div>
 
-        <div class="rightText">🪙<div id="moneyID" class="inline-block">0</div></div>
+        <div class="rightText"><img id="coinID" class="coinCl" src="img/coin.png" alt=""><div id="moneyID" class="inline-block">0</div></div>
         <div class="rightText">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
         <div class="rightText">Счётчик перезапусков: <div id="counterRebootID" class="inline-block">0</div></div>
         <div class="rightText">Сила удара: <div id="hitID" class="inline-block">1</div></div>
@@ -33,7 +32,36 @@
             <div id="timeID"></div>
         </div>
 
-        <footer>© by MrDesert - beta v0.171</footer>
+        <footer>© by MrDesert - beta v0.172</footer>
+
+
+
+<!-- <script>
+    const script = document.createElement('script');
+    script.src = "https://yandex.ru/games/sdk/v2";
+    // script.src = "https://games.apps.yandex.ru/games/sdk/v2";
+    script.async = true;
+
+    document.head.appendChild(script);
+
+    script.onload = function(){
+
+        YaGames.init()
+            .then(ysdk => {
+                window.ysdk = ysdk;
+                console.log("SDK инициализирован");
+                ysdk.features?.LoadingAPI?.ready?.();
+                console.log("GameReady вызван");
+
+                setTimeout(function(){
+                    ysdk.features.GameplayAPI?.start();
+                }, 10000)
+                
+            })
+            .catch(console.error);
+    };
+</script> -->
+
 
         <script src="main.js"></script>
         <script src="script.js"></script>

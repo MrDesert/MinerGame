@@ -43,11 +43,11 @@ var hitPlusOne = {name: "hitPlusOne",
     text: "+1 удару"
 };
 
-var autoHitOne = {name: "autoHitOne", cost: {base: 30, calc: 30, current: 30}, level: 0, typeValue: "auto", value: 1, openingLayer: 25, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", text: "+1 Автоудар раз в секунду"};
+var autoHitOne = {name: "autoHitOne", cost: {base: 30, calc: 30, current: 30}, level: 0, typeValue: "auto", timeHit: 1, value: 1, openingLayer: 2, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", text: "+1 Автоудар раз в секунду"};
 var profitPlusOne = {name: "profitPlusOne", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "profit", value: 1, openingLayer: 75, switch: "off", expBonus: 0.05, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
 var hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 10, openingLayer: 150, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "drill_transparent_450x450.png", text: "+10 удару"};
-var autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", value: 10, openingLayer: 300, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", text: "+10 Автоударов в секунду"};
-var autoHit100 = {name: "autoHitOneHundred", cost: {base: 20000, calc: 20000, current: 20000}, level: 0, typeValue: "auto", value: 100, openingLayer: 750, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHitOneHundred"), freeUp: false, img: "helmet5.png", text: "+100 Автоударов в секунду"};
+var autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", timeHit: 2, value: 10, openingLayer: 250, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", text: "+10 Автоударов в секунду"};
+var autoHit100 = {name: "autoHit100", cost: {base: 20000, calc: 20000, current: 20000}, level: 0, typeValue: "auto", timeHit: 4.5, value: 100, openingLayer: 750, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmet5.png", text: "+100 Автоударов в секунду"};
 
 var upgrades = [hitPlusOne, autoHitOne, profitPlusOne, hitPlusTen, autoHitTen, autoHit100]; //массив с объектами улучшений;
 
@@ -89,9 +89,9 @@ moneyChanges(0);
 
 var autoIntervalOne, autoIntervalTen, autoInterval100;
 function interval(){
-    autoIntervalOne = setInterval(() => hit(autoHitOne) , (1000*speedAutoHit.value));
-    autoIntervalTen = setInterval(() => hit(autoHitTen) , (1500*speedAutoHit.value));
-    autoInterval100 = setInterval(() => hit(autoHit100) , (2500*speedAutoHit.value));
+    autoIntervalOne = setInterval(() => hit(autoHitOne) , (1000*autoHitOne.timeHit*speedAutoHit.value));
+    autoIntervalTen = setInterval(() => hit(autoHitTen) , (1000*autoHitTen.timeHit*speedAutoHit.value));
+    autoInterval100 = setInterval(() => hit(autoHit100) , (1000*autoHit100.timeHit*speedAutoHit.value));
 }
 
 function startingCreationGUI(){
@@ -110,7 +110,9 @@ function startingCreationGUI(){
                     document.getElementById(id+"ImgID").src = "img/" + upgrades[i].img;
                     toStyle("#"+id+"ImgID", "filter", "grayscale(50%)");
                 toCreateTag("#"+id+"ID", "div", id+"DescriptionID", "sideMenuElementDescription", upgrades[i].text, errorCode)
-                toCreateTag("#"+id+"ID", "button", id+"BtnID", "sideMenuElementBtn", "🪙", errorCode);
+                toCreateTag("#"+id+"ID", "button", id+"BtnID", "sideMenuElementBtn", "", errorCode);
+                    toCreateTag("#"+id+"BtnID", "img", id+"BtnImgID", "coinCl", "", errorCode);
+                         document.getElementById(id+"BtnImgID").src = "img/coin.png";
                     document.getElementById(id+"BtnID").onclick = function(){upgrades[i].func();};
                     document.getElementById(id+"BtnID").disabled = "disabled";
                     toCreateTag("#"+id+"BtnID", "div", id+"CostID", "inline-block cost", "", errorCode)
@@ -121,11 +123,15 @@ function startingCreationGUI(){
         toCreateTag("#menuForExpBack", "div", "menuForExp", "centralMenu", "", errorCode);
             toCreateTag("#menuForExp", "button", "menuForExpBtnClose", "btnCloseCircule", "X", errorCode);
                 document.getElementById("menuForExpBtnClose").onclick = function(){menuTreePump(false)};
-            toCreateTag("#menuForExp", "div", "expTitleID", "moneyTopRight", "🟢", errorCode);
+            toCreateTag("#menuForExp", "div", "expTitleID", "moneyTopRight", "", errorCode);
+                toCreateTag("#expTitleID", "img", "expImgID", "expCl", "", errorCode);
+                    document.getElementById("expImgID").src = "img/exp.png";
                 toCreateTag("#expTitleID", "div", "expID", "moneyTopRightNum", "", errorCode);
             toCreateTag("#menuForExp", "div", "infoExpID", "centralMenuInfo", "", errorCode);
                 toCreateTag("#infoExpID", "div", "rebootExpDesID", "centralMenuInfoElement", "Если перезапустить шахту сейчас то можно получить: ", errorCode);
-                toCreateTag("#infoExpID", "div", "rebootExpID", "centralMenuInfoElement", "🟢", errorCode);
+                toCreateTag("#infoExpID", "div", "rebootExpID", "centralMenuInfoElement", "", errorCode);
+                    toCreateTag("#rebootExpID", "img", "rebootExpImgID", "expCl", "", errorCode);
+                        document.getElementById("rebootExpImgID").src = "img/exp.png";
                 toCreateTag("#infoExpID", "button", "rebootExpBtnID", "centralMenuElementBtn", "⟳", errorCode);
                     document.getElementById("rebootExpBtnID").onclick = function(){expBonus();};
             toCreateTag("#menuForExp", "div", "infoID", "centralMenuInfo", "", errorCode);
@@ -148,8 +154,10 @@ function moneyChanges(m){
     colorNumbers("moneyID", m < 0 ? "red" : "green");
     money += m;
     toChangeText("moneyID", toCompactNotation(money));
-    onOffBtn();
-    updateInfo();
+    if(m != 0){
+        onOffBtn();
+        updateInfo();
+    }
 }
 
 function expChanges(e){
@@ -208,8 +216,6 @@ function hit(object) {
             }
         } 
 
-        
-
         updateInfo();
     }
     if (!document.getElementById("bossLevelBonusID").hidden && autoBonus.enabled == true){
@@ -221,14 +227,16 @@ function hit(object) {
 
 function damage(object){
     trembling();
-    if (object.typeValue == "hit"){
-        layer.hp.current -= handHit;
-    } else {
-        layer.hp.current -= object.value * object.level;
+    if (switchHit){
+        if (object.typeValue == "hit"){
+            layer.hp.current -= handHit;
+        } else {
+            layer.hp.current -= object.value * object.level;
+        }
+        toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
+        toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
     }
-    toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
-    toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
-    finishLevel();
+
     updateInfo();
 }
 
@@ -238,13 +246,20 @@ function animationAutoHit(autoDamage){
         toStyle("#imgID"+id, "left", Math.floor(Math.random()*100)+"%")
         document.getElementById("imgID"+id).src = "img/"+autoDamage.autoImg;
         setTimeout(function(){
-            let rotate = Math.floor(Math.random()*50)+1075;
+            let rotate = Math.floor(Math.random()*60)+1070;
+            if (autoDamage.name == "autoHitTen"){
+                rotate += -60;
+            }
             toStyle("#imgID"+id, "transform", "rotate("+rotate+"deg)");
             toStyle("#imgID"+id, "top", "60%");
             setTimeout(function(){
                 toStyle("#imgID"+id, "opacity", "0%");
-                    damage(autoDamage);
-                    setTimeout(function(){document.getElementById("imgID"+id).remove()}, 3000);
+                document.getElementById("imgID"+id).classList.add("death");
+                damage(autoDamage);
+                setTimeout(function(){
+                    if(document.getElementById("imgID"+id)){
+                    document.getElementById("imgID"+id).remove();}
+                }, 3000);
             }, 3010);
         }, 200);
 }
@@ -255,6 +270,7 @@ function trembling(){
     setTimeout(function(){
         toStyle("#layerID", "left", "0%");
         // toStyle("#layerID", "bottom", "0%");
+        finishLevel();
     }, 50);
 }
 
@@ -270,13 +286,15 @@ function finishLevel(){
         switchsHit(false)
         toStyle("#layerImgID", "top", "100%");
         toStyle("#layerImgID", "transition", "none");
+        let death = document.querySelectorAll(".death");
+        death.forEach( det => {det.remove()});
         toStyle("#cracksID", "height", "0%");
         layerUpIntervalID = setTimeout(layerUp, 100);
         moneyChanges(Math.floor(prize.profitC * doubleMoney));
         layer.hp.calc = softProgress(layer.hp.calc, -1);
         layer.hp.round = layer.hp.current = Math.floor(layer.hp.calc * hardness.value);
-        prize.profitC = Math.round(softProgress(prize.profit, -2));
-        prize.profit = Math.floor(prize.profitC * profit.value);
+        prize.profit = prize.profitC = Math.round(softProgress(prize.profit, -2));
+        prize.profitC = Math.floor(prize.profitC * profit.value);
         layer.level++;
         toStyle("#hpBarID", "width", "100%");
         for (let i = 0; i < upgrades.length; i++){
@@ -307,6 +325,8 @@ function layerUp(){
 function onOffBtn(){
     for (let i = 0; i < upgrades.length; i++){
         let disBtn = document.getElementById(upgrades[i].name + "BtnID");
+        // console.log(money >= upgrades[i].cost.current + "money >= upgrades[i].cost.current");
+        // console.log(upgrades[i].switch == "on" + "upgrades[i].switch == 'on'");
         money >= upgrades[i].cost.current && upgrades[i].switch == "on" ? disBtn.removeAttribute("disabled") : disBtn.disabled="disabled";
     }
     for (let i = 0; i < upgradesExp.length; i++){
@@ -397,7 +417,7 @@ function upgradesExpFunc(upgrade){
             document.getElementById(name+"BtnID").disabled = "disabled";
         }
     }
-    onOffBtn()
+    // onOffBtn()
     updateInfo();
 }
 
@@ -466,7 +486,7 @@ function bossLevelBonusBtn(bonus){
     }
     bossBonus = false;
     switchsHit(true);
-    onOffBtn();
+    // onOffBtn();
     toHide("bossLevelBonusID");
 }
 
@@ -484,7 +504,7 @@ function updateInfo(){
         if( upgrades[i].typeValue == "auto"){
             let text = " Автоудар раз в "
             if(upgrades[i].value > 1){text = " Автоударов раз в "}
-            toChangeText(upgrades[i].name+"DescriptionID", "+" + upgrades[i].value + text + Math.round(speedAutoHit.parameter.value*100)/100 + speedAutoHit.parameter.type);
+            toChangeText(upgrades[i].name+"DescriptionID", "+" + upgrades[i].value + text + Math.round(speedAutoHit.parameter.value*upgrades[i].timeHit*100)/100 + speedAutoHit.parameter.type);
         }
     } 
 
@@ -507,5 +527,5 @@ function updateInfo(){
     toChangeText("hitID", handHit);
     toChangeText("autoHitInfoID", autoHit);
     toChangeText("hpID", Math.floor(layer.hp.current));
-    toChangeText("rebootExpID", expCalc() + "🟢");
+    toChangeText("rebootExpID", expCalc());
 }

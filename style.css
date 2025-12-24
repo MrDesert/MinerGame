@@ -2,6 +2,8 @@
     font-family: 'Courier New', Courier, monospace;
     touch-action: manipulation; /*  отключить двойной тап на сенсорных устройствах для увеличения  */
     user-select: none;
+    -webkit-tap-highlight-color: transparent; /* убираем синию подсветку при тапе на элементы */
+    overflow: hidden; /* что бы экран не расширялся на телефоне из-за появления элементов за границей*/
  }
 .rightText{
     text-align: right;
@@ -117,12 +119,16 @@
    object-fit: cover;
    object-position: top; 
 }
+html {
+   height: 100%;
+   width: 100%;
+}
 body {
    overflow: hidden;
    min-width: 300px;
    min-height: 300px;
-   height: 100vh;
-   width: 100vw;
+   height: 100%;
+   width: 100%;
    background-image: url(img/background.png);
    background-position: 0% 0%;
    background-size: 1200px;
@@ -168,4 +174,12 @@ body {
 
 #menuForCoins{
    z-index: 2;
+}
+
+#bookID{
+   height: 80px;
+}
+
+.coinCl, .expCl{
+   height: 20px;
 }
