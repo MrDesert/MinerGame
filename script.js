@@ -1,18 +1,18 @@
 const gameStatus = "Test1";
-var money, handHit, autoHit;
-var counter = 0;
-var counterReboot = 0;
+let money, handHit, autoHit;
+let counter = 0;
+let counterReboot = 0;
 
-var moneyExp = 0.0001;
-var exp = 10 + 20+ 40+80+160+320+640+1280+2560+5120;
-var doubleMoney = 1;
-var switchHit = true;
-var bossBonus = false;
+const moneyExp = 0.0001;
+let exp = 10 + 20+ 40+80+160+320+640+1280+2560+5120;
+let doubleMoney = 1;
+let switchHit = true;
+let bossBonus = false;
 let countAutoHit = 0;
 
 
 //C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое) P-Previos(Предыдующий)
-var layer = {
+let layer = {
     name: "layer", 
     hp: {
         base: 4, // Базовое
@@ -23,9 +23,9 @@ var layer = {
     level: 0, 
     expBonus: 0.01
 };
-var prize = {name: "prize", profit: 1, profitC: 1};
+const prize = {name: "prize", profit: 1, profitC: 1};
 
-var hitPlusOne = {name: "hitPlusOne", 
+const hitPlusOne = {name: "hitPlusOne", 
     cost: {
         base: 1, // Базовое
         calc: 1, // Расчётное
@@ -43,17 +43,18 @@ var hitPlusOne = {name: "hitPlusOne",
     text: "+1 удару"
 };
 
-var autoHitOne = {name: "autoHitOne", cost: {base: 30, calc: 30, current: 30}, level: 0, typeValue: "auto", timeHit: 1, value: 1, openingLayer: 2, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", text: "+1 Автоудар раз в секунду"};
-var profitPlusOne = {name: "profitPlusOne", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "profit", value: 1, openingLayer: 75, switch: "off", expBonus: 0.05, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
-var hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 10, openingLayer: 150, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "drill_transparent_450x450.png", text: "+10 удару"};
-var autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", timeHit: 2, value: 10, openingLayer: 250, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", text: "+10 Автоударов в секунду"};
-var autoHit100 = {name: "autoHit100", cost: {base: 20000, calc: 20000, current: 20000}, level: 0, typeValue: "auto", timeHit: 4.5, value: 100, openingLayer: 750, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmet5.png", text: "+100 Автоударов в секунду"};
+const autoHitOne = {name: "autoHitOne", cost: {base: 30, calc: 30, current: 30}, level: 0, typeValue: "auto", timeHit: 1.5, value: 1, openingLayer: 2, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", text: "+1 Автоудар раз в секунду"};
+const profitPlusOne = {name: "profitPlusOne", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "profit", value: 1, openingLayer: 75, switch: "off", expBonus: 0.05, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
+const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 10, openingLayer: 150, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "drill_transparent_450x450.png", text: "+10 удару"};
+const autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", timeHit: 2.5, value: 10, openingLayer: 250, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", text: "+10 Автоударов в секунду"};
+const autoHit100 = {name: "autoHit100", cost: {base: 20000, calc: 20000, current: 20000}, level: 0, typeValue: "auto", timeHit: 5.5, value: 100, openingLayer: 750, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmet5.png", text: "+100 Автоударов в секунду"};
 
-var upgrades = [hitPlusOne, autoHitOne, profitPlusOne, hitPlusTen, autoHitTen, autoHit100]; //массив с объектами улучшений;
+const upgrades = [hitPlusOne, autoHitOne, profitPlusOne, hitPlusTen, autoHitTen, autoHit100]; //массив с объектами улучшений;
 
-var hardness = {
+const hardness = {
     name: "hardness", 
     value: 1, 
+    valueStep: 0.01,
     parameter: {
         type: "%",
         step: -1,
@@ -66,32 +67,33 @@ var hardness = {
     title: "-1% к твёрдости", 
     description: "Твёрдость каждого слоя становится ниже "
 };
-var profit = {name: "profit", value: 1, valueStep: 0.01, parameter:{type: "%", step: 1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("profit"), text: "Прибыль добычи: ", title: "+1% к прибыле", description: "При каждой добыче вы будете получать больше прибыли "};
-var costPump = {name: "costPump", value: 1, valueStep: -0.01, parameter:{type: "%", step: -1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("costPump"), text: "Цена улучшений: ", title: "-1% к цене улучшений", description: "Стоимость всех улучшений за монеты снизиться на 1% "};
-var autoBonus = {name: "autoBonus", value: 11, valueStep: -1, parameter:{type: "s", step: -1, value: 11}, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение бонуса по истечению времени"};
-var percentMoney = {name: "percentMoney", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, func: () => upgradesExpFunc("percentMoney"), text: "Сохранение денег: ", title: "+1% к сохранению денег", description: "Сохраняет процент денег при перезапуске шахты"};
-var speedAutoHit = {name: "speedAutoHit", value: 1, valueStep: -0.05, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("speedAutoHit"), text: "Скорость автоудара: ", title: "-0.05 к времени автоудара", description: "Увеличивает скорость автоудара"};
-var expPlus = {name: "expPlus", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("expPlus"), text: "Получение опыта: ", title: "+10% к полученому опыту", description: "Увеличивает получаемы опыт за шахту"};
-var lycki;
+const profit = {name: "profit", value: 1, valueStep: 0.01, parameter:{type: "%", step: 1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("profit"), text: "Прибыль добычи: ", title: "+1% к прибыле", description: "При каждой добыче вы будете получать больше прибыли "};
+const costPump = {name: "costPump", value: 1, valueStep: -0.01, parameter:{type: "%", step: -1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("costPump"), text: "Цена улучшений: ", title: "-1% к цене улучшений", description: "Стоимость всех улучшений за монеты снизиться на 1% "};
+const autoBonus = {name: "autoBonus", value: 11, valueStep: -1, parameter:{type: "s", step: -1, value: 11}, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение бонуса по истечению времени"};
+const percentMoney = {name: "percentMoney", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, func: () => upgradesExpFunc("percentMoney"), text: "Сохранение денег: ", title: "+1% к сохранению денег", description: "Сохраняет процент денег при перезапуске шахты"};
+const speedAutoHit = {name: "speedAutoHit", value: 1, valueStep: -0.05, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("speedAutoHit"), text: "Скорость автоудара: ", title: "-0.05 к времени автоудара", description: "Увеличивает скорость автоудара"};
+const expPlus = {name: "expPlus", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("expPlus"), text: "Получение опыта: ", title: "+10% к полученому опыту", description: "Увеличивает получаемы опыт за шахту"};
+const lycki = false;
 
-var upgradesExp = [hardness, profit, costPump, autoBonus, percentMoney, speedAutoHit, expPlus];
+const upgradesExp = [hardness, profit, costPump, autoBonus, percentMoney, speedAutoHit, expPlus];
 
-let currentSecondsStart;
-let currentSeconds;
+let currentSecondsStart, currentSeconds;
 
-var bossLevel = 1;
-var bossLevelRatio = 10;
+let bossLevel = 1;
+const bossLevelRatio = 10;
+let moneyBonus, trw, timer;
+let layerUpIntervalID, autoIntervalOne, autoIntervalTen, autoInterval100;
 
 startingCreationGUI();
 startingValues();
 interval();
 moneyChanges(0);
 
-var autoIntervalOne, autoIntervalTen, autoInterval100;
+
 function interval(){
     autoIntervalOne = setInterval(() => hit(autoHitOne) , (1000*autoHitOne.timeHit*speedAutoHit.value));
-    autoIntervalTen = setInterval(() => hit(autoHitTen) , (1000*autoHitTen.timeHit*speedAutoHit.value));
-    autoInterval100 = setInterval(() => hit(autoHit100) , (1000*autoHit100.timeHit*speedAutoHit.value));
+    // autoIntervalTen = setInterval(() => hit(autoHitTen) , (1000*autoHitTen.timeHit*speedAutoHit.value));
+    // autoInterval100 = setInterval(() => hit(autoHit100) , (1000*autoHit100.timeHit*speedAutoHit.value));
 }
 
 function startingCreationGUI(){
@@ -184,7 +186,7 @@ function startingValues(){
 }
 
 function expCalc(){
-    var expProfit = money*moneyExp + layer.level*layer.expBonus + hitPlusOne.level*hitPlusOne.expBonus + profitPlusOne.level*profitPlusOne.expBonus + autoHitOne.level*autoHitOne.expBonus + hitPlusTen.level*hitPlusTen.expBonus + autoHitTen.level*autoHitTen.expBonus + autoHit100.level*autoHit100.expBonus;
+    let expProfit = money*moneyExp + layer.level*layer.expBonus + hitPlusOne.level*hitPlusOne.expBonus + profitPlusOne.level*profitPlusOne.expBonus + autoHitOne.level*autoHitOne.expBonus + hitPlusTen.level*hitPlusTen.expBonus + autoHitTen.level*autoHitTen.expBonus + autoHit100.level*autoHit100.expBonus;
     expProfit = Math.round(expProfit * expPlus.value);
     // console.log(money*moneyExp + " + " + layer.level*layer.expBonus + " + " + hitPlusOne.level*hitPlusOne.expBonus + " + " + profitPlusOne.level*profitPlusOne.expBonus + " + " + autoHitOne.level*autoHitOne.expBonus + " + " + hitPlusTen.level*hitPlusTen.expBonus + " + " + autoHitTen.level*autoHitTen.expBonus + " + " + autoHit100.level*autoHit100.expBonus + " = " + expProfit);
     return expProfit;
@@ -193,7 +195,7 @@ function expCalc(){
 function expBonus(){
     let exp = expCalc();
     expChanges(exp);
-    var m = money;
+    let m = money;
     startingValues();    
     money = Math.round(m * percentMoney.value);
     moneyChanges(0);
@@ -241,27 +243,35 @@ function damage(object){
 }
 
 function animationAutoHit(autoDamage){
-    let id = countAutoHit++;
-    toCreateTag("body", "img", "imgID"+id, "imgAutoHit", "", "hit-function");
-        toStyle("#imgID"+id, "left", Math.floor(Math.random()*100)+"%")
-        document.getElementById("imgID"+id).src = "img/"+autoDamage.autoImg;
-        setTimeout(function(){
-            let rotate = Math.floor(Math.random()*60)+1070;
-            if (autoDamage.name == "autoHitTen"){
-                rotate += -60;
-            }
-            toStyle("#imgID"+id, "transform", "rotate("+rotate+"deg)");
-            toStyle("#imgID"+id, "top", "60%");
-            setTimeout(function(){
-                toStyle("#imgID"+id, "opacity", "0%");
-                document.getElementById("imgID"+id).classList.add("death");
-                damage(autoDamage);
-                setTimeout(function(){
-                    if(document.getElementById("imgID"+id)){
-                    document.getElementById("imgID"+id).remove();}
-                }, 3000);
-            }, 3010);
-        }, 200);
+    let id = "imgID" + countAutoHit++;
+    toCreateTag("body", "img", id, "imgAutoHit", "", "hit-function");
+    let element = document.getElementById(id);
+        element.src = "img/"+autoDamage.autoImg;
+        element.style.left = Math.floor(Math.random()*100)+"%";
+
+
+    let rotate = Math.floor(Math.random()*60)+1070;
+    if (autoDamage.name == "autoHitTen"){rotate += -60;}
+    element.offsetHeight;
+    element.style.transform = "rotate("+rotate+"deg)";
+    element.style.top = "60%";
+
+    element.addEventListener('transitionend', (e) =>{
+        if (e.propertyName === 'transform' || e.propertyName === 'top'){
+            element.offsetHeight;
+            element.style.opacity = "0%";
+            element.classList.add("death");
+            damage(autoDamage);
+        }
+    }, {once: true});
+
+    element.addEventListener('transitionend', (e) =>{
+        //  console.log("transitionend");
+        if (e.propertyName === 'opacity'){
+            console.log("opacity");
+            element.remove();
+        }
+    }, {once: true});
 }
 
 function trembling(){
@@ -280,7 +290,6 @@ function switchsHit(bool){;
     }
 }
 
-let layerUpIntervalID;
 function finishLevel(){
     if (layer.hp.current <= 0){
         switchsHit(false)
@@ -421,16 +430,14 @@ function upgradesExpFunc(upgrade){
     updateInfo();
 }
 
-var moneyBonus;
-let trw;
-let timer;
+
 function bossLevelBonus(){
     toSeeable("bossLevelBonusID");
     moneyBonus = 0;
     trw = [];
-    var switchsOn = 0;
-    var lowCost;
-    for (var i = 0; i < upgrades.length; i++){
+    let switchsOn = 0;
+    let lowCost;
+    for (let i = 0; i < upgrades.length; i++){
         if(upgrades[i].switch == "on"){
             moneyBonus += upgrades[i].cost.current;
             if (!lowCost || lowCost > upgrades[i].cost.current){
@@ -447,7 +454,7 @@ function bossLevelBonus(){
     let bonus3 = upgrades[Math.floor(Math.random()*switchsOn)];
     if (bonus3 != bonus2){trw.push(bonus3);}
 
-    for (var i = 0; i < trw.length; i++){
+    for (let i = 0; i < trw.length; i++){
         let valueBtn = trw[i].name;
         let text = trw[i].text;
         if (i == 0){
@@ -460,7 +467,7 @@ function bossLevelBonus(){
     }
     switchsHit(false);
     bossBonus = true;
-    for (var i = 0; i < upgrades.length; i++){
+    for (let i = 0; i < upgrades.length; i++){
         document.getElementById(upgrades[i].name + "BtnID").disabled = "disabled";
     }
     if (autoBonus.enabled){
@@ -481,7 +488,7 @@ function bossLevelBonusBtn(bonus){
             } 
         }
     }
-    for (var i = 0; i < trw.length; i++){
+    for (let i = 0; i < trw.length; i++){
         document.getElementById("bossLevelBonusID" + i).remove();
     }
     bossBonus = false;

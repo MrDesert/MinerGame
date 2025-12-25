@@ -92,14 +92,13 @@
     cursor: url('img/pickaxe_transparent_128x128-45.png') 64 64, pointer;
  }
 #layerImgID{
-   box-shadow: 1px 0px 35px 35px rgba(0, 0, 0, 0.3);
+   /* box-shadow: 1px 0px 35px 35px rgba(0, 0, 0, 0.3); */
    top: 0px;
    background: url("img/layer.png");
-   background: rgba(0, 0, 0, 0.3); 
+   /* background: rgba(0, 0, 0, 0.3);  */
    position: absolute;
    margin-left: auto;
    margin-right: auto;
-   /* height: 100%; */
    height: 100%;
    width: 100%;
    min-width: 60%;
