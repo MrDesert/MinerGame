@@ -43,12 +43,12 @@ const hitPlusOne = {name: "hitPlusOne",
     text: "+1 удару"
 };
 
-const autoHitOne = {name: "autoHitOne", cost: {base: 50, calc: 50, current: 50}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 2, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80, text: "+1 Автоудар раз в секунду"};
-const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "pickaxe_transparent_390x390.png", text: "+5 удару"};
+const autoHitOne = {name: "autoHitOne", cost: {base: 50, calc: 50, current: 50}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80, text: "+1 Автоудар раз в секунду"};
+const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 40, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "pickaxe_transparent_390x390.png", text: "+5 удару"};
 const autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 75, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0, text: "+5 Автоударов в секунду"};
 const profitPlusOne = {name: "profitPlusOne", cost: {base: 10000, calc: 10000, current: 10000}, level: 0, typeValue: "profit", value: 1, openingLayer: 125, switch: "off", expBonus: 0.05, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
-const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 250, switch: "off", expBonus: 0.15, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png", text: "+20 удару"};
-const autoHit100 = {name: "autoHit100", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "auto", timeHit: 5.5, value: 50, openingLayer: 750, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду"};
+const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.15, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png", text: "+20 удару"};
+const autoHit100 = {name: "autoHit100", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "auto", timeHit: 5.5, value: 50, openingLayer: 500, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду"};
 
 const upgrades = [hitPlusOne, autoHitOne, hitPlusTen, autoHitTen, profitPlusOne, drill, autoHit100]; //массив с объектами улучшений;
 
@@ -270,13 +270,19 @@ function animationAutoHit(autoDamage){
 
 function trembling(){
     let id = document.getElementById("layerID");
-    id.style.left = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%";
-    id.style.bottom = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%";
+    // let instrumets = document.querySelectorAll('.death');
+    let random = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%"
+    id.style.left = random;
+    // instrumets.forEach( i => {i.style.left = random});
+
+    // id.style.bottom = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%";
+
     // toStyle("#layerID", "bottom", Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%");
 
     id.addEventListener('transitionend', () =>{
         id.style.left = "0%";
-        id.style.bottom = "0%";
+        // instrumets.forEach( i => {i.style.left = "0%"});
+        // id.style.bottom = "0%";
         finishLevel();
     }, {once: true});
         
