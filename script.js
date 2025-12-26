@@ -43,13 +43,13 @@ const hitPlusOne = {name: "hitPlusOne",
     text: "+1 удару"
 };
 
-const autoHitOne = {name: "autoHitOne", cost: {base: 30, calc: 30, current: 30}, level: 0, typeValue: "auto", timeHit: 1.5, value: 1, openingLayer: 2, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", text: "+1 Автоудар раз в секунду"};
-const profitPlusOne = {name: "profitPlusOne", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "profit", value: 1, openingLayer: 75, switch: "off", expBonus: 0.05, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
-const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 10, openingLayer: 150, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "drill_transparent_450x450.png", text: "+10 удару"};
-const autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", timeHit: 2.5, value: 10, openingLayer: 250, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", text: "+10 Автоударов в секунду"};
-const autoHit100 = {name: "autoHit100", cost: {base: 20000, calc: 20000, current: 20000}, level: 0, typeValue: "auto", timeHit: 5.5, value: 100, openingLayer: 750, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmet5.png", text: "+100 Автоударов в секунду"};
+const autoHitOne = {name: "autoHitOne", cost: {base: 50, calc: 50, current: 50}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 20, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", text: "+1 Автоудар раз в секунду"};
+const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "drill_transparent_450x450.png", text: "+5 удару"};
+const autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", timeHit: 2.5, value: 8, openingLayer: 75, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", text: "+5 Автоударов в секунду"};
+const profitPlusOne = {name: "profitPlusOne", cost: {base: 10000, calc: 10000, current: 10000}, level: 0, typeValue: "profit", value: 1, openingLayer: 125, switch: "off", expBonus: 0.05, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
+const autoHit100 = {name: "autoHit100", cost: {base: 250000, calc: 25000, current: 25000}, level: 0, typeValue: "auto", timeHit: 5.5, value: 80, openingLayer: 750, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmet5.png", text: "+100 Автоударов в секунду"};
 
-const upgrades = [hitPlusOne, autoHitOne, profitPlusOne, hitPlusTen, autoHitTen, autoHit100]; //массив с объектами улучшений;
+const upgrades = [hitPlusOne, autoHitOne, hitPlusTen, autoHitTen, profitPlusOne, autoHit100]; //массив с объектами улучшений;
 
 const hardness = {
     name: "hardness", 
@@ -249,29 +249,22 @@ function animationAutoHit(autoDamage){
         element.src = "img/"+autoDamage.autoImg;
         element.style.left = Math.floor(Math.random()*100)+"%";
 
-
     let rotate = Math.floor(Math.random()*60)+1070;
     if (autoDamage.name == "autoHitTen"){rotate += -60;}
     element.offsetHeight;
     element.style.transform = "rotate("+rotate+"deg)";
-    element.style.top = "60%";
+    element.style.top = "65%";
 
-    element.addEventListener('transitionend', (e) =>{
-        if (e.propertyName === 'transform' || e.propertyName === 'top'){
-            element.offsetHeight;
+    element.addEventListener('transitionend', function opacity(e){
+        if (e.propertyName === 'top'){
             element.style.opacity = "0%";
             element.classList.add("death");
             damage(autoDamage);
-        }
-    }, {once: true});
-
-    element.addEventListener('transitionend', (e) =>{
-        //  console.log("transitionend");
-        if (e.propertyName === 'opacity'){
-            console.log("opacity");
+        } else if (e.propertyName === 'opacity'){
             element.remove();
+            element.removeEventListener('transitionend', opacity); 
         }
-    }, {once: true});
+    });
 }
 
 function trembling(){
@@ -509,9 +502,9 @@ function updateInfo(){
         toChangeText(upgrades[i].name+"CostID", toCompactNotation(upgrades[i].cost.current));
         toChangeText(upgrades[i].name+"LevelID", upgrades[i].level);
         if( upgrades[i].typeValue == "auto"){
-            let text = " Автоудар раз в "
-            if(upgrades[i].value > 1){text = " Автоударов раз в "}
-            toChangeText(upgrades[i].name+"DescriptionID", "+" + upgrades[i].value + text + Math.round(speedAutoHit.parameter.value*upgrades[i].timeHit*100)/100 + speedAutoHit.parameter.type);
+            let text = " Автоудар - "
+            // if(upgrades[i].value > 1){text = " Автоудар - "}
+            toChangeText(upgrades[i].name+"DescriptionID", text + Math.round(upgrades[i].value*upgrades[i].level/(speedAutoHit.parameter.value*upgrades[i].timeHit)*100)/100 + " hp/s");
         }
     } 
 
