@@ -47,7 +47,7 @@ const autoHitOne = {name: "autoHitOne", cost: {base: 50, calc: 50, current: 50},
 const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "pickaxe_transparent_390x390.png", text: "+5 удару"};
 const autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 75, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0, text: "+5 Автоударов в секунду"};
 const profitPlusOne = {name: "profitPlusOne", cost: {base: 10000, calc: 10000, current: 10000}, level: 0, typeValue: "profit", value: 1, openingLayer: 125, switch: "off", expBonus: 0.05, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
-const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 250, switch: "off", expBonus: 0.15, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png", text: "+5 удару"};
+const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 250, switch: "off", expBonus: 0.15, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png", text: "+20 удару"};
 const autoHit100 = {name: "autoHit100", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "auto", timeHit: 5.5, value: 50, openingLayer: 750, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду"};
 
 const upgrades = [hitPlusOne, autoHitOne, hitPlusTen, autoHitTen, profitPlusOne, drill, autoHit100]; //массив с объектами улучшений;
@@ -94,7 +94,7 @@ moneyChanges(0);
 function interval(){
     autoIntervalOne = setInterval(() => hit(autoHitOne) , (1000*autoHitOne.timeHit*speedAutoHit.value));
     autoIntervalTen = setInterval(() => hit(autoHitTen) , (1000*autoHitTen.timeHit*speedAutoHit.value));
-    // autoInterval100 = setInterval(() => hit(autoHit100) , (1000*autoHit100.timeHit*speedAutoHit.value));
+    autoInterval100 = setInterval(() => hit(autoHit100) , (1000*autoHit100.timeHit*speedAutoHit.value));
 }
 
 function startingCreationGUI(){
@@ -269,13 +269,19 @@ function animationAutoHit(autoDamage){
 }
 
 function trembling(){
-    toStyle("#layerID", "left", Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%");
+    let id = document.getElementById("layerID");
+    id.style.left = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%";
+    id.style.bottom = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%";
     // toStyle("#layerID", "bottom", Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%");
-    setTimeout(function(){
-        toStyle("#layerID", "left", "0%");
-        // toStyle("#layerID", "bottom", "0%");
+
+    id.addEventListener('transitionend', () =>{
+        id.style.left = "0%";
+        id.style.bottom = "0%";
         finishLevel();
-    }, 50);
+    }, {once: true});
+        
+        // toStyle("#layerID", "bottom", "0%");
+
 }
 
 function switchsHit(bool){;
