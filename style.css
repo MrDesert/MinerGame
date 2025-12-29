@@ -169,8 +169,6 @@ body {
    top: -10%;
    opacity: 100%;
    pointer-events:  none; /*отключаем реакцию мыши на неё*/
-   /* transform: rotate(180deg); */
-   /* transform: translateY(100px); */
    transition: top 3s ease-in, transform 3s ease-in, opacity 3s ease-in;
 }
 

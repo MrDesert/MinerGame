@@ -1,4 +1,8 @@
-const gameStatus = "Test1";
+const test = true;
+let consoleBtnsNames = ["coins", "exp", "hit", "autohit"];
+
+let loadImgs = false;
+
 let money, handHit, autoHit;
 let counter = 0;
 let counterReboot = 0;
@@ -46,11 +50,14 @@ const hitPlusOne = {name: "hitPlusOne",
 const autoHitOne = {name: "autoHitOne", cost: {base: 50, calc: 50, current: 50}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80, text: "+1 Автоудар раз в секунду"};
 const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 40, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "pickaxe_transparent_390x390.png", text: "+5 удару"};
 const autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 75, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0, text: "+5 Автоударов в секунду"};
-const profitPlusOne = {name: "profitPlusOne", cost: {base: 10000, calc: 10000, current: 10000}, level: 0, typeValue: "profit", value: 1, openingLayer: 125, switch: "off", expBonus: 0.05, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
-const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.15, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png", text: "+20 удару"};
-const autoHit100 = {name: "autoHit100", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "auto", timeHit: 5.5, value: 50, openingLayer: 500, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду"};
+const profitPlusOne = {name: "profitPlusOne", cost: {base: 10000, calc: 10000, current: 10000}, level: 0, typeValue: "profit", value: 1, openingLayer: 125, switch: "off", expBonus: 0.3, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
+const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png", text: "+20 удару"};
+const autoHit100 = {name: "autoHit100", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, typeValue: "auto", timeHit: 4.5, value: 50, openingLayer: 300, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду"};
+const molot = {name: "molot", cost: {base: 150000, calc: 150000, current: 150000}, level: 0, typeValue: "hit", value: 75, openingLayer: 300, switch: "off", expBonus: 0.5, func: () => upgradesFunc("molot"), freeUp: false, img: "molot_trasparent_450x450.png", text: "+75 удару"};
+const molotAuto = {name: "molotAuto", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, typeValue: "auto", timeHit: 6.5, value: 120, openingLayer: 600, switch: "off", expBonus: 0.7, func: () => upgradesFunc("molotAuto"), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду"}
 
-const upgrades = [hitPlusOne, autoHitOne, hitPlusTen, autoHitTen, profitPlusOne, drill, autoHit100]; //массив с объектами улучшений;
+const upgrades = [hitPlusOne, autoHitOne, hitPlusTen, autoHitTen, profitPlusOne, drill, autoHit100, molot, molotAuto]; //массив с объектами улучшений;
+const upgradesAuto = [autoHitOne, autoHitTen, autoHit100, molotAuto];//массив с объектами улучшений, только автоудары
 
 const hardness = {
     name: "hardness", 
@@ -72,7 +79,7 @@ const profit = {name: "profit", value: 1, valueStep: 0.01, parameter:{type: "%",
 const costPump = {name: "costPump", value: 1, valueStep: -0.01, parameter:{type: "%", step: -1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("costPump"), text: "Цена улучшений: ", title: "-1% к цене улучшений", description: "Стоимость всех улучшений за монеты снизиться на 1% "};
 const autoBonus = {name: "autoBonus", value: 11, valueStep: -1, parameter:{type: "s", step: -1, value: 11}, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение бонуса по истечению времени"};
 const percentMoney = {name: "percentMoney", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, func: () => upgradesExpFunc("percentMoney"), text: "Сохранение денег: ", title: "+1% к сохранению денег", description: "Сохраняет процент денег при перезапуске шахты"};
-const speedAutoHit = {name: "speedAutoHit", value: 1, valueStep: -0.05, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("speedAutoHit"), text: "Скорость автоудара: ", title: "-0.05 к времени автоудара", description: "Увеличивает скорость автоудара"};
+const speedAutoHit = {name: "speedAutoHit", value: 0, valueStep: 0.1, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("speedAutoHit"), text: "Скорость автоудара: ", title: "-0.05 к времени автоудара", description: "Увеличивает скорость автоудара"};
 const expPlus = {name: "expPlus", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("expPlus"), text: "Получение опыта: ", title: "+10% к полученому опыту", description: "Увеличивает получаемы опыт за шахту"};
 const lycki = false;
 
@@ -83,18 +90,76 @@ let currentSecondsStart, currentSeconds;
 let bossLevel = 1;
 const bossLevelRatio = 10;
 let moneyBonus, trw, timer;
-let layerUpIntervalID, autoIntervalOne, autoIntervalTen, autoInterval100;
+let layerUpIntervalID;
 
 startingCreationGUI();
 startingValues();
-interval();
 moneyChanges(0);
 
+testing();
+function testing(){
+    if(test){createConsole(consoleBtnsNames)};
+}
 
-function interval(){
-    autoIntervalOne = setInterval(() => hit(autoHitOne) , (1000*autoHitOne.timeHit*speedAutoHit.value));
-    autoIntervalTen = setInterval(() => hit(autoHitTen) , (1000*autoHitTen.timeHit*speedAutoHit.value));
-    autoInterval100 = setInterval(() => hit(autoHit100) , (1000*autoHit100.timeHit*speedAutoHit.value));
+function consBtnReturn(value, parameter) {
+    consoleLog.push(parameter + " " + value);
+    switch(parameter){
+        case "coins":
+            moneyChanges(value);
+            break;
+        case "exp":
+            expChanges(value);
+            break;
+        case "hit":
+            handHit += value;
+            break;
+        case "autohit":
+            autoHitOne.value += value;
+            break;
+    }
+    updateInfo;
+}
+
+let previosTime = 0;
+let countTick = 0;
+function tick(time){
+    if(time - previosTime >= 100){
+        if(!loadImgs && countTick % 8 === 0){
+            preloaderTextChange();
+        }
+        countTick++;
+        for(let i = 0; i < upgradesAuto.length; i++){
+            if(countTick / Math.round(upgradesAuto[i].timeHit - Math.round(speedAutoHit.value*(i+1))) % 10 === 0){
+                hit(upgradesAuto[i]);
+            }
+        } 
+        previosTime = time;
+    }
+    requestAnimationFrame(tick);
+}
+tick(performance.now());
+
+window.addEventListener('load', function(){
+    setTimeout(function(){
+        document.getElementById("preloaderID").hidden = "hidden";
+        loadImgs = true;
+        ysdk.features.GameplayAPI?.start();
+    }, 1000);
+})
+
+function preloaderTextChange(){
+    let preloaderTextID = document.getElementById("preloaderTextID");
+    switch(preloaderTextID.innerHTML){
+        case "Загрузка...":
+            preloaderTextID.innerHTML = "Загрузка."
+            break;
+        case "Загрузка.":
+            preloaderTextID.innerHTML = "Загрузка.."
+            break;
+        case "Загрузка..":
+            preloaderTextID.innerHTML = "Загрузка..."
+            break;
+    }
 }
 
 function startingCreationGUI(){
@@ -168,21 +233,17 @@ function expChanges(e){
 }
 
 function startingValues(){
-    if(gameStatus == "Test"){
-        money = 10000000;
-    } else {
-        money = 0;
-        layer.hp.calc = layer.hp.current = layer.hp.round = layer.hp.base;
-        prize.profitC = prize.profit = 1 * profit.value;
-        handHit = 1;
-        autoHit = 0;
-        layer.level = 0;
+    money = 0;
+    layer.hp.calc = layer.hp.current = layer.hp.round = layer.hp.base;
+    prize.profitC = prize.profit = 1 * profit.value;
+    handHit = 1;
+    autoHit = 0;
+    layer.level = 0;
 
-        for (let i = 0; i < upgrades.length; i++){
-            upgrades[i].level = 0;
-            upgrades[i].cost.current = upgrades[i].cost.calc = upgrades[i].cost.base;
-            switchingElementMenu(false, upgrades[i]);
-        }
+    for (let i = 0; i < upgrades.length; i++){
+        upgrades[i].level = 0;
+        upgrades[i].cost.current = upgrades[i].cost.calc = upgrades[i].cost.base;
+        switchingElementMenu(false, upgrades[i]);
     }
 }
 
@@ -287,7 +348,6 @@ function trembling(){
     }, {once: true});
         
         // toStyle("#layerID", "bottom", "0%");
-
 }
 
 function switchsHit(bool){;
@@ -424,19 +484,13 @@ function upgradesExpFunc(upgrade){
                 }
             } else if (upgrade == "autoBonus"){
                 if (!autoBonus.enabled){autoBonus.enabled = true};
-            } else if (upgrade == "speedAutoHit"){
-                clearInterval(autoIntervalOne);
-                clearInterval(autoIntervalTen);
-                clearInterval(autoInterval100);
-                interval();
-            }
+            } 
         } 
         if (upgradesExp[i].level >= 10){
             document.getElementById(name+"ID").classList.add('disabled');
             document.getElementById(name+"BtnID").disabled = "disabled";
         }
     }
-    // onOffBtn()
     updateInfo();
 }
 
@@ -518,7 +572,6 @@ function bossLevelBonusBtn(bonus){
     }
     bossBonus = false;
     switchsHit(true);
-    // onOffBtn();
     toHide("bossLevelBonusID");
 }
 
@@ -527,6 +580,7 @@ function menuTreePump(open){
 }
 
 function updateInfo(){
+    onOffBtn();
     toChangeText("prizeID", toCompactNotation(prize.profitC * doubleMoney));
     toChangeText("depthLevelID", layer.level);
 

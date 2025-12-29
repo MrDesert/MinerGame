@@ -7,6 +7,7 @@
         <meta charset="utf-8">
     </head>
     <body id="ret" style="height: 100vh;">
+        <div id="preloaderID"><div id="preloaderTextID">Загрузка...</div></div>
         <div id="layerID">
             <img id="layerImgID" src="img/layer.png" alt=""> 
             <img id="cracksID" src="img/cracks.png" alt="">
@@ -31,12 +32,11 @@
         <div id="bossLevelBonusID" style="position: absolute; z-index: 1;" hidden="hidden">
             <div id="timeID"></div>
         </div>
-
-        <footer>© by MrDesert - beta v0.182</footer>
-
+        <footer>© by MrDesert - beta v0.2</footer>
 
 
-<!-- <script>
+
+<script>
     const script = document.createElement('script');
     script.src = "https://yandex.ru/games/sdk/v2";
     // script.src = "https://games.apps.yandex.ru/games/sdk/v2";
@@ -53,16 +53,17 @@
                 ysdk.features?.LoadingAPI?.ready?.();
                 console.log("GameReady вызван");
 
-                setTimeout(function(){
-                    ysdk.features.GameplayAPI?.start();
-                }, 10000)
+                // setTimeout(function(){
+                //     ysdk.features.GameplayAPI?.start();
+                // }, 10000)
                 
             })
             .catch(console.error);
     };
-</script> -->
+</script>
 
         <script src="math.js"></script>
+        <script src="console.js"></script>
         <script src="main.js"></script>
         <script src="script.js"></script>
     </body>
