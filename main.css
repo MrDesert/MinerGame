@@ -1,0 +1,267 @@
+@media (orientation: landscape){
+    .sideMenuLeft{ 
+        min-width: 250px;
+        max-width: 30%; 
+    }
+    .sideMenuElement {
+        display: flex;
+    }
+    .sideMenuElementBtn {
+        position: absolute;
+        min-width: 25%;
+    }
+}
+@media (orientation: portrait){
+    .sideMenuLeft{ 
+        min-width: 120px;
+        max-width: 20%; 
+    }
+    .sideMenuElementBtn {
+        min-width: 83%;
+    }
+    .sideMenuElementTitle{
+        text-align: center;
+    }
+}
+
+#preloaderID, #blurID {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 999;
+    font-size: 90px;
+    color: white;
+}
+#blurID {
+    opacity: 50%;
+}
+#preloaderTextID, #blurTextID{
+    position: absolute;
+    width: 100%;
+    top: 45%;
+    text-align: center;
+}
+.sideMenuLeft{      /* Боковое левое меню */
+	position: fixed;
+	margin: 0px; 
+	padding: 10px;
+    max-height: 600px;
+	height: 60%;
+    min-height: 100px; 
+    width: auto;
+    top: 20%; 
+	left: 0%; 
+	background: rgba(90, 90, 90, 0.8);
+	box-shadow: 0px 0px 15px 15px rgba(0, 0, 0, 0.2);
+	border-radius: 0px 30px 30px 0px;
+    overflow: auto;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    direction: rtl;
+    border: 3px outset rgb(150, 150, 150);
+    user-select: none;
+}
+.sideMenuLeft > *{
+    direction: ltr;
+}
+.sideMenuRight{
+	position: fixed;
+	margin: 0px; 
+	padding: 10px;
+	height: 600px; 
+	width: 300px;
+    top: 180px; 
+	right: 0%;  
+	background: rgba(0, 0, 0, 0.5);
+	box-shadow: 0px 0px 15px 15px rgba(0, 0, 0, 0.2);
+	border-radius: 30px 0px 0px 30px;
+    overflow: auto;
+}
+.sideMenuTitle{
+    padding: 5px;
+    font-size: 22pt;
+    text-align: center;
+    position: sticky;
+}
+.sideMenuElement {
+    background: rgba(140, 140, 140, 0.3);
+    position: relative;
+    white-space: normal;
+    border: 3px outset rgb(150, 150, 150);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.sideMenuElementIconLeft{
+    position: relative;
+    width: auto;
+    height: 100%;
+    padding: 5px;
+}
+.sideMenuElementIconLeftIMG{
+    height: 80px;
+}
+.sideMenuElementIconParametrTopLeft{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 1;
+}
+.sideMenuElementTitle{
+    font-size: 17px;
+    font-weight: bold;
+}
+.sideMenuElementDescription{
+    vertical-align: top;
+    min-width: 80px;
+    max-width: 160px;
+    top: 0px;
+    hyphens: auto;
+    word-break: break-word;
+    padding: 5px;
+}
+.sideMenuElementBtn{
+    right: 0px;
+    bottom: 0px;
+    margin: 8px;
+    height: 25%;
+    min-height: 15px;
+    width: auto;
+    background: rgba(150, 150, 150, 0.2);
+    border: 2px outset rgb(150, 150, 150);
+    border-radius: 2px;
+    cursor: pointer;
+}
+.centralMenuBackground{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0%;
+    left: 0%;
+    background: rgba(0, 0, 0, 0.5);
+    filter: blur();
+    z-index: 2;
+}
+.centralMenu{
+    overflow-y: auto;
+    position: absolute;
+    padding: 1%;
+    padding-top: 70px;
+    height: 80%;
+    width: 80%;
+    top: 10%;
+    left: 10%;
+    background: rgb(41, 41, 41);
+    border: 3px outset rgb(150, 150, 150);
+    border-radius: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.btnCloseCircule{
+    height: 30px;
+    width: 30px;
+    border-radius: 15px;
+    font-size: 15pt;
+    font-weight: bold;
+    color: white;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background: rgba(0, 0, 0, 0.7);
+}
+.moneyTopRight{
+    position: absolute;
+    right: 40px;
+    top: 30px;
+    font-size: 20pt;
+    font-weight: bold;
+    height: 30px;
+    vertical-align: middle;
+}
+.moneyTopRightNum{
+    display: inline-block;
+    vertical-align: middle;
+}
+.centralMenuInfo{
+    margin: 10px;
+    padding: 20px;
+    color: white;
+    font-size: 13pt;
+    font-weight: bold;
+    border: 1px solid rgb(100, 100, 100);
+    border-radius: 10px;
+}
+.centralMenuInfoElement{
+    width: 30%;
+    margin-left: 10px;
+    display: inline-block;
+}
+.centralMenuElement{
+    margin: 20px;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 10px;
+    position: relative;
+    white-space: normal;
+    border: 3px outset rgb(150, 150, 150);
+    border-radius: 10px;
+    background-color: #202020;
+    width: 280px;
+}
+.centralMenuElementTitle{
+    font-size: 16pt;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+.centralMenuElementDescription{
+    position: relative;
+    padding: 5px;
+    min-height: 60px; 
+    color: white;
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: center;
+    hyphens: auto;
+    z-index: 0;
+}
+.centralMenuElementBtn{
+    margin-bottom: 10px;
+    position:relative;
+    height: 30%;
+    width: 55%;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14pt;
+    font-weight: bold;
+    background: rgb(60, 60, 60);
+    z-index: 2;
+    color: white;
+    border: 3px outset rgb(160, 160, 160);
+    border-radius: 40px;
+    cursor: pointer; 
+}
+.centralMenuElementBtn:disabled{
+    color:#707070;
+    border: 3px inset rgb(150, 150, 150);
+    background-color: #202020;
+}
+
+.disabled, .disabled > *{
+    background-color: rgba(50, 50, 50, 0);
+    opacity: 80%;
+    color: #707070;
+}
+.disabled{
+    border: 3px inset rgb(100, 100, 100);
+    background-color: rgba(40, 40, 40, 0.3);
+}
+.sideMenuElementBtn:disabled {
+    border: 2px inset rgb(90, 90, 90);
+    border-radius: 2px;
+}
