@@ -17,7 +17,6 @@
 
         <h2>Текущая глубина: <div id="depthLevelID" class="inline-block">0</div></h2>
 
-<<<<<<< HEAD
         <div id="menuID" onclick="menuTreePump(true)"><img id="bookID" class="sideMenuElementIconLeftIMG" src="img/book.png" alt=""><div id="warningID" hidden></div></div>
 
         <div class="rightText">Кошелёк: <img id="coinID" class="coinCl" src="img/coin.png" alt=""><div id="moneyID" class="inline-block">0</div></div>
@@ -43,115 +42,66 @@
 
         <div id="blurID" hidden><div id="blurTextID">Продолжить</div></div>
 
-        <footer>© by MrDesert - beta v0.3</footer>
+        <footer>© by MrDesert - beta v0.3.0.1</footer>
 
 
-<script src="console.js" onload="createConsole(false, 'F2')"></script>
+<script src="console.js" onload="createConsole(true, 'F2')"></script>
 <script>
-    const useYSDK = true;
-    let resurses = false;
-    let sdkLoad = false;
-    const script = document.createElement('script');
-    script.src = "https://yandex.ru/games/sdk/v2";
-    script.async = true;
+    const useYSDK = false;
+    // let resurses = false;
+    // let sdkLoad = false;
+    // const script = document.createElement('script');
+    // script.src = "https://yandex.ru/games/sdk/v2";
+    // script.async = true;
 
-    document.head.appendChild(script);
+    // document.head.appendChild(script);
     
-    script.onload = function(){
-        myLog?.("script.onload");
-        YaGames.init()
-            .then(ysdk => {
-                window.ysdk = ysdk;
-                if(window.ysdk){
-                    sdkLoad = true;
-                    myLog?.("SDK загружен - " + sdkLoad);
-                }
-            })
-            .then(()=>{
-                return new Promise((resolve)=>{
-                    const chekcInterval = setInterval(()=>{
-                        if (sdkLoad && resurses){
-                            myLog?.("Загруженны ресурсы и SDK");
-                            ysdk.features?.GameplayAPI?.start?.();
-                            clearInterval(chekcInterval);
-                            resolve();
-                        }
-                        else if(sdkLoad){myLog?.("Ожидание ресурсов - " + resurses)}
-                        else if (resurses){myLog?.("Ожидание SDK - " + sdkLoad)}
-                        else{myLog?.("Ожидание ресурсов и CDK");}
-                    }, 400);
-                })
-            })
-            .then(()=>{
-                ysdk.features.LoadingAPI.ready();
-            })
-            .then(()=>{
-                setTimeout(function(){
-                    loadedGame(true);}, 500);
-            })
-            .catch(console.error);
-    };
-        window.addEventListener('load', function(){
-            resurses = true;
-            myLog?.("Ресурсы загруженны - " + resurses);
-        })
+    // script.onload = function(){
+    //     myLog?.("script.onload");
+    //     YaGames.init()
+    //         .then(ysdk => {
+    //             window.ysdk = ysdk;
+    //             if(window.ysdk){
+    //                 sdkLoad = true;
+    //                 myLog?.("SDK загружен - " + sdkLoad);
+    //             }
+    //         })
+    //         .then(()=>{
+    //             return new Promise((resolve)=>{
+    //                 const chekcInterval = setInterval(()=>{
+    //                     if (sdkLoad && resurses){
+    //                         myLog?.("Загруженны ресурсы и SDK");
+    //                         ysdk.features?.GameplayAPI?.start?.();
+    //                         clearInterval(chekcInterval);
+    //                         resolve();
+    //                     }
+    //                     else if(sdkLoad){myLog?.("Ожидание ресурсов - " + resurses)}
+    //                     else if (resurses){myLog?.("Ожидание SDK - " + sdkLoad)}
+    //                     else{myLog?.("Ожидание ресурсов и CDK");}
+    //                 }, 400);
+    //             })
+    //         })
+    //         .then(()=>{
+    //             ysdk.features.LoadingAPI.ready();
+    //         })
+    //         .then(()=>{
+    //             setTimeout(function(){
+    //                 loadedGame(true);}, 500);
+    //         })
+    //         .catch(console.error);
+    // };
+    //     window.addEventListener('load', function(){
+    //         resurses = true;
+    //         myLog?.("Ресурсы загруженны - " + resurses);
+    //     })
 
 
-// if(!useYSDK){
-//      setTimeout(function(){loadedGame(true);}, 500);
-// }
+if(!useYSDK){
+     setTimeout(function(){loadedGame(true);}, 500);
+}
 
 </script>
         <script src="math.js"></script>
-=======
-        <div id="menuID" style="position: relative; z-index: 1;  width: 80px;" onclick="menuTreePump(true)"><img id="bookID" class="sideMenuElementIconLeftIMG" src="img/book.png" alt=""></div>
-
-        <div class="rightText"><img id="coinID" class="coinCl" src="img/coin.png" alt=""><div id="moneyID" class="inline-block">0</div></div>
-        <div class="rightText">Счётчик ударов: <div id="counterID" class="inline-block">0</div></div>
-        <div class="rightText">Счётчик перезапусков: <div id="counterRebootID" class="inline-block">0</div></div>
-        <div class="rightText">Сила удара: <div id="hitID" class="inline-block">1</div></div>
-        <div class="rightText">Сила автоудара: <div id="autoHitInfoID" class="inline-block">0</div></div>
-
-        <div id="hpTitleID">Ударов до победы: <div id="hpID" class="inline-block">4</div></div>
-        <div id="hpBarBorderID"><div id="hpBarID"></div></div>
-        <div id="profitTitleID"><div id="luckyID"> </div>Прибыль за победу: <div id="prizeID" class="inline-block">1</div></div>
-
-        <div id="bossLevelBonusID" style="position: absolute; z-index: 1;" hidden="hidden">
-            <div id="timeID"></div>
-        </div>
-        <footer>© by MrDesert - beta v0.2</footer>
-
-
-
-<script>
-    const script = document.createElement('script');
-    script.src = "https://yandex.ru/games/sdk/v2";
-    // script.src = "https://games.apps.yandex.ru/games/sdk/v2";
-    script.async = true;
-
-    document.head.appendChild(script);
-
-    script.onload = function(){
-
-        YaGames.init()
-            .then(ysdk => {
-                window.ysdk = ysdk;
-                console.log("SDK инициализирован");
-                ysdk.features?.LoadingAPI?.ready?.();
-                console.log("GameReady вызван");
-
-                // setTimeout(function(){
-                //     ysdk.features.GameplayAPI?.start();
-                // }, 10000)
-                
-            })
-            .catch(console.error);
-    };
-</script>
-
-        <script src="math.js"></script>
-        <script src="console.js"></script>
->>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
         <script src="main.js"></script>
         <script src="script.js"></script>
     </body>
