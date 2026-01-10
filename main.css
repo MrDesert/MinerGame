@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @media (orientation: landscape){
     .sideMenuLeft{ 
         min-width: 250px;
@@ -25,6 +26,9 @@
 }
 
 #preloaderID, #blurID {
+=======
+#preloaderID {
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     position: fixed;
     top: 0;
     left: 0;
@@ -35,10 +39,14 @@
     font-size: 90px;
     color: white;
 }
+<<<<<<< HEAD
 #blurID {
     opacity: 50%;
 }
 #preloaderTextID, #blurTextID{
+=======
+#preloaderTextID{
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     position: absolute;
     width: 100%;
     top: 45%;
@@ -51,7 +59,13 @@
     max-height: 600px;
 	height: 60%;
     min-height: 100px; 
+<<<<<<< HEAD
     width: auto;
+=======
+	max-width: 300px;
+    width: 20%;
+    min-width: 50px; 
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     top: 20%; 
 	left: 0%; 
 	background: rgba(90, 90, 90, 0.8);
@@ -94,10 +108,18 @@
     border: 3px outset rgb(150, 150, 150);
     border-radius: 10px;
     margin-bottom: 10px;
+<<<<<<< HEAD
 }
 .sideMenuElementIconLeft{
     position: relative;
     width: auto;
+=======
+    display: flex;
+}
+.sideMenuElementIconLeft{
+    position: relative;
+    width: 30%;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     height: 100%;
     padding: 5px;
 }
@@ -106,6 +128,7 @@
 }
 .sideMenuElementIconParametrTopLeft{
     position: absolute;
+<<<<<<< HEAD
     top: 5px;
     left: 5px;
     z-index: 1;
@@ -124,12 +147,31 @@
     padding: 5px;
 }
 .sideMenuElementBtn{
+=======
+    top: 6px;
+    left: 6px;
+    z-index: 1;
+}
+.sideMenuElementDescription{
+    vertical-align: top;
+    top: 0px;
+    hyphens: auto;
+    padding: 5px;
+}
+.sideMenuElementBtn{
+    position: absolute;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     right: 0px;
     bottom: 0px;
     margin: 8px;
     height: 25%;
     min-height: 15px;
+<<<<<<< HEAD
     width: auto;
+=======
+    width: 25%;
+    min-width: 50px;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     background: rgba(150, 150, 150, 0.2);
     border: 2px outset rgb(150, 150, 150);
     border-radius: 2px;
@@ -157,9 +199,12 @@
     background: rgb(41, 41, 41);
     border: 3px outset rgb(150, 150, 150);
     border-radius: 40px;
+<<<<<<< HEAD
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+=======
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 }
 .btnCloseCircule{
     height: 30px;
@@ -179,12 +224,18 @@
     top: 30px;
     font-size: 20pt;
     font-weight: bold;
+<<<<<<< HEAD
     height: 30px;
     vertical-align: middle;
 }
 .moneyTopRightNum{
     display: inline-block;
     vertical-align: middle;
+=======
+}
+.moneyTopRightNum{
+    display: inline-block;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 }
 .centralMenuInfo{
     margin: 10px;
@@ -197,20 +248,33 @@
 }
 .centralMenuInfoElement{
     width: 30%;
+<<<<<<< HEAD
+=======
+    margin-top: 5px;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     margin-left: 10px;
     display: inline-block;
 }
 .centralMenuElement{
     margin: 20px;
+<<<<<<< HEAD
     margin-left: 5%;
     margin-right: 5%;
+=======
+    margin-left: 2%;
+    margin-right: 2%;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     padding: 10px;
     position: relative;
     white-space: normal;
     border: 3px outset rgb(150, 150, 150);
     border-radius: 10px;
     background-color: #202020;
+<<<<<<< HEAD
     width: 280px;
+=======
+    width: 27%;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 }
 .centralMenuElementTitle{
     font-size: 16pt;
@@ -230,6 +294,7 @@
     z-index: 0;
 }
 .centralMenuElementBtn{
+<<<<<<< HEAD
     margin-bottom: 10px;
     position:relative;
     height: 30%;
@@ -237,6 +302,13 @@
     bottom: 5%;
     left: 50%;
     transform: translateX(-50%);
+=======
+    position:relative;
+    height: 30%;
+    width: 30%;
+    bottom: 5%;
+    left: 35%;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     font-size: 14pt;
     font-weight: bold;
     background: rgb(60, 60, 60);

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 let loadImgs = false;
 
 let money, handHit, autoHit;
@@ -6,6 +7,19 @@ let rerollTimer = false;
 
 const moneyExp = 0.0001;
 let exp = 0;
+=======
+const test = true;
+let consoleBtnsNames = ["coins", "exp", "hit", "autohit"];
+
+let loadImgs = false;
+
+let money, handHit, autoHit;
+let counter = 0;
+let counterReboot = 0;
+
+const moneyExp = 0.0001;
+let exp = 10 + 20+ 40+80+160+320+640+1280+2560+5120;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 let doubleMoney = 1;
 let switchHit = true;
 let bossBonus = false;
@@ -26,8 +40,12 @@ let layer = {
 };
 const prize = {name: "prize", profit: 1, profitC: 1};
 
+<<<<<<< HEAD
 const hitPlusOne = {
     name: "hitPlusOne", 
+=======
+const hitPlusOne = {name: "hitPlusOne", 
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     cost: {
         base: 3, // Базовое
         calc: 3, // Расчётное
@@ -42,6 +60,7 @@ const hitPlusOne = {
     func: () => upgradesFunc("hitPlusOne"), 
     freeUp: false, 
     img: "shovel_transparent_390x390.png", 
+<<<<<<< HEAD
     text: "+1 удару",
     title: "Лопата"
 };
@@ -56,6 +75,21 @@ const molot = {name: "molot", cost: {base: 250000, calc: 250000, current: 250000
 const molotAuto = {name: "molotAuto", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: () => upgradesFunc("molotAuto"), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду", title: "Шахтёр с отбойником"}
 
 const upgrades = [hitPlusOne, autoHitOne, profitPlusOne, hitPlusTen, autoHitTen, drill, autoHit100, molot, molotAuto]; //массив с объектами улучшений;
+=======
+    text: "+1 удару"
+};
+
+const autoHitOne = {name: "autoHitOne", cost: {base: 50, calc: 50, current: 50}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80, text: "+1 Автоудар раз в секунду"};
+const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 40, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "pickaxe_transparent_390x390.png", text: "+5 удару"};
+const autoHitTen = {name: "autoHitTen", cost: {base: 2500, calc: 2500, current: 2500}, level: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 75, switch: "off", expBonus: 0.3, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0, text: "+5 Автоударов в секунду"};
+const profitPlusOne = {name: "profitPlusOne", cost: {base: 10000, calc: 10000, current: 10000}, level: 0, typeValue: "profit", value: 1, openingLayer: 125, switch: "off", expBonus: 0.3, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1🪙 к прибыли"};
+const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png", text: "+20 удару"};
+const autoHit100 = {name: "autoHit100", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, typeValue: "auto", timeHit: 4.5, value: 50, openingLayer: 300, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду"};
+const molot = {name: "molot", cost: {base: 150000, calc: 150000, current: 150000}, level: 0, typeValue: "hit", value: 75, openingLayer: 300, switch: "off", expBonus: 0.5, func: () => upgradesFunc("molot"), freeUp: false, img: "molot_trasparent_450x450.png", text: "+75 удару"};
+const molotAuto = {name: "molotAuto", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, typeValue: "auto", timeHit: 6.5, value: 120, openingLayer: 600, switch: "off", expBonus: 0.7, func: () => upgradesFunc("molotAuto"), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду"}
+
+const upgrades = [hitPlusOne, autoHitOne, hitPlusTen, autoHitTen, profitPlusOne, drill, autoHit100, molot, molotAuto]; //массив с объектами улучшений;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 const upgradesAuto = [autoHitOne, autoHitTen, autoHit100, molotAuto];//массив с объектами улучшений, только автоудары
 
 const hardness = {
@@ -74,12 +108,21 @@ const hardness = {
     title: "-1% к твёрдости", 
     description: "Твёрдость каждого слоя становится ниже "
 };
+<<<<<<< HEAD
 const profit = {name: "profit", value: 1, valueStep: 0.01, parameter:{type: "%", step: 1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("profit"), text: "Прибыль добычи: ", title: "+1% к прибыли", description: "При каждой добыче вы будете получать больше прибыли "};
 const costPump = {name: "costPump", value: 1, valueStep: -0.01, parameter:{type: "%", step: -1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("costPump"), text: "Цена улучшений: ", title: "-1% к цене улучшений", description: "Стоимость всех улучшений за монеты снизится на 1% "};
 const autoBonus = {name: "autoBonus", value: 11, valueStep: -1, parameter:{type: "s", step: -1, value: 11}, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение бонуса по истечении времени"};
 const percentMoney = {name: "percentMoney", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, func: () => upgradesExpFunc("percentMoney"), text: "Сохранение денег: ", title: "+1% к сохранению денег", description: "Сохраняет процент денег при перезапуске шахты"};
 const speedAutoHit = {name: "speedAutoHit", value: 0, valueStep: 0.1, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("speedAutoHit"), text: "Скорость автоудара: ", title: "-0.05 ко времени автоудара", description: "Увеличивает скорость автоудара"};
 const expPlus = {name: "expPlus", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("expPlus"), text: "Получение опыта: ", title: "+10% к полученному опыту", description: "Увеличивает получаемый опыт за шахту"};
+=======
+const profit = {name: "profit", value: 1, valueStep: 0.01, parameter:{type: "%", step: 1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("profit"), text: "Прибыль добычи: ", title: "+1% к прибыле", description: "При каждой добыче вы будете получать больше прибыли "};
+const costPump = {name: "costPump", value: 1, valueStep: -0.01, parameter:{type: "%", step: -1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("costPump"), text: "Цена улучшений: ", title: "-1% к цене улучшений", description: "Стоимость всех улучшений за монеты снизиться на 1% "};
+const autoBonus = {name: "autoBonus", value: 11, valueStep: -1, parameter:{type: "s", step: -1, value: 11}, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение бонуса по истечению времени"};
+const percentMoney = {name: "percentMoney", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, func: () => upgradesExpFunc("percentMoney"), text: "Сохранение денег: ", title: "+1% к сохранению денег", description: "Сохраняет процент денег при перезапуске шахты"};
+const speedAutoHit = {name: "speedAutoHit", value: 0, valueStep: 0.1, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("speedAutoHit"), text: "Скорость автоудара: ", title: "-0.05 к времени автоудара", description: "Увеличивает скорость автоудара"};
+const expPlus = {name: "expPlus", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("expPlus"), text: "Получение опыта: ", title: "+10% к полученому опыту", description: "Увеличивает получаемы опыт за шахту"};
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 const lycki = false;
 
 const upgradesExp = [hardness, profit, costPump, autoBonus, percentMoney, speedAutoHit, expPlus];
@@ -91,6 +134,7 @@ const bossLevelRatio = 10;
 let moneyBonus, trw, timer;
 let layerUpIntervalID;
 
+<<<<<<< HEAD
 let obj = {message: "JS"};
  myLog?.("obj - " + obj.message);
 fetch('data.json')
@@ -110,6 +154,19 @@ consoleCreateBtnsCP(["coins", "exp", "hit", "autohit"])//создание пан
 
 function consBtnReturn(value, parameter) {
     myLog?.(parameter + " " + value);
+=======
+startingCreationGUI();
+startingValues();
+moneyChanges(0);
+
+testing();
+function testing(){
+    if(test){createConsole(consoleBtnsNames)};
+}
+
+function consBtnReturn(value, parameter) {
+    consoleLog.push(parameter + " " + value);
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     switch(parameter){
         case "coins":
             moneyChanges(value);
@@ -127,6 +184,7 @@ function consBtnReturn(value, parameter) {
     updateInfo;
 }
 
+<<<<<<< HEAD
 function loadedGame(load) {
     if(load){
         document.getElementById("preloaderID").hidden = "hidden";
@@ -208,11 +266,28 @@ function tick(time){
         }
         textTimer();
         tick.lastTime = time;
+=======
+let previosTime = 0;
+let countTick = 0;
+function tick(time){
+    if(time - previosTime >= 100){
+        if(!loadImgs && countTick % 8 === 0){
+            preloaderTextChange();
+        }
+        countTick++;
+        for(let i = 0; i < upgradesAuto.length; i++){
+            if(countTick / Math.round(upgradesAuto[i].timeHit - Math.round(speedAutoHit.value*(i+1))) % 10 === 0){
+                hit(upgradesAuto[i]);
+            }
+        } 
+        previosTime = time;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     }
     requestAnimationFrame(tick);
 }
 tick(performance.now());
 
+<<<<<<< HEAD
 function textTimer(){
     if (!document.getElementById("bossLevelBonusID").hidden && autoBonus.enabled == true && rerollTimer){
         currentSeconds = new Date().getSeconds();
@@ -223,6 +298,15 @@ function textTimer(){
         toChangeText("timeID", "");
     }
 }
+=======
+window.addEventListener('load', function(){
+    setTimeout(function(){
+        document.getElementById("preloaderID").hidden = "hidden";
+        loadImgs = true;
+        ysdk.features.GameplayAPI?.start();
+    }, 1000);
+})
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 
 function preloaderTextChange(){
     let preloaderTextID = document.getElementById("preloaderTextID");
@@ -239,6 +323,7 @@ function preloaderTextChange(){
     }
 }
 
+<<<<<<< HEAD
 window.addEventListener('blur', ()=> {
     myLog?.("Потерян фокус");
     ysdk.features?.GameplayAPI?.stop?.();
@@ -257,6 +342,8 @@ window.addEventListener('focus', ()=>{
     }
 })
 
+=======
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 function startingCreationGUI(){
     let errorCode = startingCreationGUI.name
 
@@ -272,9 +359,13 @@ function startingCreationGUI(){
                 toCreateTag("#"+id+"IconID", "img", id+"ImgID", "sideMenuElementIconLeftIMG", "", errorCode);
                     document.getElementById(id+"ImgID").src = "img/" + upgrades[i].img;
                     toStyle("#"+id+"ImgID", "filter", "grayscale(50%)");
+<<<<<<< HEAD
                 toCreateTag("#"+id+"ID", "div", id+"InfoID", "sideMenuElementInfo", "", errorCode);
                     toCreateTag("#"+id+"InfoID", "div", id+"TitleID", "sideMenuElementTitle", upgrades[i].title, errorCode);
                     toCreateTag("#"+id+"InfoID", "div", id+"DescriptionID", "sideMenuElementDescription", upgrades[i].text, errorCode)
+=======
+                toCreateTag("#"+id+"ID", "div", id+"DescriptionID", "sideMenuElementDescription", upgrades[i].text, errorCode)
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
                 toCreateTag("#"+id+"ID", "button", id+"BtnID", "sideMenuElementBtn", "", errorCode);
                     toCreateTag("#"+id+"BtnID", "img", id+"BtnImgID", "coinCl", "", errorCode);
                          document.getElementById(id+"BtnImgID").src = "img/coin.png";
@@ -291,13 +382,20 @@ function startingCreationGUI(){
             toCreateTag("#menuForExp", "div", "expTitleID", "moneyTopRight", "", errorCode);
                 toCreateTag("#expTitleID", "img", "expImgID", "expCl", "", errorCode);
                     document.getElementById("expImgID").src = "img/exp.png";
+<<<<<<< HEAD
                 toCreateTag("#expTitleID", "div", "expID", "moneyTopRightNum", "0", errorCode);
+=======
+                toCreateTag("#expTitleID", "div", "expID", "moneyTopRightNum", "", errorCode);
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
             toCreateTag("#menuForExp", "div", "infoExpID", "centralMenuInfo", "", errorCode);
                 toCreateTag("#infoExpID", "div", "rebootExpDesID", "centralMenuInfoElement", "Если перезапустить шахту сейчас то можно получить: ", errorCode);
                 toCreateTag("#infoExpID", "div", "rebootExpID", "centralMenuInfoElement", "", errorCode);
                     toCreateTag("#rebootExpID", "img", "rebootExpImgID", "expCl", "", errorCode);
                         document.getElementById("rebootExpImgID").src = "img/exp.png";
+<<<<<<< HEAD
                     toCreateTag("#rebootExpID", "div", "rebootExpCostID", "inline-block cost", "0", errorCode);
+=======
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
                 toCreateTag("#infoExpID", "button", "rebootExpBtnID", "centralMenuElementBtn", "⟳", errorCode);
                     document.getElementById("rebootExpBtnID").onclick = function(){expBonus();};
             toCreateTag("#menuForExp", "div", "infoID", "centralMenuInfo", "", errorCode);
@@ -309,6 +407,7 @@ function startingCreationGUI(){
                 toCreateTag("#"+id+"ID", "div", id+"TitleID", "centralMenuElementTitle", upgradesExp[i].title, errorCode); 
                 toCreateTag("#"+id+"ID", "div", id+"LevelID", "btnCloseCircule", "0", errorCode);
                 toCreateTag("#"+id+"ID", "p", id+"DescriptionID", "centralMenuElementDescription", upgradesExp[i].description, errorCode);  
+<<<<<<< HEAD
                 toCreateTag("#"+id+"ID", "button", id+"BtnID", "centralMenuElementBtn", "", errorCode);
                     toCreateTag("#"+id+"BtnID", "img", id+"ImgBtnID", "expCl", "", errorCode);
                         document.getElementById(id+"ImgBtnID").src = "img/exp.png";
@@ -357,6 +456,12 @@ function reroll(){
             // onError: (error) => myLog?.("ошибка: ", error)
         }
     });
+=======
+                toCreateTag("#"+id+"ID", "button", id+"BtnID", "centralMenuElementBtn", "🟢", errorCode);
+                    document.getElementById(id+"BtnID").onclick = function(){upgradesExp[i].func();};
+                    toCreateTag("#"+id+"BtnID", "div", id+"CostID", "inline-block cost", "", errorCode);
+        } 
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 }
 
 function moneyChanges(m){
@@ -372,26 +477,36 @@ function moneyChanges(m){
 
 function expChanges(e){
     exp += e;
+<<<<<<< HEAD
     toChangeText("expID", toCompactNotation(exp));
+=======
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 }
 
 function startingValues(){
     money = 0;
+<<<<<<< HEAD
     bossLevel = 1;
+=======
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     layer.hp.calc = layer.hp.current = layer.hp.round = layer.hp.base;
     prize.profitC = prize.profit = 1 * profit.value;
     handHit = 1;
     autoHit = 0;
     layer.level = 0;
+<<<<<<< HEAD
     allBonusFree = true;
     document.getElementById("bossLevelBonusAllBtnID").removeAttribute("disabled");
     document.getElementById("bossLevelBonusAllBtnID").classList.remove("disabled");
+=======
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 
     for (let i = 0; i < upgrades.length; i++){
         upgrades[i].level = 0;
         upgrades[i].cost.current = upgrades[i].cost.calc = upgrades[i].cost.base;
         switchingElementMenu(false, upgrades[i]);
     }
+<<<<<<< HEAD
     openingLayerUp();
 }
 
@@ -404,6 +519,14 @@ function expCalc(){
     } else {
         toHide("warningID");
     }
+=======
+}
+
+function expCalc(){
+    let expProfit = money*moneyExp + layer.level*layer.expBonus + hitPlusOne.level*hitPlusOne.expBonus + profitPlusOne.level*profitPlusOne.expBonus + autoHitOne.level*autoHitOne.expBonus + hitPlusTen.level*hitPlusTen.expBonus + autoHitTen.level*autoHitTen.expBonus + autoHit100.level*autoHit100.expBonus;
+    expProfit = Math.round(expProfit * expPlus.value);
+    // console.log(money*moneyExp + " + " + layer.level*layer.expBonus + " + " + hitPlusOne.level*hitPlusOne.expBonus + " + " + profitPlusOne.level*profitPlusOne.expBonus + " + " + autoHitOne.level*autoHitOne.expBonus + " + " + hitPlusTen.level*hitPlusTen.expBonus + " + " + autoHitTen.level*autoHitTen.expBonus + " + " + autoHit100.level*autoHit100.expBonus + " = " + expProfit);
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     return expProfit;
 }
 
@@ -414,17 +537,27 @@ function expBonus(){
     startingValues();    
     money = Math.round(m * percentMoney.value);
     moneyChanges(0);
+<<<<<<< HEAD
     ysdk?.adv?.showFullscreenAdv?.();
+=======
+    counterReboot++;
+
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     toStyle("#ret", "backgroundPositionY", "0%");
     toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current+ "%");
     toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
 
+<<<<<<< HEAD
     toChangeText("counterRebootID", expBonus.count=(expBonus.count || 0) + 1);
+=======
+    toChangeText("counterRebootID", counterReboot);
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     updateInfo();
 }
 
 function hit(object) {
     if (switchHit){
+<<<<<<< HEAD
         if(object.typeValue == "hit"){
             damage(object);
             toChangeText("counterID", hit.count=(hit.count || 0) + 1);
@@ -432,12 +565,31 @@ function hit(object) {
         else {
             if(object.level > 0){animationAutoHit(object);}
         } 
+=======
+        if(object.typeValue == "hit"){counter++; damage(object);}
+        else {
+            if(object.level > 0){
+                animationAutoHit(object);
+            }
+        } 
+
+        updateInfo();
+    }
+    if (!document.getElementById("bossLevelBonusID").hidden && autoBonus.enabled == true){
+        currentSeconds = new Date().getSeconds();
+        let raznica = autoBonus.value - (currentSeconds - currentSecondsStart);
+        toChangeText("timeID", "Автовыбор через: " + raznica + " секунд")
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     }
 }
 
 function damage(object){
     trembling();
+<<<<<<< HEAD
     if (switchHit && layer.hp.current > 0){
+=======
+    if (switchHit){
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
         if (object.typeValue == "hit"){
             layer.hp.current -= handHit;
         } else {
@@ -446,7 +598,11 @@ function damage(object){
         toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
         toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
     }
+<<<<<<< HEAD
     finishLevel();
+=======
+
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     updateInfo();
 }
 
@@ -490,6 +646,10 @@ function trembling(){
         id.style.left = "0%";
         // instrumets.forEach( i => {i.style.left = "0%"});
         // id.style.bottom = "0%";
+<<<<<<< HEAD
+=======
+        finishLevel();
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     }, {once: true});
         
         // toStyle("#layerID", "bottom", "0%");
@@ -518,7 +678,15 @@ function finishLevel(){
         layer.level++;
         layerUp(layerID);
         toStyle("#hpBarID", "width", "100%");
+<<<<<<< HEAD
         openingLayerUp();
+=======
+        for (let i = 0; i < upgrades.length; i++){
+            if (layer.level == upgrades[i].openingLayer){
+                switchingElementMenu(true, upgrades[i]);
+            }
+        }
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
         if (bossLevel == layer.level){  
             bossLevel += bossLevelRatio;
             bossLevelBonus();
@@ -542,6 +710,7 @@ function layerUp(layerID){
     }, {once: true});
 }
 
+<<<<<<< HEAD
 function openingLayerUp(){
     for (let i = 0; i < upgrades.length; i++){
         if (layer.level >= upgrades[i].openingLayer){
@@ -550,6 +719,8 @@ function openingLayerUp(){
     }
 }
 
+=======
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 function onOffBtn(){
     for (let i = 0; i < upgrades.length; i++){
         let disBtn = document.getElementById(upgrades[i].name + "BtnID");
@@ -601,6 +772,12 @@ function upgradesFunc(upgrade) {
                     case "hit":
                         handHit += value;
                         break;
+<<<<<<< HEAD
+=======
+                    case "auto":
+                        autoHit += value;
+                        break;
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
                     case "profit":
                         prize.profit++;
                         prize.profitC++;
@@ -658,6 +835,7 @@ function bossLevelBonus(){
     }
     moneyBonus = toRoundoff(Math.ceil(Math.random()*(moneyBonus / switchsOn)) * 2 + 1);
     if(moneyBonus < lowCost){moneyBonus = lowCost + moneyBonus};
+<<<<<<< HEAD
 
     let bonus1 = bossLevelBonusRandom(switchsOn);
     let bonus2 = bossLevelBonusRandom(switchsOn);
@@ -682,6 +860,26 @@ function bossLevelBonus(){
             Object.assign(document.createElement('button'), {className: "bossLevelBonusCls", id: "bossLevelBonusID" + i,  innerHTML:title, value: valueBtn, onclick: function(){bossLevelBonusBtn(this);}})
         )
         document.getElementById("bossLevelBonusIMGID"+i).src = "img/" + img;
+=======
+    trw.push(toCompactNotation(moneyBonus));
+
+    let bonus2 = bossLevelBonusRandom(switchsOn);
+    let bonus3 = bossLevelBonusRandom(switchsOn);
+
+    trw.push(bonus2);
+    if (bonus3 != bonus2){trw.push(bonus3);}
+
+    for (let i = 0; i < trw.length; i++){
+        let valueBtn = trw[i].name;
+        let text = trw[i].text;
+        if (i == 0){
+            valueBtn = "moneyBonus";
+            text = trw[i] + " Монет!";
+        }
+        document.getElementById("bossLevelBonusID").append(
+            Object.assign(document.createElement('button'), {className: "bossLevelBonusCls", id: "bossLevelBonusID" + i,  innerHTML: "Приз №" + (i+1) + " " + text, value: valueBtn, onclick: function(){bossLevelBonusBtn(this);}})
+        )
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     }
     switchsHit(false);
     bossBonus = true;
@@ -690,6 +888,7 @@ function bossLevelBonus(){
     }
     if (autoBonus.enabled){
         currentSecondsStart = new Date().getSeconds();
+<<<<<<< HEAD
         rerollTimer = true;
         timer = setTimeout(function(){document.getElementById("bossLevelBonusID" + Math.floor(Math.random()*trw.length)).click()}, autoBonus.value*1000);
     }
@@ -698,6 +897,10 @@ function bossLevelBonus(){
     } else {
         toSeeable("bossLevelBonusRerolBtnID");
     }
+=======
+        timer = setTimeout(function(){document.getElementById("bossLevelBonusID" + Math.floor(Math.random()*trw.length)).click()}, autoBonus.value*1000);
+    }
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 }
 
 function bossLevelBonusRandom(switchsOn){
@@ -705,7 +908,10 @@ function bossLevelBonusRandom(switchsOn){
     let test = switchsOn;
     for(let i = 0; i < test; i++){
         if(random - switchsOn <= 0 ){
+<<<<<<< HEAD
             myLog(upgrades[i].name);
+=======
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
             return upgrades[i];
         }  else {
             random -= switchsOn;
@@ -716,6 +922,7 @@ function bossLevelBonusRandom(switchsOn){
 
 function bossLevelBonusBtn(bonus){
     clearTimeout(timer);
+<<<<<<< HEAD
     if(bonus === "All"){
         bossLevelBonusBtn.count = 3;
         if(allBonusFree){
@@ -727,6 +934,9 @@ function bossLevelBonusBtn(bonus){
             }
         } 
     } else if(bonus.value == "moneyBonus"){
+=======
+    if(bonus.value == "moneyBonus"){
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
         moneyChanges(Math.floor(moneyBonus));
     } else {
         for (let i = 0; i < upgrades.length; i++){
@@ -736,12 +946,17 @@ function bossLevelBonusBtn(bonus){
             } 
         }
     }
+<<<<<<< HEAD
     if(bossLevelBonusBtn.count > 0){
         bossLevelBonusBtn.count--;
     } else {
         for (let i = 0; i < trw.length; i++){
             document.getElementById("bossLevelBonusID" + i).remove();
         }
+=======
+    for (let i = 0; i < trw.length; i++){
+        document.getElementById("bossLevelBonusID" + i).remove();
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     }
     bossBonus = false;
     switchsHit(true);
@@ -756,16 +971,24 @@ function updateInfo(){
     onOffBtn();
     toChangeText("prizeID", toCompactNotation(prize.profitC * doubleMoney));
     toChangeText("depthLevelID", layer.level);
+<<<<<<< HEAD
     autoHit = 0;
+=======
+
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
     for(let i = 0; i < upgrades.length; i++){
         toChangeText(upgrades[i].name+"CostID", toCompactNotation(upgrades[i].cost.current));
         toChangeText(upgrades[i].name+"LevelID", upgrades[i].level);
         if( upgrades[i].typeValue == "auto"){
             let text = " Автоудар - "
             // if(upgrades[i].value > 1){text = " Автоудар - "}
+<<<<<<< HEAD
             let damage = Math.round(upgrades[i].value*upgrades[i].level/(speedAutoHit.parameter.value*upgrades[i].timeHit)*100)/100;
             toChangeText(upgrades[i].name+"DescriptionID", text + damage + " hp/s");
             autoHit += damage;
+=======
+            toChangeText(upgrades[i].name+"DescriptionID", text + Math.round(upgrades[i].value*upgrades[i].level/(speedAutoHit.parameter.value*upgrades[i].timeHit)*100)/100 + " hp/s");
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
         }
     } 
 
@@ -783,8 +1006,17 @@ function updateInfo(){
         }
     }
 
+<<<<<<< HEAD
     toChangeText("hitID", handHit);
     toChangeText("autoHitInfoID", Math.round(autoHit*100)/100 + " hp/s");
     toChangeText("hpID", Math.floor(layer.hp.current));
     toChangeText("rebootExpCostID", expCalc());
+=======
+    toChangeText("counterID", counter);
+    toChangeText("expID", toCompactNotation(exp));
+    toChangeText("hitID", handHit);
+    toChangeText("autoHitInfoID", autoHit);
+    toChangeText("hpID", Math.floor(layer.hp.current));
+    toChangeText("rebootExpID", expCalc());
+>>>>>>> 0ea064eb9af4c76faa6aff1881d0ce8bffba1b49
 }
