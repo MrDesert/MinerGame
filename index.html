@@ -47,66 +47,66 @@
 
 <script src="console.js" onload="createConsole(false, 'F2')"></script>
 <script>
-    // const useYSDK = false;
-    let resurses = false;
-    let sdkLoad = false;
-    const script = document.createElement('script');
-    script.src = "https://yandex.ru/games/sdk/v2";
-    script.async = true;
+    const useYSDK = false;
+    // let resurses = false;
+    // let sdkLoad = false;
+    // const script = document.createElement('script');
+    // script.src = "https://yandex.ru/games/sdk/v2";
+    // script.async = true;
 
-    document.getElementsByTagName('footer')[0].innerHTML = "© MrDesert - v0.3.0.3"; //Заменяю версию для яндекса
-    document.addEventListener('contextmenu', e => e.preventDefault()); //Отключение контекстного меню на ПКМ
+    // document.getElementsByTagName('footer')[0].innerHTML = "© MrDesert - v0.3.0.3"; //Заменяю версию для яндекса
+    // document.addEventListener('contextmenu', e => e.preventDefault()); //Отключение контекстного меню на ПКМ
 
-    document.head.appendChild(script);
+    // document.head.appendChild(script);
     
-    script.onload = function(){
-        myLog?.("script.onload");
-        YaGames.init()
-            .then(ysdk => {
-                myLog?.("язык - " + ysdk.environment?.i18n?.lang); //Запрашиваем язык у YSDK
-                document.documentElement.lang = 'ru';
-                window.ysdk = ysdk;
-                if(window.ysdk){
-                    sdkLoad = true;
-                    myLog?.("SDK загружен - " + sdkLoad);
-                }
-            })
-            .then(()=>{
-                return new Promise((resolve)=>{
-                    const chekcInterval = setInterval(()=>{
-                        if (sdkLoad && resurses){
-                            myLog?.("Загруженны ресурсы и SDK");
-                            ysdk.features?.GameplayAPI?.start?.();
-                            clearInterval(chekcInterval);
-                            resolve();
-                        }
-                        else if(sdkLoad){myLog?.("Ожидание ресурсов - " + resurses)}
-                        else if (resurses){myLog?.("Ожидание SDK - " + sdkLoad)}
-                        else{myLog?.("Ожидание ресурсов и CDK");}
-                    }, 400);
-                })
-            })
-            .then(()=>{
+    // script.onload = function(){
+    //     myLog?.("script.onload");
+    //     YaGames.init()
+    //         .then(ysdk => {
+    //             myLog?.("язык - " + ysdk.environment?.i18n?.lang); //Запрашиваем язык у YSDK
+    //             document.documentElement.lang = 'ru';
+    //             window.ysdk = ysdk;
+    //             if(window.ysdk){
+    //                 sdkLoad = true;
+    //                 myLog?.("SDK загружен - " + sdkLoad);
+    //             }
+    //         })
+    //         .then(()=>{
+    //             return new Promise((resolve)=>{
+    //                 const chekcInterval = setInterval(()=>{
+    //                     if (sdkLoad && resurses){
+    //                         myLog?.("Загруженны ресурсы и SDK");
+    //                         ysdk.features?.GameplayAPI?.start?.();
+    //                         clearInterval(chekcInterval);
+    //                         resolve();
+    //                     }
+    //                     else if(sdkLoad){myLog?.("Ожидание ресурсов - " + resurses)}
+    //                     else if (resurses){myLog?.("Ожидание SDK - " + sdkLoad)}
+    //                     else{myLog?.("Ожидание ресурсов и CDK");}
+    //                 }, 400);
+    //             })
+    //         })
+    //         .then(()=>{
                                                         
                                         
-                ysdk.features.LoadingAPI.ready();
-            })
-            .then(()=>{
-                setTimeout(function(){
-                    loadedGame(true);}, 500);
-            })
-            .catch(console.error);
-    };
-    window.addEventListener('load', function(){
-        resurses = true;
-        myLog?.("Ресурсы загруженны - " + resurses);
-    })
+    //             ysdk.features.LoadingAPI.ready();
+    //         })
+    //         .then(()=>{
+    //             setTimeout(function(){
+    //                 loadedGame(true);}, 500);
+    //         })
+    //         .catch(console.error);
+    // };
+    // window.addEventListener('load', function(){
+    //     resurses = true;
+    //     myLog?.("Ресурсы загруженны - " + resurses);
+    // })
     
-    myLog?.("Язык - " + YaGames.locale());
+    // myLog?.("Язык - " + YaGames.locale());
 
-// if(!useYSDK){
-//      setTimeout(function(){loadedGame(true);}, 500);
-// }
+if(!useYSDK){
+     setTimeout(function(){loadedGame(true);}, 500);
+}
 
 </script>
         <script src="math.js"></script>
