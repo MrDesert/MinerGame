@@ -1,4 +1,30 @@
-#preloaderID {
+@media (orientation: landscape){
+    .sideMenuLeft{ 
+        min-width: 250px;
+        max-width: 30%; 
+    }
+    .sideMenuElement {
+        display: flex;
+    }
+    .sideMenuElementBtn {
+        position: absolute;
+        min-width: 25%;
+    }
+}
+@media (orientation: portrait){
+    .sideMenuLeft{ 
+        min-width: 120px;
+        max-width: 20%; 
+    }
+    .sideMenuElementBtn {
+        min-width: 83%;
+    }
+    .sideMenuElementTitle{
+        text-align: center;
+    }
+}
+
+#preloaderID, #blurID {
     position: fixed;
     top: 0;
     left: 0;
@@ -9,7 +35,10 @@
     font-size: 90px;
     color: white;
 }
-#preloaderTextID{
+#blurID {
+    opacity: 50%;
+}
+#preloaderTextID, #blurTextID{
     position: absolute;
     width: 100%;
     top: 45%;
@@ -22,9 +51,7 @@
     max-height: 600px;
 	height: 60%;
     min-height: 100px; 
-	max-width: 300px;
-    width: 20%;
-    min-width: 50px; 
+    width: auto;
     top: 20%; 
 	left: 0%; 
 	background: rgba(90, 90, 90, 0.8);
@@ -67,11 +94,10 @@
     border: 3px outset rgb(150, 150, 150);
     border-radius: 10px;
     margin-bottom: 10px;
-    display: flex;
 }
 .sideMenuElementIconLeft{
     position: relative;
-    width: 30%;
+    width: auto;
     height: 100%;
     padding: 5px;
 }
@@ -80,25 +106,30 @@
 }
 .sideMenuElementIconParametrTopLeft{
     position: absolute;
-    top: 6px;
-    left: 6px;
+    top: 5px;
+    left: 5px;
     z-index: 1;
+}
+.sideMenuElementTitle{
+    font-size: 17px;
+    font-weight: bold;
 }
 .sideMenuElementDescription{
     vertical-align: top;
+    min-width: 80px;
+    max-width: 160px;
     top: 0px;
     hyphens: auto;
+    word-break: break-word;
     padding: 5px;
 }
 .sideMenuElementBtn{
-    position: absolute;
     right: 0px;
     bottom: 0px;
     margin: 8px;
     height: 25%;
     min-height: 15px;
-    width: 25%;
-    min-width: 50px;
+    width: auto;
     background: rgba(150, 150, 150, 0.2);
     border: 2px outset rgb(150, 150, 150);
     border-radius: 2px;
@@ -126,6 +157,9 @@
     background: rgb(41, 41, 41);
     border: 3px outset rgb(150, 150, 150);
     border-radius: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 .btnCloseCircule{
     height: 30px;
@@ -145,9 +179,12 @@
     top: 30px;
     font-size: 20pt;
     font-weight: bold;
+    height: 30px;
+    vertical-align: middle;
 }
 .moneyTopRightNum{
     display: inline-block;
+    vertical-align: middle;
 }
 .centralMenuInfo{
     margin: 10px;
@@ -160,21 +197,20 @@
 }
 .centralMenuInfoElement{
     width: 30%;
-    margin-top: 5px;
     margin-left: 10px;
     display: inline-block;
 }
 .centralMenuElement{
     margin: 20px;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
     padding: 10px;
     position: relative;
     white-space: normal;
     border: 3px outset rgb(150, 150, 150);
     border-radius: 10px;
     background-color: #202020;
-    width: 27%;
+    width: 280px;
 }
 .centralMenuElementTitle{
     font-size: 16pt;
@@ -194,11 +230,13 @@
     z-index: 0;
 }
 .centralMenuElementBtn{
+    margin-bottom: 10px;
     position:relative;
     height: 30%;
-    width: 30%;
+    width: 55%;
     bottom: 5%;
-    left: 35%;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 14pt;
     font-weight: bold;
     background: rgb(60, 60, 60);

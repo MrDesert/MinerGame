@@ -1,3 +1,25 @@
+ @media (orientation: landscape){
+   .bonusContainer{
+      display: inline-block;
+   }
+    #bossLevelBonusID{
+      top: 30%;
+   } 
+   .bossLevelBonusIMG{
+      height: 80px;
+    }
+
+ }
+ @media (orientation: portrait){
+    #bossLevelBonusID{
+      top: 10%;
+      max-width: 25%;
+   } 
+    .bossLevelBonusIMG{
+      height: 70px;
+    }
+}
+
  *{
     font-family: 'Courier New', Courier, monospace;
     touch-action: manipulation; /*  отключить двойной тап на сенсорных устройствах для увеличения  */
@@ -6,7 +28,11 @@
     overflow: hidden; /* что бы экран не расширялся на телефоне из-за появления элементов за границей*/
  }
 .rightText{
+   margin-right: 10px;
     text-align: right;
+    line-height: 1.2;
+    vertical-align: middle;
+    height: 24px;
  }
  #hpTitleID, #profitTitleID, #bossLevelBonusID{
     width: 100%;
@@ -14,23 +40,14 @@
  }
  #bossLevelBonusID{
    position: absolute;
-   left: 30%;
    background: rgba(41, 41, 41, 0.8);
     border: 3px outset rgb(150, 150, 150);
     border-radius: 25px;
-    width: 40%;
+    width: auto;
+   left: 50%;
+   transform: translateX(-50%);
     /* height: 90px; */
-    min-width: 100px;
- }
- .bossLevelBonusCls{
-    width: 25%;
-    height: 50px;
-    margin: 10px;
-    z-index: 1;
-    cursor: pointer;
-    color: white;
-    background-color: #606060;
-    border-radius: 3px;
+    min-width: 130px;
  }
  #pupmsTitle{
     font-size: 25pt;
@@ -47,6 +64,8 @@
  }
  .inline-block{
     display: inline-block;
+    vertical-align: middle;
+
  }
  footer{
     position: fixed;
@@ -141,15 +160,12 @@ body {
    backdrop-filter: blur(1px);
    margin: 0%;
 }
-#bossLevelBonusID {
-   color: white;
-}
 #infoExpID{
    position: relative;
    display: flex;
-   height: 6%;
-   width: 50%;
-   margin: 0px;
+   height: auto;
+   margin: 10px;
+   width: 100% - 20px;
 }
 #rebootExpBtnID {
    position: absolute;
@@ -177,9 +193,82 @@ body {
 }
 
 #bookID{
-   height: 80px;
+   object-fit: fill;
+   width: 100%;
+   height: 100%;
+}
+#menuID{
+   position: absolute;
+   top: 5px;
+   left: 5px;
+   /* position: relative;  */
+
+   z-index: 1;  
+   width: 8%;
+   max-width: 80px;
+   min-width: 60px;
 }
 
 .coinCl, .expCl{
    height: 20px;
+   vertical-align: middle;
 }
+#bossLevelBonusID{
+   position: absolute;
+   z-index: 3;
+   padding: 15px;
+   color: white;
+   width: auto;
+}
+.bonusContainer{
+   width: 90px;
+}
+.bonusContainer{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+ .bossLevelBonusCls{
+    width: 100%;
+    height: auto;
+    z-index: 1;
+    cursor: pointer;
+    color: white;
+    background-color: #606060;
+    border-radius: 3px;
+ }
+ #bossLevelBonusConteinerRerollID{
+   width: 100%;
+ }
+
+  #bossLevelBonusAllBtnID{
+   width: 120px;
+   margin-left: 20px;
+ }
+ #bossLevelBonusRerolBtnID{
+   height: 40px;
+   width: 53px;
+   margin-left: 20px;
+   border-radius: 10px;
+ }
+ #bossLevelBonusRerolBtnImgID{
+   width: 100%;
+   height: 100%;
+   object-fit: contain;
+}
+
+ #bossLevelBonusTitleID{
+   font-size: 25px;
+   margin-top: 5px;
+   margin-bottom: 5px;
+   hyphens: auto;
+ }
+
+ #warningID{
+   position: absolute;
+   top: 2px;
+   left: 0px;
+   background-color: red;
+   height: 15px;
+   width: 15px;
+   border-radius: 7px;
+ }

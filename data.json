@@ -1,0 +1,39 @@
+{
+    "weapon":{
+        "shovel":{
+            "name": "hitPlusOne",
+            "cost": {
+                "base": 3,
+                "calc": 3,
+                "current": 3
+            },
+            "level": 0, 
+            "typeValue": "hit", 
+            "value": 1, 
+            "openingLayer": 1, 
+            "switch": "off", 
+            "expBonus": 0.05, 
+            "func": "() => upgradesFunc('hitPlusOne')", 
+            "freeUp": false, 
+            "img": "shovel_transparent_390x390.png", 
+            "text": "+1 удару",
+            "title": "Лопата"
+        },
+        "shovel miner":{
+
+        },
+        "pickaxe":{
+
+        }, 
+        "pickaxe miner":{
+
+        }, 
+        "helmet":{
+
+        },
+        "drill":{
+
+        }
+    }
+
+}
