@@ -32,26 +32,56 @@
         <div id="bossLevelBonusID" style="position: absolute; z-index: 1;" hidden="hidden">
             <div id="timeID"></div>
         </div>
-        <footer>© by MrDesert - beta v0.2</footer>
+        <footer>© by MrDesert - beta v0.2.4</footer>
 
 
-
+<script src="console.js"></script>
 <script>
+    myConsoleStart();    
+    function myConsoleStart(){
+        if(true){createConsole()};//создание консоли
+    }
+</script>
+<script>
+    let resurses = false;
+    let sdkLoad = false;
+    myConsole("script.YSDK");
     const script = document.createElement('script');
     script.src = "https://yandex.ru/games/sdk/v2";
-    // script.src = "https://games.apps.yandex.ru/games/sdk/v2";
     script.async = true;
 
     document.head.appendChild(script);
 
     script.onload = function(){
-
+        myConsole("script.onload");
         YaGames.init()
             .then(ysdk => {
                 window.ysdk = ysdk;
-                console.log("SDK инициализирован");
-                ysdk.features?.LoadingAPI?.ready?.();
-                console.log("GameReady вызван");
+                if(window.ysdk){
+                    myConsole("SDK инициализирован");
+                    sdkLoad = true;
+                }
+
+
+                // ysdk.features?.LoadingAPI?.ready?.();
+                if(ysdk.features?.LoadingAPI?.ready){
+                    const readyCall = ysdk.features.LoadingAPI.ready();
+                    if(readyCall && typeof readyCall.then === 'function'){
+                        readyCall
+                            .then(()=>{
+                                myConsole("GameReady вызван успешно!")
+                            })
+                            .catch((error) => {
+                                myConsole("GameReady не вызван!")
+                            });
+                    } else {
+                        myConsole("GameReady вызван синхронно успешно!")
+                    }
+                    
+                } else {
+                    myConsole("GameReady Недоступен!")
+                }
+                
 
                 // setTimeout(function(){
                 //     ysdk.features.GameplayAPI?.start();
@@ -60,10 +90,32 @@
             })
             .catch(console.error);
     };
-</script>
+    window.addEventListener('load', function(){
+        myConsole("addEventListener");
+        setTimeout(function(){
+            myConsole("setTimeout");
+            resurses = true;
+        }, 500);
+    })
 
+
+    function ysdkGameReady(currentTime){
+        if(resurses & sdkLoad){
+            myConsole(ysdk.features.GameplayAPI.start);
+            ysdk.features?.LoadingAPI?.ready?.();
+            ysdk.features.GameplayAPI?.start();
+            if(ysdk.features.GameplayAPI.start){
+                myConsole(ysdk.features.GameplayAPI.start);
+                loadedGame(true);
+            }
+
+        }
+        requestAnimationFrame(ysdkGameReady);
+    }
+    ysdkGameReady(performance.now());
+
+</script>
         <script src="math.js"></script>
-        <script src="console.js"></script>
         <script src="main.js"></script>
         <script src="script.js"></script>
     </body>

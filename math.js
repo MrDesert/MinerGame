@@ -1,3 +1,3 @@
-function mathTriangularNumber(number){
-    return number * (number+1)/2;
+function mathTriangularNumber(N){
+    return N * (N+1)/2;
 }

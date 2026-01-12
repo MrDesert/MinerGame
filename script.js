@@ -1,4 +1,3 @@
-const test = true;
 let consoleBtnsNames = ["coins", "exp", "hit", "autohit"];
 
 let loadImgs = false;
@@ -96,10 +95,7 @@ startingCreationGUI();
 startingValues();
 moneyChanges(0);
 
-testing();
-function testing(){
-    if(test){createConsole(consoleBtnsNames)};
-}
+consoleCreateBtnsCP(consoleBtnsNames)//создание панели управления в консоле
 
 function consBtnReturn(value, parameter) {
     consoleLog.push(parameter + " " + value);
@@ -120,6 +116,13 @@ function consBtnReturn(value, parameter) {
     updateInfo;
 }
 
+function loadedGame(load) {
+    if(load){
+        document.getElementById("preloaderID").hidden = "hidden";
+        loadImgs = true;
+    }
+}
+
 let previosTime = 0;
 let countTick = 0;
 function tick(time){
@@ -138,14 +141,6 @@ function tick(time){
     requestAnimationFrame(tick);
 }
 tick(performance.now());
-
-window.addEventListener('load', function(){
-    setTimeout(function(){
-        document.getElementById("preloaderID").hidden = "hidden";
-        loadImgs = true;
-        ysdk.features.GameplayAPI?.start();
-    }, 1000);
-})
 
 function preloaderTextChange(){
     let preloaderTextID = document.getElementById("preloaderTextID");
