@@ -1,3 +1,6 @@
+let langGame = "en";
+const langTexts = {};
+let textsLoaded = false;
 let loadImgs = false;
 
 let money, handHit, autoHit;
@@ -42,17 +45,17 @@ const hitPlusOne = {
     func: () => upgradesFunc("hitPlusOne"), 
     freeUp: false, 
     img: "shovel_transparent_390x390.png", 
-    text: "+1 удару",
+    text: "+1 к удару",
     title: "Лопата"
 };
 
 const autoHitOne = {name: "autoHitOne", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80, text: "+1 Автоудар раз в секунду", title: "Шахтёр с Лопатой"};
-const profitPlusOne = {name: "profitPlusOne", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1 монета к прибыли", title: "Каска"};
-const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "pickaxe_transparent_390x390.png", text: "+5 удару", title: "Кирка"};
+const profitPlusOne = {name: "profitPlusOne", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1 к прибыли", title: "Каска"};
+const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "pickaxe_transparent_390x390.png", text: "+5 к удару", title: "Кирка"};
 const autoHitTen = {name: "autoHitTen", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0, text: "+5 Автоударов в секунду", title: "Шахтёр с Киркой"};
-const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png", text: "+20 удару", title: "Бур"};
+const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png", text: "+20 к удару", title: "Бур"};
 const autoHit100 = {name: "autoHit100", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду", title: "Шахтёр с буром"};
-const molot = {name: "molot", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: () => upgradesFunc("molot"), freeUp: false, img: "molot_trasparent_450x450.png", text: "+75 удару", title: "Отбойник"};
+const molot = {name: "molot", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: () => upgradesFunc("molot"), freeUp: false, img: "molot_trasparent_450x450.png", text: "+75 к удару", title: "Отбойник"};
 const molotAuto = {name: "molotAuto", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: () => upgradesFunc("molotAuto"), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду", title: "Шахтёр с отбойником"}
 
 const upgrades = [hitPlusOne, autoHitOne, profitPlusOne, hitPlusTen, autoHitTen, drill, autoHit100, molot, molotAuto]; //массив с объектами улучшений;
@@ -76,10 +79,10 @@ const hardness = {
 };
 const profit = {name: "profit", value: 1, valueStep: 0.01, parameter:{type: "%", step: 1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("profit"), text: "Прибыль добычи: ", title: "+1% к прибыли", description: "При каждой добыче вы будете получать больше прибыли "};
 const costPump = {name: "costPump", value: 1, valueStep: -0.01, parameter:{type: "%", step: -1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("costPump"), text: "Цена улучшений: ", title: "-1% к цене улучшений", description: "Стоимость всех улучшений за монеты снизится на 1% "};
-const autoBonus = {name: "autoBonus", value: 11, valueStep: -1, parameter:{type: "s", step: -1, value: 11}, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Время автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение бонуса по истечении времени"};
+const autoBonus = {name: "autoBonus", value: 11, valueStep: -1, parameter:{type: "s", step: -1, value: 11}, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Длительность автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение бонуса по истечении времени"};
 const percentMoney = {name: "percentMoney", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, func: () => upgradesExpFunc("percentMoney"), text: "Сохранение денег: ", title: "+1% к сохранению денег", description: "Сохраняет процент денег при перезапуске шахты"};
-const speedAutoHit = {name: "speedAutoHit", value: 0, valueStep: 0.1, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("speedAutoHit"), text: "Скорость автоудара: ", title: "-0.05 ко времени автоудара", description: "Увеличивает скорость автоудара"};
-const expPlus = {name: "expPlus", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("expPlus"), text: "Получение опыта: ", title: "+10% к полученному опыту", description: "Увеличивает получаемый опыт за шахту"};
+const speedAutoHit = {name: "speedAutoHit", value: 0, valueStep: 0.1, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("speedAutoHit"), text: "Скорость автоудара: ", title: "+0.05 к скорости автоудара", description: "Увеличивает скорость автоудара"};
+const expPlus = {name: "expPlus", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("expPlus"), text: "Получение опыта: ", title: "+10% к получаемому опыту", description: "Увеличивает получаемый опыт за шахту"};
 const lycki = false;
 
 const upgradesExp = [hardness, profit, costPump, autoBonus, percentMoney, speedAutoHit, expPlus];
@@ -91,14 +94,37 @@ const bossLevelRatio = 10;
 let moneyBonus, trw, timer;
 let layerUpIntervalID;
 
-let obj = {message: "JS"};
- myLog?.("obj - " + obj.message);
-fetch('data.json')
-    .then(r => r.json())
-    .then(data => {
-        obj.message = data.message;
-        myLog?.("obj - " + obj.message);
-    })
+// let obj = {message: "JS"};
+//  myLog?.("obj - " + obj.message);
+// fetch('data.json')
+//     .then(r => r.json())
+//     .then(data => {
+//         obj.message = data.message;
+//         myLog?.("obj - " + obj.message);
+// })
+
+loadLangTexts().then(()=>{textsLoaded = true; loadedGame()});
+async function loadLangTexts(){
+    const texts = await fetch('lang.json').then(r => r.json());
+    Object.assign(langTexts, texts);
+}
+function getText(key) {
+    return langTexts[key]?.[langGame];
+}
+function changeLang(){
+    myLog("lang " + langGame)
+    myLog(langGame == "ru");
+    langGame === "ru" ? "en" : "ru";
+    myLog("lang " + langGame)
+    document.getElementById("langBtnID").innerHTML = langGame;
+    // langGame = document.documentElement.lang = lang; 
+    changeTextsLang() 
+}
+function changeTextsLang(){
+    myLog(getText("loading"));
+    document.getElementById("currentDepth").innerHTML = getText("current_depth")
+}
+        
 
 
 startingCreationGUI();
@@ -128,9 +154,10 @@ function consBtnReturn(value, parameter) {
 }
 
 function loadedGame(load) {
-    if(load){
+    if(load && textsLoaded){
         document.getElementById("preloaderID").hidden = "hidden";
         loadImgs = true;
+        changeTextsLang();
     }
 }
 
@@ -293,7 +320,7 @@ function startingCreationGUI(){
                     document.getElementById("expImgID").src = "img/exp.png";
                 toCreateTag("#expTitleID", "div", "expID", "moneyTopRightNum", "0", errorCode);
             toCreateTag("#menuForExp", "div", "infoExpID", "centralMenuInfo", "", errorCode);
-                toCreateTag("#infoExpID", "div", "rebootExpDesID", "centralMenuInfoElement", "Если перезапустить шахту сейчас то можно получить: ", errorCode);
+                toCreateTag("#infoExpID", "div", "rebootExpDesID", "centralMenuInfoElement", "Если перезапустить шахту сейчас, то можно получить: ", errorCode);
                 toCreateTag("#infoExpID", "div", "rebootExpID", "centralMenuInfoElement", "", errorCode);
                     toCreateTag("#rebootExpID", "img", "rebootExpImgID", "expCl", "", errorCode);
                         document.getElementById("rebootExpImgID").src = "img/exp.png";
@@ -424,6 +451,7 @@ function expBonus(){
 }
 
 function hit(object) {
+
     if (switchHit){
         if(object.typeValue == "hit"){
             damage(object);

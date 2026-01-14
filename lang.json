@@ -1,0 +1,200 @@
+{
+  "loading": {
+    "ru": "Загрузка",
+    "en": "Loading"
+  },
+  "continue": {
+    "ru": "Продолжить",
+    "en": "Continue"
+  },
+  "current_depth": {
+    "ru": "Текущая глубина:",
+    "en": "Current depth:"
+  },
+  "profit": {
+    "ru": "Прибыль",
+    "en": "Profit"
+  },
+  "upgrades": {
+    "ru": "Улучшения",
+    "en": "Upgrades"
+  },
+  "helmet": {
+    "ru": "Каска",
+    "en": "Helmet"
+  },
+  "shovel": {
+    "ru": "Лопата",
+    "en": "Shovel"
+  },
+  "miner_shovel": {
+    "ru": "Шахтёр с Лопатой",
+    "en": "Miner with Shovel"
+  },
+  "pickaxe": {
+    "ru": "Кирка",
+    "en": "Pickaxe"
+  },
+  "miner_pickaxe": {
+    "ru": "Шахтёр с Киркой",
+    "en": "Miner with Pickaxe"
+  },
+  "drill": {
+    "ru": "Бур",
+    "en": "Drill"
+  },
+  "miner_drill": {
+    "ru": "Шахтёр с Буром",
+    "en": "Miner with Drill"
+  },
+  "jackhammer": {
+    "ru": "Отбойник",
+    "en": "Jackhammer"
+  },
+  "miner_jackhammer": {
+    "ru": "Шахтёр с отбойником",
+    "en": "Miner with Jackhammer"
+  },
+  "damage": {
+    "ru": "к удару",
+    "en": "damage"
+  },
+  "auto_mine": {
+    "ru": "Автоудар",
+    "en": "Auto-Mine"
+  },
+  "helmet_upgrade": {
+    "ru": "+1 к прибыли",
+    "en": "+1 to Profit"
+  },
+  "wallet": {
+    "ru": "Кошелёк",
+    "en": "Wallet"
+  },
+  "clicks": {
+    "ru": "Кликов",
+    "en": "Clicks"
+  },
+  "resets": {
+    "ru": "Перезапусков",
+    "en": "Resets"
+  },
+  "hand_damage": {
+    "ru": "Сила удара",
+    "en": "Damage"
+  },
+  "prestige_info": {
+    "ru": "Если перезапустить шахту сейчас, то можно получить",
+    "en": "If you reset the mine now, you will get:"
+  },
+  "layer_hardness": {
+    "name": {
+      "ru": "Твёрдость слоёв",
+      "en": "Layer Hardness"
+    },
+    "title": {
+      "ru": "-1% к твёрдости",
+      "en": "-1% to Hardness"
+    },
+    "desc": {
+      "ru": "Твёрдость каждого слоя становится ниже",
+      "en": "Each layer's hardness is reduced"
+    }
+  },
+  "auto_bonus_duration": {
+    "name": {
+      "ru": "Длительность автобонуса",
+      "en": "Auto-Bonus Duration"
+    },
+    "title": {
+      "ru": "+1с ко времени автобонуса",
+      "en": "+1s to Auto-Bonus"
+    },
+    "desc": {
+      "ru": "Автоматическое получение бонуса по истечении времени",
+      "en": "Automatically receive a bonus when the timer ends"
+    }
+  },
+  "xp_gain": {
+    "name": {
+      "ru": "Получение опыта",
+      "en": "XP Gain"
+    },
+    "title": {
+      "ru": "+10% к получаемому опыту",
+      "en": "+10% to XP Gain"
+    },
+    "desc": {
+      "ru": "Увеличивает получаемый опыт за шахту",
+      "en": "Increases experience gained from the mine"
+    }
+  },
+  "mining_profit": {
+    "name": {
+      "ru": "Прибыль добычи",
+      "en": "Mining Profit"
+    },
+    "title": {
+      "ru": "+1% к прибыли",
+      "en": "+1% to Profit"
+    },
+    "desc": {
+      "ru": "При каждой добыче вы будете получать больше прибыли",
+      "en": "Each mining action yields more profit"
+    }
+  },
+  "money_keep": {
+    "name": {
+      "ru": "Сохранение денег",
+      "en": "Money Keep"
+    },
+    "title": {
+      "ru": "+1% к сохранению денег",
+      "en": "+1% to Cash Preservation"
+    },
+    "desc":{
+      "ru": "Сохраняет процент денег при перезапуске шахты",
+      "en": "Keeps a percentage of cash when resetting the mine"
+    }
+  },
+  "upgrade_cost": {
+    "name": {
+      "ru": "Цена улучшений",
+      "en": "Upgrade Cost"
+    },
+    "title": {
+      "ru": "-1% к цене улучшений",
+      "en": "-1% to Upgrade Cost"
+    },
+    "desc": {
+      "ru": "Стоимость всех улучшений за монеты снизится на 1%",
+      "en": "Cost of all coin upgrades is reduced by 1%"
+    }
+  },
+  "auto_mine_speed": {
+    "name" : {
+      "ru": "Скорость автоудара",
+      "en": "Auto-Mine"
+    },
+    "title": {
+      "ru": "+0.05 к скорости автоудара",
+      "en": "+0.05s to Auto-Mine Speed"
+    },
+    "desc": {
+      "ru": "Увеличивает скорость автоудара",
+      "en": "Increases auto-mining speed"
+    }
+  },
+  "bonus_available": {
+    "ru": "Доступен бонус!",
+    "en": "Bonus Available!"
+  },
+  "claim_all": {
+    "ru": "Получить всё",
+    "en": "Claim All"
+  },
+  "coment":{
+    "1": "Создал логичную структуру ключей: - `item` - для предметов, - `miner_item` - для шахтёров с предметами, - `miner_item` - для шахтёров с предметами, - `item_damage` - для бонусов урона, - `stat` - для статистик, - `stat_bonus` - для бонусов к статам, - `stat_desc` - для описаний бонусов" ,
+    "2": "Теперь вам просто нужно в коде обращаться к переводам по этим ключам, например: - Для заголовка прибыли: `translations.profit.ru`, - Для кнопки продолжить: `translations.continue.en`"
+  }
+}
