@@ -103,7 +103,7 @@ let layerUpIntervalID;
 //         myLog?.("obj - " + obj.message);
 // })
 
-loadLangTexts().then(()=>{textsLoaded = true; loadedGame()});
+loadLangTexts().then(()=>{textsLoaded = true; myLog(textsLoaded); loadedGame()});
 async function loadLangTexts(){
     const texts = await fetch('lang.json').then(r => r.json());
     Object.assign(langTexts, texts);
@@ -112,17 +112,14 @@ function getText(key) {
     return langTexts[key]?.[langGame];
 }
 function changeLang(){
-    myLog("lang " + langGame)
-    myLog(langGame == "ru");
-    langGame === "ru" ? "en" : "ru";
-    myLog("lang " + langGame)
-    document.getElementById("langBtnID").innerHTML = langGame;
-    // langGame = document.documentElement.lang = lang; 
+    langGame = langGame == "ru" ? "en" : "ru";
+    toChangeText("langBtnID", langGame);
     changeTextsLang() 
 }
 function changeTextsLang(){
-    myLog(getText("loading"));
-    document.getElementById("currentDepth").innerHTML = getText("current_depth")
+    for(const key in langTexts){
+        toChangeText(key, getText(key));
+    }
 }
         
 
@@ -254,14 +251,14 @@ function textTimer(){
 function preloaderTextChange(){
     let preloaderTextID = document.getElementById("preloaderTextID");
     switch(preloaderTextID.innerHTML){
-        case "Загрузка...":
-            preloaderTextID.innerHTML = "Загрузка."
+        case "...":
+            preloaderTextID.innerHTML = "."
             break;
-        case "Загрузка.":
-            preloaderTextID.innerHTML = "Загрузка.."
+        case ".":
+            preloaderTextID.innerHTML = ".."
             break;
-        case "Загрузка..":
-            preloaderTextID.innerHTML = "Загрузка..."
+        case "..":
+            preloaderTextID.innerHTML = "..."
             break;
     }
 }
@@ -290,7 +287,7 @@ function startingCreationGUI(){
     //Родитель: Имя с селетором; Ребёнок: Тэг, ID, классы, текст; Тех. Инфо: Код поиска. 
     //Боковое меню
     toCreateTag("body", "div", "menuForCoins", "sideMenuLeft", "", errorCode);
-        toCreateTag("#menuForCoins", "div", "menuForCoinsTitle", "sideMenuTitle", "Улучшения", errorCode);
+        toCreateTag("#menuForCoins", "div", "upgrades", "sideMenuTitle", "Улучшения", errorCode);
     for(let i = 0; i < upgrades.length; i++){
         let id = upgrades[i].name;
         toCreateTag("#menuForCoins", "div", id+"ID", "sideMenuElement disabled", "", errorCode);
@@ -424,8 +421,10 @@ function startingValues(){
 
 function expCalc(){
     let expProfit = money*moneyExp + layer.level*layer.expBonus + hitPlusOne.level*hitPlusOne.expBonus + profitPlusOne.level*profitPlusOne.expBonus + autoHitOne.level*autoHitOne.expBonus + hitPlusTen.level*hitPlusTen.expBonus + autoHitTen.level*autoHitTen.expBonus + autoHit100.level*autoHit100.expBonus || 0;
+    for(let i = 0; i < upgrades.length; i++){
+        expProfit += upgrades[i].level*upgrades.expBonus;
+    }
     expProfit = Math.round(expProfit * expPlus.value);
-    // console.log(money*moneyExp + " + " + layer.level*layer.expBonus + " + " + hitPlusOne.level*hitPlusOne.expBonus + " + " + profitPlusOne.level*profitPlusOne.expBonus + " + " + autoHitOne.level*autoHitOne.expBonus + " + " + hitPlusTen.level*hitPlusTen.expBonus + " + " + autoHitTen.level*autoHitTen.expBonus + " + " + autoHit100.level*autoHit100.expBonus + " = " + expProfit);
     if(expProfit >=10 || exp >= 10){
         toSeeable("warningID");
     } else {

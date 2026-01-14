@@ -38,7 +38,7 @@
 #blurID {
     opacity: 50%;
 }
-#preloaderTextID, #blurTextID{
+#preloaderCentr, #blurTextID{
     position: absolute;
     width: 100%;
     top: 45%;
