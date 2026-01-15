@@ -68,7 +68,7 @@ function consoleCreateBtnsCP(btns){
             );
         }
         document.querySelector("#myConsoleControlPanel").append(
-            Object.assign(document.createElement("button"), {id: "myConsoleCPClearStorageID", style: "height: 25px; font-size: 20px; margin: 5px; display: inline-block;", innerHTML:"очистить локальное хранилище", onclick: function(){localStorage.clear(); startingValues(); hit.count = 0; expBonus.count = 0; bossLevel = 1;}})
+            Object.assign(document.createElement("button"), {id: "myConsoleCPClearStorageID", style: "height: 25px; font-size: 20px; margin: 5px; display: inline-block;", innerHTML:"очистить локальное хранилище", onclick: function(){localStorage.clear(); startingValues(); hit.count = 0; expBonus.count = 0; bossLevel = 1; exp = 0}})
         );
         update();
     }

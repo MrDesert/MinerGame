@@ -243,35 +243,21 @@ function textTimer(){
 }
 
 function preloaderTextChange(){
-    let preloaderTextID = document.getElementById("preloaderTextID");
-    switch(preloaderTextID.innerHTML){
-        case "...":
-            preloaderTextID.innerHTML = "."
-            break;
-        case ".":
-            preloaderTextID.innerHTML = ".."
-            break;
-        case "..":
-            preloaderTextID.innerHTML = "..."
-            break;
-    }
+    const id = document.getElementById("preloaderTextID");
+    id.textContent = id.textContent == "..." ? "." : id.textContent == "." ? ".." : "...";
 }
 
 window.addEventListener('blur', ()=> {
-    myLog?.("Потерян фокус");
-    ysdk.features?.GameplayAPI?.stop?.();
     toSeeable("blurID");
     switchHit = false;
+    ysdk?.features?.GameplayAPI?.stop?.();
 })
 
 window.addEventListener('focus', ()=>{
-    myLog?.("Снова в фокусе");
+    toHide("blurID");
+    switchHit = !bossBonus;
     if (sdkLoad && resurses){
         ysdk.features?.GameplayAPI?.start?.();
-    }
-    toHide("blurID");
-    if(!bossBonus){
-        switchHit = true;
     }
 })
 
@@ -288,7 +274,7 @@ function startingCreationGUI(){
             toCreateTag("#"+id+"ID", "div", id+"IconID", "sideMenuElementIconLeft", "", errorCode);
                 toCreateTag("#"+id+"IconID", "div", id+"LevelID", "sideMenuElementIconParametrTopLeft level", "", errorCode);
                 toCreateTag("#"+id+"IconID", "img", id+"ImgID", "sideMenuElementIconLeftIMG", "", errorCode);
-                    document.getElementById(id+"ImgID").src = "img/" + upgrades[i].img;
+                    DOM.id(id+"ImgID").src = "img/" + upgrades[i].img;
                     toStyle("#"+id+"ImgID", "filter", "grayscale(50%)");
                 toCreateTag("#"+id+"ID", "div", id+"InfoID", "sideMenuElementInfo", "", errorCode);
                     toCreateTag("#"+id+"InfoID", "div", id, "sideMenuElementTitle", "", errorCode);
@@ -296,9 +282,9 @@ function startingCreationGUI(){
                     toCreateTag("#"+id+"InfoID", "span", id+"ValueID", "sideMenuElementDescription", "", errorCode)
                 toCreateTag("#"+id+"ID", "button", id+"BtnID", "sideMenuElementBtn", "", errorCode);
                     toCreateTag("#"+id+"BtnID", "img", id+"BtnImgID", "coinCl", "", errorCode);
-                         document.getElementById(id+"BtnImgID").src = "img/coin.png";
-                    document.getElementById(id+"BtnID").onclick = function(){upgrades[i].func();};
-                    document.getElementById(id+"BtnID").disabled = "disabled";
+                         DOM.id(id+"BtnImgID").src = "img/coin.png";
+                    DOM.id(id+"BtnID").onclick = function(){upgrades[i].func();};
+                    DOM.id(id+"BtnID").disabled = "disabled";
                     toCreateTag("#"+id+"BtnID", "div", id+"CostID", "inline-block cost", "", errorCode)
     }
     // Центральное меню
@@ -306,19 +292,19 @@ function startingCreationGUI(){
     toHide('menuForExpBack');
         toCreateTag("#menuForExpBack", "div", "menuForExp", "centralMenu", "", errorCode);
             toCreateTag("#menuForExp", "button", "menuForExpBtnClose", "btnCloseCircule", "X", errorCode);
-                document.getElementById("menuForExpBtnClose").onclick = function(){menuTreePump(false)};
+                DOM.id("menuForExpBtnClose").onclick = function(){menuTreePump(false)};
             toCreateTag("#menuForExp", "div", "expTitleID", "moneyTopRight", "", errorCode);
                 toCreateTag("#expTitleID", "img", "expImgID", "expCl", "", errorCode);
-                    document.getElementById("expImgID").src = "img/exp.png";
+                    DOM.id("expImgID").src = "img/exp.png";
                 toCreateTag("#expTitleID", "div", "expID", "moneyTopRightNum", "0", errorCode);
             toCreateTag("#menuForExp", "div", "infoExpID", "centralMenuInfo", "", errorCode);
                 toCreateTag("#infoExpID", "span", "prestige_info", "centralMenuInfoElement", "", errorCode);
                 toCreateTag("#infoExpID", "div", "rebootExpID", "centralMenuInfoElement", "", errorCode);
                     toCreateTag("#rebootExpID", "img", "rebootExpImgID", "expCl", "", errorCode);
-                        document.getElementById("rebootExpImgID").src = "img/exp.png";
+                        DOM.id("rebootExpImgID").src = "img/exp.png";
                     toCreateTag("#rebootExpID", "div", "rebootExpCostID", "inline-block cost", "0", errorCode);
                 toCreateTag("#infoExpID", "button", "rebootExpBtnID", "centralMenuElementBtn", "⟳", errorCode);
-                    document.getElementById("rebootExpBtnID").onclick = function(){expBonus();};
+                    DOM.id("rebootExpBtnID").onclick = function(){expBonus();};
             toCreateTag("#menuForExp", "div", "infoID", "centralMenuInfo", "", errorCode);
         for(let i = 0; i < upgradesExp.length; i++){
             let id = upgradesExp[i].name;
@@ -331,8 +317,8 @@ function startingCreationGUI(){
                 toCreateTag("#"+id+"ID", "p", id+"_desc", "centralMenuElementDescription", "", errorCode);  
                 toCreateTag("#"+id+"ID", "button", id+"BtnID", "centralMenuElementBtn", "", errorCode);
                     toCreateTag("#"+id+"BtnID", "img", id+"ImgBtnID", "expCl", "", errorCode);
-                        document.getElementById(id+"ImgBtnID").src = "img/exp.png";
-                    document.getElementById(id+"BtnID").onclick = function(){upgradesExp[i].func();};
+                        DOM.id(id+"ImgBtnID").src = "img/exp.png";
+                    DOM.id(id+"BtnID").onclick = function(){upgradesExp[i].func();};
                     toCreateTag("#"+id+"BtnID", "div", id+"CostID", "inline-block cost", "", errorCode);
         }
 
@@ -350,34 +336,25 @@ function startingCreationGUI(){
             }
             toCreateTag("#bossLevelBonusID", "div", "bossLevelBonusConteinerRerollID", "", "", errorCode)
             toCreateTag("#bossLevelBonusConteinerRerollID", "button", "claim_all", "bossLevelBonusCls", "Получить всё", errorCode);
-                document.getElementById("claim_all").onclick = function(){bossLevelBonusBtn("All");};
+                DOM.id("claim_all").onclick = function(){bossLevelBonusBtn("All");};
             toCreateTag("#bossLevelBonusConteinerRerollID", "button", "bossLevelBonusRerolBtnID", "bossLevelBonusCls", "", errorCode);
-                document.getElementById("bossLevelBonusRerolBtnID").onclick = function(){reroll();};
+                DOM.id("bossLevelBonusRerolBtnID").onclick = function(){reroll();};
                 toCreateTag('#bossLevelBonusRerolBtnID', "img", "bossLevelBonusRerolBtnImgID", "", "", errorCode);
-                    document.getElementById("bossLevelBonusRerolBtnImgID").src = "img/ad.png";
+                    DOM.id("bossLevelBonusRerolBtnImgID").src = "img/ad.png";
     updateInfo();
 }
 
 function reroll(){
     rerollTimer = false;
     clearTimeout(timer);
-    // ysdk.adv.showFullscreenAdv({
     ysdk.adv.showRewardedVideo?.({
         callbacks: {
             onRewarded: () => {
-                // myLog?.('реклама открыта'),
-            // onOpen: () => myLog?.('реклама открыта'),
-            // onClose: (wasShown) => {
-                // if(wasShown){
-                    allBonusFree = true
-                    document.getElementById("claim_all").removeAttribute("disabled");
-                    document.getElementById("claim_all").classList.remove("disabled");
-                    toHide("bossLevelBonusRerolBtnID");
-                // } else {
-                    // myLog?.('реклама не была показана');
-                // }
+                allBonusFree = true;
+                DOM.elDisabled("claim_all", false);
+                DOM.id("claim_all").classList.remove("disabled");
+                toHide("bossLevelBonusRerolBtnID");
             }
-            // onError: (error) => myLog?.("ошибка: ", error)
         }
     });
 }
@@ -393,8 +370,7 @@ function moneyChanges(m){
 }
 
 function expChanges(e){
-    exp += e;
-    toChangeText("expID", toCompactNotation(exp));
+    toChangeText("expID", toCompactNotation(exp += e));
 }
 
 function startingValues(){
@@ -406,8 +382,8 @@ function startingValues(){
     autoHit = 0;
     layer.level = 0;
     allBonusFree = true;
-    document.getElementById("claim_all").removeAttribute("disabled");
-    document.getElementById("claim_all").classList.remove("disabled");
+    DOM.elDisabled("claim_all", false);
+    DOM.id("claim_all").classList.remove("disabled");
 
     for (let i = 0; i < upgrades.length; i++){
         upgrades[i].level = 0;
@@ -423,11 +399,7 @@ function expCalc(){
         expProfit += upgrades[i].level*upgrades[i].expBonus;
     }
     expProfit = Math.round(expProfit * xp_gain.value);
-    if(expProfit >=10 || exp >= 10){
-        toSeeable("warningID");
-    } else {
-        toHide("warningID");
-    }
+    DOM.elHide("warningID", !(expProfit >=10 || exp >= 10))
     return expProfit;
 }
 
@@ -477,7 +449,7 @@ function damage(object){
 function animationAutoHit(autoDamage){
     let id = "imgID" + countAutoHit++;
     toCreateTag("body", "img", id, "imgAutoHit", "", "hit-function");
-    let element = document.getElementById(id);
+    let element = DOM.id(id);
         element.src = "img/"+autoDamage.autoImg;
         element.style.left = Math.floor(Math.random()*100)+"%";
 
@@ -499,14 +471,12 @@ function animationAutoHit(autoDamage){
 }
 
 function trembling(){
-    let id = document.getElementById("layerID");
+    let id = DOM.id("layerID");
     // let instrumets = document.querySelectorAll('.death');
     let random = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%"
     id.style.left = random;
     // instrumets.forEach( i => {i.style.left = random});
-
     // id.style.bottom = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%";
-
     // toStyle("#layerID", "bottom", Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%");
 
     id.addEventListener('transitionend', () =>{
@@ -518,20 +488,18 @@ function trembling(){
         // toStyle("#layerID", "bottom", "0%");
 }
 
-function switchsHit(bool){;
-    if (!bossBonus){
-        switchHit = bool;
-    }
+function switchsHit(bool){
+    if (!bossBonus){switchHit = bool;}
 }
 
 function finishLevel(){
     if (layer.hp.current <= 0){
         switchsHit(false)
-        let layerID = document.getElementById('layerImgID');
-        layerID.style.top = "100%";
-        layerID.style.transition = "none";
+        let layerID = DOM.id('layerImgID');
+            layerID.style.top = "100%";
+            layerID.style.transition = "none";
         let death = document.querySelectorAll(".death");
-        death.forEach( det => {det.remove()});
+            death.forEach( det => {det.remove()});
         toStyle("#cracksID", "height", "0%");
         moneyChanges(Math.floor(prize.profitC * doubleMoney));
         layer.hp.calc = softProgress(layer.hp.calc, -1);
@@ -576,8 +544,6 @@ function openingLayerUp(){
 function onOffBtn(){
     for (let i = 0; i < upgrades.length; i++){
         let disBtn = document.getElementById(upgrades[i].name + "BtnID");
-        // console.log(money >= upgrades[i].cost.current + "money >= upgrades[i].cost.current");
-        // console.log(upgrades[i].switch == "on" + "upgrades[i].switch == 'on'");
         money >= upgrades[i].cost.current && upgrades[i].switch == "on" ? disBtn.removeAttribute("disabled") : disBtn.disabled="disabled";
     }
     for (let i = 0; i < upgradesExp.length; i++){

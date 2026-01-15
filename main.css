@@ -24,7 +24,7 @@
     }
 }
 
-#preloaderID, #blurID {
+#preloaderID, #blurID{
     position: fixed;
     top: 0;
     left: 0;
@@ -38,7 +38,7 @@
 #blurID {
     opacity: 50%;
 }
-#preloaderCentr, #blurTextID{
+#preloaderCentr, #continue{
     position: absolute;
     width: 100%;
     top: 45%;
