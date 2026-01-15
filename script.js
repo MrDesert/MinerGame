@@ -29,8 +29,8 @@ let layer = {
 };
 const prize = {name: "prize", profit: 1, profitC: 1};
 
-const hitPlusOne = {
-    name: "hitPlusOne", 
+const shovel = {
+    name: "shovel", 
     cost: {
         base: 3, // Базовое
         calc: 3, // Расчётное
@@ -42,27 +42,25 @@ const hitPlusOne = {
     openingLayer: 1, 
     switch: "off", 
     expBonus: 0.05, 
-    func: () => upgradesFunc("hitPlusOne"), 
+    func: () => upgradesFunc("shovel"), 
     freeUp: false, 
-    img: "shovel_transparent_390x390.png", 
-    text: "+1 к удару",
-    title: "Лопата"
+    img: "shovel_transparent_390x390.png"
 };
 
-const autoHitOne = {name: "autoHitOne", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: () => upgradesFunc("autoHitOne"), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80, text: "+1 Автоудар раз в секунду", title: "Шахтёр с Лопатой"};
-const profitPlusOne = {name: "profitPlusOne", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("profitPlusOne"), freeUp: false, img: "helmet5.png", text: "+1 к прибыли", title: "Каска"};
-const hitPlusTen = {name: "hitPlusTen", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("hitPlusTen"), freeUp: false, img: "pickaxe_transparent_390x390.png", text: "+5 к удару", title: "Кирка"};
-const autoHitTen = {name: "autoHitTen", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: () => upgradesFunc("autoHitTen"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0, text: "+5 Автоударов в секунду", title: "Шахтёр с Киркой"};
-const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png", text: "+20 к удару", title: "Бур"};
-const autoHit100 = {name: "autoHit100", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: () => upgradesFunc("autoHit100"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду", title: "Шахтёр с буром"};
-const molot = {name: "molot", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: () => upgradesFunc("molot"), freeUp: false, img: "molot_trasparent_450x450.png", text: "+75 к удару", title: "Отбойник"};
-const molotAuto = {name: "molotAuto", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: () => upgradesFunc("molotAuto"), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60, text: "+100 Автоударов в секунду", title: "Шахтёр с отбойником"}
+const miner_shovel = {name: "miner_shovel", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: () => upgradesFunc("miner_shovel"), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80};
+const helmet = {name: "helmet", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("helmet"), freeUp: false, img: "helmet5.png"};
+const pickaxe = {name: "pickaxe", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("pickaxe"), freeUp: false, img: "pickaxe_transparent_390x390.png"};
+const miner_pickaxe = {name: "miner_pickaxe", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: () => upgradesFunc("miner_pickaxe"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0};
+const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png"};
+const miner_drill = {name: "miner_drill", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: () => upgradesFunc("miner_drill"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60};
+const jackhammer = {name: "jackhammer", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: () => upgradesFunc("jackhammer"), freeUp: false, img: "molot_trasparent_450x450.png"};
+const miner_jackhammer = {name: "miner_jackhammer", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: () => upgradesFunc("miner_jackhammer"), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60}
 
-const upgrades = [hitPlusOne, autoHitOne, profitPlusOne, hitPlusTen, autoHitTen, drill, autoHit100, molot, molotAuto]; //массив с объектами улучшений;
-const upgradesAuto = [autoHitOne, autoHitTen, autoHit100, molotAuto];//массив с объектами улучшений, только автоудары
+const upgrades = [shovel, miner_shovel, helmet, pickaxe, miner_pickaxe, drill, miner_drill, jackhammer, miner_jackhammer]; //массив с объектами улучшений;
+const upgradesAuto = [miner_shovel, miner_pickaxe, miner_drill, miner_jackhammer];//массив с объектами улучшений, только автоудары
 
-const hardness = {
-    name: "hardness", 
+const layer_hardness = {
+    name: "layer_hardness", 
     value: 1, 
     valueStep: 0.01,
     parameter: {
@@ -72,20 +70,17 @@ const hardness = {
     },
     cost: 10, 
     level: 0, 
-    func: () => upgradesExpFunc("hardness"), 
-    text: "Твёрдость слоёв: ", 
-    title: "-1% к твёрдости", 
-    description: "Твёрдость каждого слоя становится ниже "
+    func: () => upgradesExpFunc("layer_hardness")
 };
-const profit = {name: "profit", value: 1, valueStep: 0.01, parameter:{type: "%", step: 1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("profit"), text: "Прибыль добычи: ", title: "+1% к прибыли", description: "При каждой добыче вы будете получать больше прибыли "};
-const costPump = {name: "costPump", value: 1, valueStep: -0.01, parameter:{type: "%", step: -1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("costPump"), text: "Цена улучшений: ", title: "-1% к цене улучшений", description: "Стоимость всех улучшений за монеты снизится на 1% "};
-const autoBonus = {name: "autoBonus", value: 11, valueStep: -1, parameter:{type: "s", step: -1, value: 11}, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("autoBonus"), text: "Длительность автобонуса: ", title: "-1s ко времени автобонуса", description: "Автоматическое получение бонуса по истечении времени"};
-const percentMoney = {name: "percentMoney", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, func: () => upgradesExpFunc("percentMoney"), text: "Сохранение денег: ", title: "+1% к сохранению денег", description: "Сохраняет процент денег при перезапуске шахты"};
-const speedAutoHit = {name: "speedAutoHit", value: 0, valueStep: 0.1, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("speedAutoHit"), text: "Скорость автоудара: ", title: "+0.05 к скорости автоудара", description: "Увеличивает скорость автоудара"};
-const expPlus = {name: "expPlus", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("expPlus"), text: "Получение опыта: ", title: "+10% к получаемому опыту", description: "Увеличивает получаемый опыт за шахту"};
+const mining_profit = {name: "mining_profit", value: 1, valueStep: 0.01, parameter:{type: "%", step: 1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("mining_profit")};
+const upgrade_cost = {name: "upgrade_cost", value: 1, valueStep: -0.01, parameter:{type: "%", step: -1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("upgrade_cost")};
+const auto_bonus_duration = {name: "auto_bonus_duration", value: 11, valueStep: -1, parameter:{type: "s", step: -1, value: 11}, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("auto_bonus_duration")};
+const money_keep = {name: "money_keep", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, func: () => upgradesExpFunc("money_keep")};
+const auto_mine_speed = {name: "auto_mine_speed", value: 0, valueStep: 0.1, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("auto_mine_speed")};
+const xp_gain = {name: "xp_gain", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("xp_gain")};
 const lycki = false;
 
-const upgradesExp = [hardness, profit, costPump, autoBonus, percentMoney, speedAutoHit, expPlus];
+const upgradesExp = [layer_hardness, mining_profit, upgrade_cost, auto_bonus_duration, money_keep, auto_mine_speed, xp_gain];
 
 let currentSecondsStart, currentSeconds;
 
@@ -121,7 +116,6 @@ function changeTextsLang(){
         toChangeText(key, getText(key));
     }
 }
-        
 
 
 startingCreationGUI();
@@ -144,7 +138,7 @@ function consBtnReturn(value, parameter) {
             handHit += value;
             break;
         case "autohit":
-            autoHitOne.value += value;
+            miner_shovel.value += value;
             break;
     }
     updateInfo;
@@ -187,8 +181,8 @@ document.addEventListener('DOMContentLoaded', function() {
     bossLevel = Number(localStorage.getItem("bossLevel")) || 1;
     allBonusFree = localStorage.getItem("allBonusFree") === 'false' ? false : true;
     if(!allBonusFree){
-        document.getElementById("bossLevelBonusAllBtnID").disabled = "disabled";
-        document.getElementById("bossLevelBonusAllBtnID").classList.add("disabled");
+        document.getElementById("claim_all").disabled = "disabled";
+        document.getElementById("claim_all").classList.add("disabled");
     }
     moneyChanges(0);
     onOffBtn();
@@ -225,8 +219,8 @@ function tick(time){
         }
         tick.count++;
         for(let i = 0; i < upgradesAuto.length; i++){
-            if(tick.count / (Math.round(upgradesAuto[i].timeHit*10 - speedAutoHit.value*(i+1)*10)/10) % 10 === 0){
-                // myLog(speedAutoHit.value*(i+1)+" i "+ i)
+            if(tick.count / (Math.round(upgradesAuto[i].timeHit*10 - auto_mine_speed.value*(i+1)*10)/10) % 10 === 0){
+                // myLog(auto_mine_speed.value*(i+1)+" i "+ i)
                 hit(upgradesAuto[i]);
             }
         }
@@ -238,13 +232,13 @@ function tick(time){
 tick(performance.now());
 
 function textTimer(){
-    if (!document.getElementById("bossLevelBonusID").hidden && autoBonus.enabled == true && rerollTimer){
+    if (!document.getElementById("bossLevelBonusID").hidden && auto_bonus_duration.enabled == true && rerollTimer){
         currentSeconds = new Date().getSeconds();
-        let raznica = autoBonus.value - (currentSeconds - currentSecondsStart);
+        let raznica = auto_bonus_duration.value - (currentSeconds - currentSecondsStart);
         if(raznica > 60){raznica -= 60}
-        toChangeText("timeID", "Автовыбор через: " + raznica + " секунд")
+        toChangeText("autoSelectValue", raznica);
     } else {
-        toChangeText("timeID", "");
+        toChangeText("autoSelectValue", "");
     }
 }
 
@@ -297,8 +291,9 @@ function startingCreationGUI(){
                     document.getElementById(id+"ImgID").src = "img/" + upgrades[i].img;
                     toStyle("#"+id+"ImgID", "filter", "grayscale(50%)");
                 toCreateTag("#"+id+"ID", "div", id+"InfoID", "sideMenuElementInfo", "", errorCode);
-                    toCreateTag("#"+id+"InfoID", "div", id+"TitleID", "sideMenuElementTitle", upgrades[i].title, errorCode);
-                    toCreateTag("#"+id+"InfoID", "div", id+"DescriptionID", "sideMenuElementDescription", upgrades[i].text, errorCode)
+                    toCreateTag("#"+id+"InfoID", "div", id, "sideMenuElementTitle", "", errorCode);
+                    toCreateTag("#"+id+"InfoID", "span", id+"_desc", "sideMenuElementDescription", "", errorCode)
+                    toCreateTag("#"+id+"InfoID", "span", id+"ValueID", "sideMenuElementDescription", "", errorCode)
                 toCreateTag("#"+id+"ID", "button", id+"BtnID", "sideMenuElementBtn", "", errorCode);
                     toCreateTag("#"+id+"BtnID", "img", id+"BtnImgID", "coinCl", "", errorCode);
                          document.getElementById(id+"BtnImgID").src = "img/coin.png";
@@ -317,7 +312,7 @@ function startingCreationGUI(){
                     document.getElementById("expImgID").src = "img/exp.png";
                 toCreateTag("#expTitleID", "div", "expID", "moneyTopRightNum", "0", errorCode);
             toCreateTag("#menuForExp", "div", "infoExpID", "centralMenuInfo", "", errorCode);
-                toCreateTag("#infoExpID", "div", "rebootExpDesID", "centralMenuInfoElement", "Если перезапустить шахту сейчас, то можно получить: ", errorCode);
+                toCreateTag("#infoExpID", "span", "prestige_info", "centralMenuInfoElement", "", errorCode);
                 toCreateTag("#infoExpID", "div", "rebootExpID", "centralMenuInfoElement", "", errorCode);
                     toCreateTag("#rebootExpID", "img", "rebootExpImgID", "expCl", "", errorCode);
                         document.getElementById("rebootExpImgID").src = "img/exp.png";
@@ -327,12 +322,13 @@ function startingCreationGUI(){
             toCreateTag("#menuForExp", "div", "infoID", "centralMenuInfo", "", errorCode);
         for(let i = 0; i < upgradesExp.length; i++){
             let id = upgradesExp[i].name;
-                toCreateTag("#infoID", "div", id+"InfoID", "centralMenuInfoElement", upgradesExp[i].text, errorCode);
-                    toCreateTag("#"+id+"InfoID", "div", id+"InfoValueID", "centralMenuInfoElementValue inline-block", "", errorCode);
+                toCreateTag("#infoID", "div", id+"InfoID", "centralMenuInfoElement", "", errorCode);
+                    toCreateTag("#"+id+"InfoID", "span", id, "centralMenuInfoElementValue", "", errorCode);
+                    toCreateTag("#"+id+"InfoID", "span", id+"InfoValueID", "centralMenuInfoElementValue", "", errorCode);
             toCreateTag("#menuForExp", "div", id+"ID", "centralMenuElement inline-block", "", errorCode);
-                toCreateTag("#"+id+"ID", "div", id+"TitleID", "centralMenuElementTitle", upgradesExp[i].title, errorCode); 
+                toCreateTag("#"+id+"ID", "div", id+"_title", "centralMenuElementTitle", "", errorCode); 
                 toCreateTag("#"+id+"ID", "div", id+"LevelID", "btnCloseCircule", "0", errorCode);
-                toCreateTag("#"+id+"ID", "p", id+"DescriptionID", "centralMenuElementDescription", upgradesExp[i].description, errorCode);  
+                toCreateTag("#"+id+"ID", "p", id+"_desc", "centralMenuElementDescription", "", errorCode);  
                 toCreateTag("#"+id+"ID", "button", id+"BtnID", "centralMenuElementBtn", "", errorCode);
                     toCreateTag("#"+id+"BtnID", "img", id+"ImgBtnID", "expCl", "", errorCode);
                         document.getElementById(id+"ImgBtnID").src = "img/exp.png";
@@ -343,15 +339,18 @@ function startingCreationGUI(){
         //бонусное меню
         toCreateTag("body", "div", "bossLevelBonusID", "", "", errorCode);
         toHide("bossLevelBonusID");
-            toCreateTag("#bossLevelBonusID", "div", "bossLevelBonusTitleID", "", "Доступен бонус!", errorCode);
+            toCreateTag("#bossLevelBonusID", "div", "bonus_available", "", "Доступен бонус!", errorCode);
             toCreateTag("#bossLevelBonusID", "div", "timeID", "", "", errorCode);
+                toCreateTag("#timeID", "span", "auto_select", "", "", errorCode);
+                toCreateTag("#timeID", "span", "autoSelectValue", "", "", errorCode);
+                toCreateTag("#timeID", "span", "auto_select_second", "", "", errorCode);
             for(let i = 0; i < 3; i++){
                 toCreateTag("#bossLevelBonusID", "div", "bossLevelBonusContainerID"+i, "bonusContainer", "", errorCode);
                     toCreateTag("#bossLevelBonusContainerID"+i, "img", "bossLevelBonusIMGID"+i, "bossLevelBonusIMG", "", errorCode);    
             }
             toCreateTag("#bossLevelBonusID", "div", "bossLevelBonusConteinerRerollID", "", "", errorCode)
-            toCreateTag("#bossLevelBonusConteinerRerollID", "button", "bossLevelBonusAllBtnID", "bossLevelBonusCls", "Получить всё", errorCode);
-                document.getElementById("bossLevelBonusAllBtnID").onclick = function(){bossLevelBonusBtn("All");};
+            toCreateTag("#bossLevelBonusConteinerRerollID", "button", "claim_all", "bossLevelBonusCls", "Получить всё", errorCode);
+                document.getElementById("claim_all").onclick = function(){bossLevelBonusBtn("All");};
             toCreateTag("#bossLevelBonusConteinerRerollID", "button", "bossLevelBonusRerolBtnID", "bossLevelBonusCls", "", errorCode);
                 document.getElementById("bossLevelBonusRerolBtnID").onclick = function(){reroll();};
                 toCreateTag('#bossLevelBonusRerolBtnID', "img", "bossLevelBonusRerolBtnImgID", "", "", errorCode);
@@ -371,8 +370,8 @@ function reroll(){
             // onClose: (wasShown) => {
                 // if(wasShown){
                     allBonusFree = true
-                    document.getElementById("bossLevelBonusAllBtnID").removeAttribute("disabled");
-                    document.getElementById("bossLevelBonusAllBtnID").classList.remove("disabled");
+                    document.getElementById("claim_all").removeAttribute("disabled");
+                    document.getElementById("claim_all").classList.remove("disabled");
                     toHide("bossLevelBonusRerolBtnID");
                 // } else {
                     // myLog?.('реклама не была показана');
@@ -384,7 +383,6 @@ function reroll(){
 }
 
 function moneyChanges(m){
-    // console.log(m + " - Денег"); //Количество денег на трату
     colorNumbers("moneyID", m < 0 ? "red" : "green");
     money += m;
     toChangeText("moneyID", toCompactNotation(money));
@@ -403,13 +401,13 @@ function startingValues(){
     money = 0;
     bossLevel = 1;
     layer.hp.calc = layer.hp.current = layer.hp.round = layer.hp.base;
-    prize.profitC = prize.profit = 1 * profit.value;
+    prize.profitC = prize.profit = 1 * mining_profit.value;
     handHit = 1;
     autoHit = 0;
     layer.level = 0;
     allBonusFree = true;
-    document.getElementById("bossLevelBonusAllBtnID").removeAttribute("disabled");
-    document.getElementById("bossLevelBonusAllBtnID").classList.remove("disabled");
+    document.getElementById("claim_all").removeAttribute("disabled");
+    document.getElementById("claim_all").classList.remove("disabled");
 
     for (let i = 0; i < upgrades.length; i++){
         upgrades[i].level = 0;
@@ -420,11 +418,11 @@ function startingValues(){
 }
 
 function expCalc(){
-    let expProfit = money*moneyExp + layer.level*layer.expBonus + hitPlusOne.level*hitPlusOne.expBonus + profitPlusOne.level*profitPlusOne.expBonus + autoHitOne.level*autoHitOne.expBonus + hitPlusTen.level*hitPlusTen.expBonus + autoHitTen.level*autoHitTen.expBonus + autoHit100.level*autoHit100.expBonus || 0;
+    let expProfit = money*moneyExp + layer.level*layer.expBonus || 0;
     for(let i = 0; i < upgrades.length; i++){
-        expProfit += upgrades[i].level*upgrades.expBonus;
+        expProfit += upgrades[i].level*upgrades[i].expBonus;
     }
-    expProfit = Math.round(expProfit * expPlus.value);
+    expProfit = Math.round(expProfit * xp_gain.value);
     if(expProfit >=10 || exp >= 10){
         toSeeable("warningID");
     } else {
@@ -438,7 +436,7 @@ function expBonus(){
     expChanges(exp);
     let m = money;
     startingValues();    
-    money = Math.round(m * percentMoney.value);
+    money = Math.round(m * money_keep.value);
     moneyChanges(0);
     ysdk?.adv?.showFullscreenAdv?.();
     toStyle("#ret", "backgroundPositionY", "0%");
@@ -450,7 +448,6 @@ function expBonus(){
 }
 
 function hit(object) {
-
     if (switchHit){
         if(object.typeValue == "hit"){
             damage(object);
@@ -485,7 +482,6 @@ function animationAutoHit(autoDamage){
         element.style.left = Math.floor(Math.random()*100)+"%";
 
     let rotate = Math.floor(Math.random()*80)+1060 + autoDamage.rotate;
-    // if (autoDamage.name == "autoHitTen"){rotate += autoDamage.rotate;}
     element.offsetHeight;
     element.style.transform = "rotate("+rotate+"deg)";
     element.style.top = "65%";
@@ -539,9 +535,9 @@ function finishLevel(){
         toStyle("#cracksID", "height", "0%");
         moneyChanges(Math.floor(prize.profitC * doubleMoney));
         layer.hp.calc = softProgress(layer.hp.calc, -1);
-        layer.hp.round = layer.hp.current = Math.floor(layer.hp.calc * hardness.value);
+        layer.hp.round = layer.hp.current = Math.floor(layer.hp.calc * layer_hardness.value);
         prize.profit = prize.profitC = Math.round(softProgress(prize.profit, -2));
-        prize.profitC = Math.floor(prize.profitC * profit.value);
+        prize.profitC = Math.floor(prize.profitC * mining_profit.value);
         layer.level++;
         layerUp(layerID);
         toStyle("#hpBarID", "width", "100%");
@@ -620,7 +616,7 @@ function upgradesFunc(upgrade) {
                 up = true;
                 moneyChanges(-Math.floor(costC));
                 upgrades[i].cost.calc = Math.round(softProgress(upgrades[i].cost.calc, i-1));
-                upgrades[i].cost.current = Math.round(upgrades[i].cost.calc * costPump.value);
+                upgrades[i].cost.current = Math.round(upgrades[i].cost.calc * upgrade_cost.value);
                 colorNumbers(name+"CostID", "red");
             }
             if(up){
@@ -651,12 +647,12 @@ function upgradesExpFunc(upgrade){
             upgradesExp[i].level++;
             upgradesExp[i].parameter.value += upgradesExp[i].parameter.step;
             upgradesExp[i].value += upgradesExp[i].valueStep;
-            if(upgrade == "costPump"){
+            if(upgrade == "upgrade_cost"){
                 for(let i = 0; i < upgrades.length; i++){
-                    upgrades[i].cost.current = Math.round(upgrades[i].cost.calc * costPump.value);
+                    upgrades[i].cost.current = Math.round(upgrades[i].cost.calc * upgrade_cost.value);
                 }
-            } else if (upgrade == "autoBonus"){
-                if (!autoBonus.enabled){autoBonus.enabled = true};
+            } else if (upgrade == "auto_bonus_duration"){
+                if (!auto_bonus_duration.enabled){auto_bonus_duration.enabled = true};
             } 
         } 
         if (upgradesExp[i].level >= 10){
@@ -698,7 +694,7 @@ function bossLevelBonus(){
 
     for (let i = 0; i < trw.length; i++){
         let valueBtn = trw[i].name;
-        let title = "+1 "+trw[i].title;
+        let title = "+1 "+ getText(trw[i].name);
         let img = trw[i].img;
         if (trw[i] == moneyBonus){
             valueBtn = "moneyBonus";
@@ -715,10 +711,10 @@ function bossLevelBonus(){
     for (let i = 0; i < upgrades.length; i++){
         document.getElementById(upgrades[i].name + "BtnID").disabled = "disabled";
     }
-    if (autoBonus.enabled){
+    if (auto_bonus_duration.enabled){
         currentSecondsStart = new Date().getSeconds();
         rerollTimer = true;
-        timer = setTimeout(function(){document.getElementById("bossLevelBonusID" + Math.floor(Math.random()*trw.length)).click()}, autoBonus.value*1000);
+        timer = setTimeout(function(){document.getElementById("bossLevelBonusID" + Math.floor(Math.random()*trw.length)).click()}, auto_bonus_duration.value*1000);
     }
     if(allBonusFree){
         toHide("bossLevelBonusRerolBtnID");
@@ -747,8 +743,8 @@ function bossLevelBonusBtn(bonus){
         bossLevelBonusBtn.count = 3;
         if(allBonusFree){
             allBonusFree = false;
-            document.getElementById("bossLevelBonusAllBtnID").disabled = "disabled";
-             document.getElementById("bossLevelBonusAllBtnID").classList.add("disabled");
+            document.getElementById("claim_all").disabled = "disabled";
+             document.getElementById("claim_all").classList.add("disabled");
             for (let i = 0; i < trw.length; i++){
                 simulateClick("#bossLevelBonusID" + i);
             }
@@ -788,10 +784,9 @@ function updateInfo(){
         toChangeText(upgrades[i].name+"CostID", toCompactNotation(upgrades[i].cost.current));
         toChangeText(upgrades[i].name+"LevelID", upgrades[i].level);
         if( upgrades[i].typeValue == "auto"){
-            let text = " Автоудар - "
             // if(upgrades[i].value > 1){text = " Автоудар - "}
-            let damage = Math.round(upgrades[i].value*upgrades[i].level/(speedAutoHit.parameter.value*upgrades[i].timeHit)*100)/100;
-            toChangeText(upgrades[i].name+"DescriptionID", text + damage + " hp/s");
+            let damage = Math.round(upgrades[i].value*upgrades[i].level/(auto_mine_speed.parameter.value*upgrades[i].timeHit)*100)/100;
+            toChangeText(upgrades[i].name+"ValueID", damage + " hp/s");
             autoHit += damage;
         }
     } 
