@@ -42,19 +42,19 @@ const shovel = {
     openingLayer: 1, 
     switch: "off", 
     expBonus: 0.05, 
-    func: () => upgradesFunc("shovel"), 
+    func: (b) => upgradesFunc(shovel, b), 
     freeUp: false, 
     img: "shovel_transparent_390x390.png"
 };
 
-const miner_shovel = {name: "miner_shovel", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: () => upgradesFunc("miner_shovel"), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80};
-const helmet = {name: "helmet", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("helmet"), freeUp: false, img: "helmet5.png"};
-const pickaxe = {name: "pickaxe", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: () => upgradesFunc("pickaxe"), freeUp: false, img: "pickaxe_transparent_390x390.png"};
-const miner_pickaxe = {name: "miner_pickaxe", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: () => upgradesFunc("miner_pickaxe"), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0};
-const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: () => upgradesFunc("drill"), freeUp: false, img: "drill_transparent_450x450.png"};
-const miner_drill = {name: "miner_drill", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: () => upgradesFunc("miner_drill"), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60};
-const jackhammer = {name: "jackhammer", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: () => upgradesFunc("jackhammer"), freeUp: false, img: "molot_trasparent_450x450.png"};
-const miner_jackhammer = {name: "miner_jackhammer", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: () => upgradesFunc("miner_jackhammer"), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60}
+const miner_shovel = {name: "miner_shovel", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: (b) => upgradesFunc(miner_shovel, b), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80};
+const helmet = {name: "helmet", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(helmet, b), freeUp: false, img: "helmet5.png"};
+const pickaxe = {name: "pickaxe", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(pickaxe, b), freeUp: false, img: "pickaxe_transparent_390x390.png"};
+const miner_pickaxe = {name: "miner_pickaxe", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: (b) => upgradesFunc(miner_pickaxe, b), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0};
+const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: (b) => upgradesFunc(drill, b), freeUp: false, img: "drill_transparent_450x450.png"};
+const miner_drill = {name: "miner_drill", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: (b) => upgradesFunc(miner_drill, b), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60};
+const jackhammer = {name: "jackhammer", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: (b) => upgradesFunc(jackhammer, b), freeUp: false, img: "molot_trasparent_450x450.png"};
+const miner_jackhammer = {name: "miner_jackhammer", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: (b) => upgradesFunc(miner_jackhammer, b), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60}
 
 const upgrades = [shovel, miner_shovel, helmet, pickaxe, miner_pickaxe, drill, miner_drill, jackhammer, miner_jackhammer]; //массив с объектами улучшений;
 const upgradesAuto = [miner_shovel, miner_pickaxe, miner_drill, miner_jackhammer];//массив с объектами улучшений, только автоудары
@@ -98,7 +98,7 @@ let layerUpIntervalID;
 //         myLog?.("obj - " + obj.message);
 // })
 
-loadLangTexts().then(()=>{textsLoaded = true; myLog(textsLoaded); loadedGame()});
+loadLangTexts().then(()=>{textsLoaded = true; loadedGame()});
 async function loadLangTexts(){
     const texts = await fetch('lang.json').then(r => r.json());
     Object.assign(langTexts, texts);
@@ -214,13 +214,10 @@ window.addEventListener('beforeunload', () => {
 function tick(time){
     tick.count = (tick.count || 0)
     if(time - (tick.lastTime || 0) >= 100){
-        if(!loadImgs && tick.count % 8 === 0){
-            preloaderTextChange();
-        }
+        if(!loadImgs && tick.count % 8 === 0){preloaderTextChange();}
         tick.count++;
         for(let i = 0; i < upgradesAuto.length; i++){
             if(tick.count / (Math.round(upgradesAuto[i].timeHit*10 - auto_mine_speed.value*(i+1)*10)/10) % 10 === 0){
-                // myLog(auto_mine_speed.value*(i+1)+" i "+ i)
                 hit(upgradesAuto[i]);
             }
         }
@@ -332,7 +329,8 @@ function startingCreationGUI(){
                 toCreateTag("#timeID", "span", "auto_select_second", "", "", errorCode);
             for(let i = 0; i < 3; i++){
                 toCreateTag("#bossLevelBonusID", "div", "bossLevelBonusContainerID"+i, "bonusContainer", "", errorCode);
-                    toCreateTag("#bossLevelBonusContainerID"+i, "img", "bossLevelBonusIMGID"+i, "bossLevelBonusIMG", "", errorCode);    
+                    toCreateTag("#bossLevelBonusContainerID"+i, "img", "bossLevelBonusIMGID"+i, "bossLevelBonusIMG", "", errorCode);
+                    toCreateTag("#bossLevelBonusContainerID"+i, "span", "bossLevelBonusValueID"+i, "bossLevelBonusValue", errorCode);  
             }
             toCreateTag("#bossLevelBonusID", "div", "bossLevelBonusConteinerRerollID", "", "", errorCode)
             toCreateTag("#bossLevelBonusConteinerRerollID", "button", "claim_all", "bossLevelBonusCls", "Получить всё", errorCode);
@@ -542,9 +540,11 @@ function openingLayerUp(){
 }
 
 function onOffBtn(){
+            // myLog(1)
     for (let i = 0; i < upgrades.length; i++){
-        let disBtn = document.getElementById(upgrades[i].name + "BtnID");
-        money >= upgrades[i].cost.current && upgrades[i].switch == "on" ? disBtn.removeAttribute("disabled") : disBtn.disabled="disabled";
+        const id = upgrades[i].name + "BtnID";
+        const bool = !(money >= upgrades[i].cost.current && upgrades[i].switch == "on");
+        DOM.elDisabled(id, bool)
     }
     for (let i = 0; i < upgradesExp.length; i++){
         let disBtn = document.getElementById(upgradesExp[i].name + "BtnID");
@@ -555,50 +555,46 @@ function onOffBtn(){
 function switchingElementMenu(switchType, btn){
     if(switchType){
         btn.switch = "on";
-        document.getElementById(btn.name+"ID").classList.remove("disabled");
+        DOM.id(btn.name+"ID").classList.remove("disabled");
         toStyle("#"+btn.name+"ImgID", "filter", "grayscale(0%)");
     } else {
         btn.switch = "off";
-        document.getElementById(btn.name+"ID").classList.add("disabled");
+        DOM.id(btn.name+"ID").classList.add("disabled");
         toStyle("#"+btn.name+"ImgID", "filter", "grayscale(50%)");
     }
     onOffBtn();
+    // myLog("switch")
 }
 
-function upgradesFunc(upgrade) {
-    let up = false;
-    for(let i = 0; i < upgrades.length; i++){
-        let name = upgrades[i].name;
-        let freeUp = upgrades[i].freeUp;
-        let costC = upgrades[i].cost.current;
-        let typeValue = upgrades[i].typeValue;
-        let value = upgrades[i].value;
+function upgradesFunc(item, bool) {
+    let name = item.name;
+    // let freeUp = item.freeUp;
+    let cost = item.cost;
+    let typeValue = item.typeValue;
+    let value = item.value;
 
-        if (upgrade == name){
-            if(freeUp){
-                up = true;
-                upgrades[i].freeUp = false;
-            } else if(money >= costC){
-                up = true;
-                moneyChanges(-Math.floor(costC));
-                upgrades[i].cost.calc = Math.round(softProgress(upgrades[i].cost.calc, i-1));
-                upgrades[i].cost.current = Math.round(upgrades[i].cost.calc * upgrade_cost.value);
-                colorNumbers(name+"CostID", "red");
-            }
-            if(up){
-                switch(typeValue){
-                    case "hit":
-                        handHit += value;
-                        break;
-                    case "profit":
-                        prize.profit++;
-                        prize.profitC++;
-                        break;
-                }
-                upgrades[i].level++;
-                colorNumbers(name+"LevelID", "green");
-            }  
+    if(bool){
+        up();
+        // item.freeUp = false;
+    } else if(money >= cost.current){
+        up();
+        moneyChanges(-Math.floor(cost.current));
+        cost.calc = Math.round(softProgress(cost.calc, -1));// было i-1 и сейчас пока что работает криво надо исправить!
+        cost.current = Math.round(cost.calc * upgrade_cost.value);
+        colorNumbers(name+"CostID", "red");
+    }
+    function up(){
+        switch(typeValue){
+            case "hit":
+                handHit += value;
+                break;
+            case "profit":
+                prize.profit++;
+                prize.profitC++;
+                break;
         }
+        item.level++;
+        colorNumbers(name+"LevelID", "green");
     }
     updateInfo();
 }
@@ -660,33 +656,29 @@ function bossLevelBonus(){
 
     for (let i = 0; i < trw.length; i++){
         let valueBtn = trw[i].name;
-        let title = "+1 "+ getText(trw[i].name);
+        let title = "+1 "+ getText(valueBtn);
         let img = trw[i].img;
         if (trw[i] == moneyBonus){
             valueBtn = "moneyBonus";
             title = "+"+ toCompactNotation(trw[i]) + " Монет!";
             img = "coin.png";
         }
-        document.getElementById("bossLevelBonusContainerID"+i).append(
-            Object.assign(document.createElement('button'), {className: "bossLevelBonusCls", id: "bossLevelBonusID" + i,  innerHTML:title, value: valueBtn, onclick: function(){bossLevelBonusBtn(this);}})
-        )
-        document.getElementById("bossLevelBonusIMGID"+i).src = "img/" + img;
+        const id = "bossLevelBonusIMGID"+i;
+        DOM.id(id).src = "img/" + img;
+        DOM.id(id).onclick = ()=> bossLevelBonusBtn(valueBtn);
+        toChangeText("bossLevelBonusValueID"+i, title);
     }
     switchsHit(false);
     bossBonus = true;
     for (let i = 0; i < upgrades.length; i++){
-        document.getElementById(upgrades[i].name + "BtnID").disabled = "disabled";
+        DOM.elDisabled(upgrades[i].name + "BtnID", true);
     }
     if (auto_bonus_duration.enabled){
         currentSecondsStart = new Date().getSeconds();
         rerollTimer = true;
-        timer = setTimeout(function(){document.getElementById("bossLevelBonusID" + Math.floor(Math.random()*trw.length)).click()}, auto_bonus_duration.value*1000);
+        timer = setTimeout(function(){document.getElementById("bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)).click()}, auto_bonus_duration.value*1000);
     }
-    if(allBonusFree){
-        toHide("bossLevelBonusRerolBtnID");
-    } else {
-        toSeeable("bossLevelBonusRerolBtnID");
-    }
+    DOM.elHide("bossLevelBonusRerolBtnID", allBonusFree);
 }
 
 function bossLevelBonusRandom(switchsOn){
@@ -706,30 +698,22 @@ function bossLevelBonusRandom(switchsOn){
 function bossLevelBonusBtn(bonus){
     clearTimeout(timer);
     if(bonus === "All"){
-        bossLevelBonusBtn.count = 3;
         if(allBonusFree){
             allBonusFree = false;
-            document.getElementById("claim_all").disabled = "disabled";
-             document.getElementById("claim_all").classList.add("disabled");
+            DOM.elDisabled("claim_all", true);
+            DOM.id("claim_all").classList.add("disabled");
             for (let i = 0; i < trw.length; i++){
-                simulateClick("#bossLevelBonusID" + i);
+                simulateClick("#bossLevelBonusContainerID" + i);
             }
         } 
-    } else if(bonus.value == "moneyBonus"){
+    } else if(bonus == "moneyBonus"){
         moneyChanges(Math.floor(moneyBonus));
     } else {
         for (let i = 0; i < upgrades.length; i++){
-            if (bonus.value == upgrades[i].name){
-                upgrades[i].freeUp = true;
-                upgrades[i].func();
+            if (bonus == upgrades[i].name){
+                // upgrades[i].freeUp = true;
+                upgrades[i].func(true);
             } 
-        }
-    }
-    if(bossLevelBonusBtn.count > 0){
-        bossLevelBonusBtn.count--;
-    } else {
-        for (let i = 0; i < trw.length; i++){
-            document.getElementById("bossLevelBonusID" + i).remove();
         }
     }
     bossBonus = false;
@@ -738,11 +722,10 @@ function bossLevelBonusBtn(bonus){
 }
 
 function menuTreePump(open){
-    open ? toSeeable("menuForExpBack") : toHide("menuForExpBack");
+    DOM.elHide("menuForExpBack", open);
 }
 
 function updateInfo(){
-    onOffBtn();
     toChangeText("prizeID", toCompactNotation(prize.profitC * doubleMoney));
     toChangeText("depthLevelID", layer.level);
     autoHit = 0;
