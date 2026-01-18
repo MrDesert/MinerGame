@@ -1,0 +1,10 @@
+{
+    "menuForCoins": {
+        "Parent": "ret",
+        "Class": "sideMenuLeft"
+    },
+    "upgrades": {
+        "Parent": "menuForCoins",  
+        "Class": "sideMenuTitle"
+    }
+}

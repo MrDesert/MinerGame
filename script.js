@@ -1,6 +1,8 @@
 let langGame = "en";
 const langTexts = {};
 let textsLoaded = false;
+const HTMLs = {};
+let HTMLLoaded = false;
 let loadImgs = false;
 
 let money, handHit, autoHit;
@@ -98,6 +100,25 @@ let layerUpIntervalID;
 //         myLog?.("obj - " + obj.message);
 // })
 
+loadHTMLs().then(()=>{
+    HTMLLoaded = true; 
+    generateHTML().then(()=>{
+        startingCreationGUI().then(()=>{
+            startingValues();
+        })
+    })
+});
+async function loadHTMLs(){
+    const load = await fetch('HTML.json').then(r => r.json());
+    Object.assign(HTMLs, load);
+}
+function generateHTML(){
+    for(const key in HTMLs){
+        console.log(key);
+        console.log(HTMLs[key]);
+        DOM.Create({Parent: HTMLs[key]?.Parent, Id: key, Class: HTMLs[key]?.Class});
+    }
+}
 loadLangTexts().then(()=>{textsLoaded = true; loadedGame()});
 async function loadLangTexts(){
     const texts = await fetch('lang.json').then(r => r.json());
@@ -118,28 +139,19 @@ function changeTextsLang(){
 }
 
 
-startingCreationGUI();
-startingValues();
-moneyChanges(0);
+// startingCreationGUI();
+// startingValues();
+finance(0);
 updateInfo();
 
 consoleCreateBtnsCP(["coins", "exp", "hit", "autohit"])//создание панели управления в консоле
 
 function consBtnReturn(value, parameter) {
-    myLog?.(parameter + " " + value);
     switch(parameter){
-        case "coins":
-            moneyChanges(value);
-            break;
-        case "exp":
-            expChanges(value);
-            break;
-        case "hit":
-            handHit += value;
-            break;
-        case "autohit":
-            miner_shovel.value += value;
-            break;
+        case "coins": finance(value); break;
+        case "exp": expChanges(value); break;
+        case "hit": handHit += value; break;
+        case "autohit": miner_shovel.value += value; break;
     }
     updateInfo;
 }
@@ -184,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById("claim_all").disabled = "disabled";
         document.getElementById("claim_all").classList.add("disabled");
     }
-    moneyChanges(0);
+    finance(0);
     onOffBtn();
     openingLayerUp();
     toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
@@ -229,13 +241,13 @@ function tick(time){
 tick(performance.now());
 
 function textTimer(){
-    if (!document.getElementById("bossLevelBonusID").hidden && auto_bonus_duration.enabled == true && rerollTimer){
+    if(HTMLLoaded){
+    if (auto_bonus_duration.enabled == true && rerollTimer && !document.getElementById("bossLevelBonusID").hidden){
         currentSeconds = new Date().getSeconds();
         let raznica = auto_bonus_duration.value - (currentSeconds - currentSecondsStart);
         if(raznica > 60){raznica -= 60}
         toChangeText("autoSelectValue", raznica);
-    } else {
-        toChangeText("autoSelectValue", "");
+    } else {toChangeText("autoSelectValue", "");}
     }
 }
 
@@ -245,13 +257,13 @@ function preloaderTextChange(){
 }
 
 window.addEventListener('blur', ()=> {
-    toSeeable("blurID");
+    DOM.Hide("blurID", false);
     switchHit = false;
     ysdk?.features?.GameplayAPI?.stop?.();
 })
 
 window.addEventListener('focus', ()=>{
-    toHide("blurID");
+    DOM.Hide("blurID");
     switchHit = !bossBonus;
     if (sdkLoad && resurses){
         ysdk.features?.GameplayAPI?.start?.();
@@ -259,86 +271,67 @@ window.addEventListener('focus', ()=>{
 })
 
 function startingCreationGUI(){
-    let errorCode = startingCreationGUI.name
-
-    //Родитель: Имя с селетором; Ребёнок: Тэг, ID, классы, текст; Тех. Инфо: Код поиска. 
     //Боковое меню
-    toCreateTag("body", "div", "menuForCoins", "sideMenuLeft", "", errorCode);
-        toCreateTag("#menuForCoins", "div", "upgrades", "sideMenuTitle", "Улучшения", errorCode);
+    // DOM.Create({Parent: "ret", Id: "menuForCoins", Class: "sideMenuLeft"});
+        // DOM.Create({Parent: "menuForCoins", Id: "upgrades", Class: "sideMenuTitle"});
     for(let i = 0; i < upgrades.length; i++){
         let id = upgrades[i].name;
-        toCreateTag("#menuForCoins", "div", id+"ID", "sideMenuElement disabled", "", errorCode);
-            toCreateTag("#"+id+"ID", "div", id+"IconID", "sideMenuElementIconLeft", "", errorCode);
-                toCreateTag("#"+id+"IconID", "div", id+"LevelID", "sideMenuElementIconParametrTopLeft level", "", errorCode);
-                toCreateTag("#"+id+"IconID", "img", id+"ImgID", "sideMenuElementIconLeftIMG", "", errorCode);
-                    DOM.id(id+"ImgID").src = "img/" + upgrades[i].img;
+        DOM.Create({Parent: "menuForCoins", Id: id+"ID", Class: "sideMenuElement disabled"});
+            DOM.Create({Parent: id+"ID", Id: id+"IconID", Class: "sideMenuElementIconLeft"});
+                DOM.Create({Parent: id+"IconID", Id: id+"LevelID", Class: "sideMenuElementIconParametrTopLeft level"});
+                DOM.Create({Parent: id+"IconID", Tag: "img", Id: id+"ImgID", Class: "sideMenuElementIconLeftIMG", Src: "img/" + upgrades[i].img});
                     toStyle("#"+id+"ImgID", "filter", "grayscale(50%)");
-                toCreateTag("#"+id+"ID", "div", id+"InfoID", "sideMenuElementInfo", "", errorCode);
-                    toCreateTag("#"+id+"InfoID", "div", id, "sideMenuElementTitle", "", errorCode);
-                    toCreateTag("#"+id+"InfoID", "span", id+"_desc", "sideMenuElementDescription", "", errorCode)
-                    toCreateTag("#"+id+"InfoID", "span", id+"ValueID", "sideMenuElementDescription", "", errorCode)
-                toCreateTag("#"+id+"ID", "button", id+"BtnID", "sideMenuElementBtn", "", errorCode);
-                    toCreateTag("#"+id+"BtnID", "img", id+"BtnImgID", "coinCl", "", errorCode);
-                         DOM.id(id+"BtnImgID").src = "img/coin.png";
-                    DOM.id(id+"BtnID").onclick = function(){upgrades[i].func();};
-                    DOM.id(id+"BtnID").disabled = "disabled";
-                    toCreateTag("#"+id+"BtnID", "div", id+"CostID", "inline-block cost", "", errorCode)
+            DOM.Create({Parent: id+"ID", Id: id+"InfoID", Class: "sideMenuElementInfo"});
+                DOM.Create({Parent: id+"InfoID", Id: id, Class: "sideMenuElementTitle"});
+                DOM.Create({Parent: id+"InfoID", Tag: "span", Id: id+"_desc", Class: "sideMenuElementDescription"});
+                DOM.Create({Parent: id+"InfoID", Tag: "span", Id: id+"ValueID", Class: "sideMenuElementDescription"});
+            DOM.Create({Parent: id+"ID", Tag: "button", Id: id+"BtnID", Class: "sideMenuElementBtn", OnClick: function(){upgrades[i].func();}});
+                DOM.Create({Parent: id+"BtnID", Tag: "img", Id: id+"BtnImgID", Class: "coinCl", Src: "img/coin.png", Disabled: "true"});
+                DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
     }
     // Центральное меню
-    toCreateTag("body", "div", "menuForExpBack", "centralMenuBackground", "", errorCode);
-    toHide('menuForExpBack');
-        toCreateTag("#menuForExpBack", "div", "menuForExp", "centralMenu", "", errorCode);
-            toCreateTag("#menuForExp", "button", "menuForExpBtnClose", "btnCloseCircule", "X", errorCode);
-                DOM.id("menuForExpBtnClose").onclick = function(){menuTreePump(false)};
-            toCreateTag("#menuForExp", "div", "expTitleID", "moneyTopRight", "", errorCode);
-                toCreateTag("#expTitleID", "img", "expImgID", "expCl", "", errorCode);
-                    DOM.id("expImgID").src = "img/exp.png";
-                toCreateTag("#expTitleID", "div", "expID", "moneyTopRightNum", "0", errorCode);
-            toCreateTag("#menuForExp", "div", "infoExpID", "centralMenuInfo", "", errorCode);
-                toCreateTag("#infoExpID", "span", "prestige_info", "centralMenuInfoElement", "", errorCode);
-                toCreateTag("#infoExpID", "div", "rebootExpID", "centralMenuInfoElement", "", errorCode);
-                    toCreateTag("#rebootExpID", "img", "rebootExpImgID", "expCl", "", errorCode);
-                        DOM.id("rebootExpImgID").src = "img/exp.png";
-                    toCreateTag("#rebootExpID", "div", "rebootExpCostID", "inline-block cost", "0", errorCode);
-                toCreateTag("#infoExpID", "button", "rebootExpBtnID", "centralMenuElementBtn", "⟳", errorCode);
-                    DOM.id("rebootExpBtnID").onclick = function(){expBonus();};
-            toCreateTag("#menuForExp", "div", "infoID", "centralMenuInfo", "", errorCode);
+    DOM.Create({Parent: "ret", Id: "menuForExpBack", Class: "centralMenuBackground", Hidden: "true"});
+        DOM.Create({Parent: "menuForExpBack", Id: "menuForExp", Class: "centralMenu"});
+            DOM.Create({Parent: "menuForExp", Tag: "button", Id: "menuForExpBtnClose", Class: "btnCloseCircule", Text: "X", OnClick: function(){menuTreePump(true)}});
+            DOM.Create({Parent: "menuForExp", Id: "expTitleID", Class: "moneyTopRight"});
+                DOM.Create({Parent: "expTitleID", Tag: "img", Id: "expImgID", Class: "expCl", Src: "img/exp.png"});
+                DOM.Create({Parent: "expTitleID", Id: "expID", Class: "moneyTopRightNum"});
+            DOM.Create({Parent: "menuForExp", Id: "infoExpID", Class: "centralMenuInfo"});
+                DOM.Create({Parent: "infoExpID", Tag: "span", Id: "prestige_info", Class: "centralMenuInfoElement"});
+                DOM.Create({Parent: "infoExpID", Id: "rebootExpID", Class: "centralMenuInfoElement"});
+                    DOM.Create({Parent: "rebootExpID", Tag: "img", Id: "rebootExpImgID", Class: "expCl", Src: "img/exp.png"});
+                    DOM.Create({Parent: "rebootExpID", Id: "rebootExpCostID", Class: "inline-block cost", Text: "0"});
+                DOM.Create({Parent: "infoExpID", Tag: "button", Id: "rebootExpBtnID", Class: "centralMenuElementBtn", Text: "⟳", OnClick: function(){expBonus()}});
+            DOM.Create({Parent: "menuForExp", Id: "infoID", Class: "centralMenuInfo"});
         for(let i = 0; i < upgradesExp.length; i++){
             let id = upgradesExp[i].name;
-                toCreateTag("#infoID", "div", id+"InfoID", "centralMenuInfoElement", "", errorCode);
-                    toCreateTag("#"+id+"InfoID", "span", id, "centralMenuInfoElementValue", "", errorCode);
-                    toCreateTag("#"+id+"InfoID", "span", id+"InfoValueID", "centralMenuInfoElementValue", "", errorCode);
-            toCreateTag("#menuForExp", "div", id+"ID", "centralMenuElement inline-block", "", errorCode);
-                toCreateTag("#"+id+"ID", "div", id+"_title", "centralMenuElementTitle", "", errorCode); 
-                toCreateTag("#"+id+"ID", "div", id+"LevelID", "btnCloseCircule", "0", errorCode);
-                toCreateTag("#"+id+"ID", "p", id+"_desc", "centralMenuElementDescription", "", errorCode);  
-                toCreateTag("#"+id+"ID", "button", id+"BtnID", "centralMenuElementBtn", "", errorCode);
-                    toCreateTag("#"+id+"BtnID", "img", id+"ImgBtnID", "expCl", "", errorCode);
-                        DOM.id(id+"ImgBtnID").src = "img/exp.png";
-                    DOM.id(id+"BtnID").onclick = function(){upgradesExp[i].func();};
-                    toCreateTag("#"+id+"BtnID", "div", id+"CostID", "inline-block cost", "", errorCode);
+                DOM.Create({Parent: "infoID", Id: id+"InfoID", Class: "centralMenuInfoElement"});
+                    DOM.Create({Parent: id+"InfoID", Tag: "span", Id: id, Class: "centralMenuInfoElementValue"});
+                    DOM.Create({Parent: id+"InfoID", Tag: "span", Id: id+"InfoValueID", Class: "centralMenuInfoElementValue"});
+            DOM.Create({Parent: "menuForExp", Id: id+"ID", Class: "centralMenuElement inline-block"});
+                DOM.Create({Parent: id+"ID", Id: id+"_title", Class: "centralMenuElementTitle"});
+                DOM.Create({Parent: id+"ID", Id: id+"LevelID", Class: "btnCloseCircule", Text: "0"}); 
+                DOM.Create({Parent: id+"ID", Tag: "p", Id: id+"_desc", Class: "centralMenuElementDescription"});
+                DOM.Create({Parent: id+"ID", Tag: "button", Id: id+"BtnID", Class: "centralMenuElementBtn", OnClick: function(){upgradesExp[i].func();}}); 
+                    DOM.Create({Parent: id+"BtnID", Tag: "img", Id: id+"ImgBtnID", Class: "expCl", Src: "img/exp.png"});
+                    DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
         }
-
         //бонусное меню
-        toCreateTag("body", "div", "bossLevelBonusID", "", "", errorCode);
-        toHide("bossLevelBonusID");
-            toCreateTag("#bossLevelBonusID", "div", "bonus_available", "", "Доступен бонус!", errorCode);
-            toCreateTag("#bossLevelBonusID", "div", "timeID", "", "", errorCode);
-                toCreateTag("#timeID", "span", "auto_select", "", "", errorCode);
-                toCreateTag("#timeID", "span", "autoSelectValue", "", "", errorCode);
-                toCreateTag("#timeID", "span", "auto_select_second", "", "", errorCode);
+        DOM.Create({Parent: "ret", Id: "bossLevelBonusID", Hidden: "true"});
+            DOM.Create({Parent: "bossLevelBonusID", Id: "bonus_available", Text: "Доступен бонус!"});
+            DOM.Create({Parent: "bossLevelBonusID", Id: "timeID"});
+                DOM.Create({Parent: "timeID", Tag: "span", Id: "auto_select"});
+                DOM.Create({Parent: "timeID", Tag: "span", Id: "autoSelectValue"});
+                DOM.Create({Parent: "timeID", Tag: "span", Id: "auto_select_second"});
             for(let i = 0; i < 3; i++){
-                toCreateTag("#bossLevelBonusID", "div", "bossLevelBonusContainerID"+i, "bonusContainer", "", errorCode);
-                    toCreateTag("#bossLevelBonusContainerID"+i, "img", "bossLevelBonusIMGID"+i, "bossLevelBonusIMG", "", errorCode);
-                    toCreateTag("#bossLevelBonusContainerID"+i, "span", "bossLevelBonusValueID"+i, "bossLevelBonusValue", errorCode);  
+                DOM.Create({Parent: "bossLevelBonusID", Id: "bossLevelBonusContainerID"+i, Class: "bonusContainer"});
+                    DOM.Create({Parent: "bossLevelBonusContainerID"+i, Tag: "img", Id: "bossLevelBonusIMGID"+i, Class: "bossLevelBonusIMG"});
+                    DOM.Create({Parent: "bossLevelBonusContainerID"+i, Tag: "span", Id: "bossLevelBonusValueID"+i, Class: "bossLevelBonusValue"}); 
             }
-            toCreateTag("#bossLevelBonusID", "div", "bossLevelBonusConteinerRerollID", "", "", errorCode)
-            toCreateTag("#bossLevelBonusConteinerRerollID", "button", "claim_all", "bossLevelBonusCls", "Получить всё", errorCode);
-                DOM.id("claim_all").onclick = function(){bossLevelBonusBtn("All");};
-            toCreateTag("#bossLevelBonusConteinerRerollID", "button", "bossLevelBonusRerolBtnID", "bossLevelBonusCls", "", errorCode);
-                DOM.id("bossLevelBonusRerolBtnID").onclick = function(){reroll();};
-                toCreateTag('#bossLevelBonusRerolBtnID', "img", "bossLevelBonusRerolBtnImgID", "", "", errorCode);
-                    DOM.id("bossLevelBonusRerolBtnImgID").src = "img/ad.png";
+            DOM.Create({Parent: "bossLevelBonusID", Id: "bossLevelBonusConteinerRerollID"});
+                DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claim_all", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All");}});
+                DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
+                    DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
     updateInfo();
 }
 
@@ -349,15 +342,15 @@ function reroll(){
         callbacks: {
             onRewarded: () => {
                 allBonusFree = true;
-                DOM.elDisabled("claim_all", false);
-                DOM.id("claim_all").classList.remove("disabled");
-                toHide("bossLevelBonusRerolBtnID");
+                DOM.Disable("claim_all", false);
+                DOM.Id("claim_all").classList.remove("disabled");
+                DOM.Hide("bossLevelBonusRerolBtnID");
             }
         }
     });
 }
 
-function moneyChanges(m){
+function finance(m){
     colorNumbers("moneyID", m < 0 ? "red" : "green");
     money += m;
     toChangeText("moneyID", toCompactNotation(money));
@@ -380,8 +373,8 @@ function startingValues(){
     autoHit = 0;
     layer.level = 0;
     allBonusFree = true;
-    DOM.elDisabled("claim_all", false);
-    DOM.id("claim_all").classList.remove("disabled");
+    DOM.Disable("claim_all", false);
+    DOM.Id("claim_all").classList.remove("disabled");
 
     for (let i = 0; i < upgrades.length; i++){
         upgrades[i].level = 0;
@@ -397,7 +390,7 @@ function expCalc(){
         expProfit += upgrades[i].level*upgrades[i].expBonus;
     }
     expProfit = Math.round(expProfit * xp_gain.value);
-    DOM.elHide("warningID", !(expProfit >=10 || exp >= 10))
+    DOM.Hide("warningID", !(expProfit >=10 || exp >= 10))
     return expProfit;
 }
 
@@ -407,7 +400,7 @@ function expBonus(){
     let m = money;
     startingValues();    
     money = Math.round(m * money_keep.value);
-    moneyChanges(0);
+    finance(0);
     ysdk?.adv?.showFullscreenAdv?.();
     toStyle("#ret", "backgroundPositionY", "0%");
     toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current+ "%");
@@ -446,30 +439,28 @@ function damage(object){
 
 function animationAutoHit(autoDamage){
     let id = "imgID" + countAutoHit++;
-    toCreateTag("body", "img", id, "imgAutoHit", "", "hit-function");
-    let element = DOM.id(id);
+    DOM.Create({Parent: "ret", Tag: "img", Id: id, Class: "imgAutoHit"});
+    let rotate = Math.floor(Math.random()*80)+1060 + autoDamage.rotate;
+    let element = DOM.Id(id);
         element.src = "img/"+autoDamage.autoImg;
         element.style.left = Math.floor(Math.random()*100)+"%";
-
-    let rotate = Math.floor(Math.random()*80)+1060 + autoDamage.rotate;
-    element.offsetHeight;
-    element.style.transform = "rotate("+rotate+"deg)";
-    element.style.top = "65%";
-
-    element.addEventListener('transitionend', function opacity(e){
-        if (e.propertyName === 'top'){
-            element.style.opacity = "0%";
-            element.classList.add("death");
-            damage(autoDamage);
-        } else if (e.propertyName === 'opacity'){
-            element.remove();
-            element.removeEventListener('transitionend', opacity); 
-        }
-    });
+        element.offsetHeight;
+        element.style.transform = "rotate("+rotate+"deg)";
+        element.style.top = "65%";
+        element.addEventListener('transitionend', function opacity(e){
+            if (e.propertyName === 'top'){
+                element.style.opacity = "0%";
+                element.classList.add("death");
+                damage(autoDamage);
+            } else if (e.propertyName === 'opacity'){
+                element.remove();
+                element.removeEventListener('transitionend', opacity); 
+            }
+        });
 }
 
 function trembling(){
-    let id = DOM.id("layerID");
+    let id = DOM.Id("layerID");
     // let instrumets = document.querySelectorAll('.death');
     let random = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%"
     id.style.left = random;
@@ -493,13 +484,13 @@ function switchsHit(bool){
 function finishLevel(){
     if (layer.hp.current <= 0){
         switchsHit(false)
-        let layerID = DOM.id('layerImgID');
+        let layerID = DOM.Id('layerImgID');
             layerID.style.top = "100%";
             layerID.style.transition = "none";
         let death = document.querySelectorAll(".death");
             death.forEach( det => {det.remove()});
         toStyle("#cracksID", "height", "0%");
-        moneyChanges(Math.floor(prize.profitC * doubleMoney));
+        finance(Math.floor(prize.profitC * doubleMoney));
         layer.hp.calc = softProgress(layer.hp.calc, -1);
         layer.hp.round = layer.hp.current = Math.floor(layer.hp.calc * layer_hardness.value);
         prize.profit = prize.profitC = Math.round(softProgress(prize.profit, -2));
@@ -544,7 +535,7 @@ function onOffBtn(){
     for (let i = 0; i < upgrades.length; i++){
         const id = upgrades[i].name + "BtnID";
         const bool = !(money >= upgrades[i].cost.current && upgrades[i].switch == "on");
-        DOM.elDisabled(id, bool)
+        DOM.Disable(id, bool)
     }
     for (let i = 0; i < upgradesExp.length; i++){
         let disBtn = document.getElementById(upgradesExp[i].name + "BtnID");
@@ -555,11 +546,11 @@ function onOffBtn(){
 function switchingElementMenu(switchType, btn){
     if(switchType){
         btn.switch = "on";
-        DOM.id(btn.name+"ID").classList.remove("disabled");
+        DOM.Id(btn.name+"ID").classList.remove("disabled");
         toStyle("#"+btn.name+"ImgID", "filter", "grayscale(0%)");
     } else {
         btn.switch = "off";
-        DOM.id(btn.name+"ID").classList.add("disabled");
+        DOM.Id(btn.name+"ID").classList.add("disabled");
         toStyle("#"+btn.name+"ImgID", "filter", "grayscale(50%)");
     }
     onOffBtn();
@@ -568,30 +559,19 @@ function switchingElementMenu(switchType, btn){
 
 function upgradesFunc(item, bool) {
     let name = item.name;
-    // let freeUp = item.freeUp;
     let cost = item.cost;
-    let typeValue = item.typeValue;
-    let value = item.value;
-
-    if(bool){
-        up();
-        // item.freeUp = false;
+    if(bool){up();
     } else if(money >= cost.current){
         up();
-        moneyChanges(-Math.floor(cost.current));
-        cost.calc = Math.round(softProgress(cost.calc, -1));// было i-1 и сейчас пока что работает криво надо исправить!
+        finance(-Math.floor(cost.current));
+        cost.calc = Math.round(softProgress(cost.calc, upgrades.indexOf(item)-1));
         cost.current = Math.round(cost.calc * upgrade_cost.value);
         colorNumbers(name+"CostID", "red");
     }
     function up(){
-        switch(typeValue){
-            case "hit":
-                handHit += value;
-                break;
-            case "profit":
-                prize.profit++;
-                prize.profitC++;
-                break;
+        switch(item.typeValue){
+            case "hit": handHit += item.value; break;
+            case "profit": prize.profit++; prize.profitC++; break;
         }
         item.level++;
         colorNumbers(name+"LevelID", "green");
@@ -627,7 +607,7 @@ function upgradesExpFunc(upgrade){
 
 
 function bossLevelBonus(){
-    toSeeable("bossLevelBonusID");
+    DOM.Hide("bossLevelBonusID", false);
     moneyBonus = 0;
     trw = [];
     let switchsOn = 0;
@@ -664,21 +644,21 @@ function bossLevelBonus(){
             img = "coin.png";
         }
         const id = "bossLevelBonusIMGID"+i;
-        DOM.id(id).src = "img/" + img;
-        DOM.id(id).onclick = ()=> bossLevelBonusBtn(valueBtn);
+        DOM.Id(id).src = "img/" + img;
+        DOM.Id(id).onclick = ()=> bossLevelBonusBtn(valueBtn);
         toChangeText("bossLevelBonusValueID"+i, title);
     }
     switchsHit(false);
     bossBonus = true;
     for (let i = 0; i < upgrades.length; i++){
-        DOM.elDisabled(upgrades[i].name + "BtnID", true);
+        DOM.Disable(upgrades[i].name + "BtnID", true);
     }
     if (auto_bonus_duration.enabled){
         currentSecondsStart = new Date().getSeconds();
         rerollTimer = true;
         timer = setTimeout(function(){document.getElementById("bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)).click()}, auto_bonus_duration.value*1000);
     }
-    DOM.elHide("bossLevelBonusRerolBtnID", allBonusFree);
+    DOM.Hide("bossLevelBonusRerolBtnID", allBonusFree);
 }
 
 function bossLevelBonusRandom(switchsOn){
@@ -700,14 +680,14 @@ function bossLevelBonusBtn(bonus){
     if(bonus === "All"){
         if(allBonusFree){
             allBonusFree = false;
-            DOM.elDisabled("claim_all", true);
-            DOM.id("claim_all").classList.add("disabled");
+            DOM.Disable("claim_all", true);
+            DOM.Id("claim_all").classList.add("disabled");
             for (let i = 0; i < trw.length; i++){
                 simulateClick("#bossLevelBonusContainerID" + i);
             }
         } 
     } else if(bonus == "moneyBonus"){
-        moneyChanges(Math.floor(moneyBonus));
+        finance(Math.floor(moneyBonus));
     } else {
         for (let i = 0; i < upgrades.length; i++){
             if (bonus == upgrades[i].name){
@@ -718,14 +698,15 @@ function bossLevelBonusBtn(bonus){
     }
     bossBonus = false;
     switchsHit(true);
-    toHide("bossLevelBonusID");
+    DOM.Hide("bossLevelBonusID");
 }
 
 function menuTreePump(open){
-    DOM.elHide("menuForExpBack", open);
+    DOM.Hide("menuForExpBack", open);
 }
 
 function updateInfo(){
+    if(HTMLLoaded){
     toChangeText("prizeID", toCompactNotation(prize.profitC * doubleMoney));
     toChangeText("depthLevelID", layer.level);
     autoHit = 0;
@@ -758,4 +739,5 @@ function updateInfo(){
     toChangeText("autoHitInfoID", Math.round(autoHit*100)/100 + " hp/s");
     toChangeText("hpID", Math.floor(layer.hp.current));
     toChangeText("rebootExpCostID", expCalc());
+    }
 }
