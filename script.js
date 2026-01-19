@@ -4,6 +4,7 @@ let textsLoaded = false;
 const HTMLs = {};
 let HTMLLoaded = false;
 let loadImgs = false;
+let DOMContentLoaded = false;
 
 let money, handHit, autoHit;
 let allBonusFree = true;
@@ -58,7 +59,8 @@ const miner_drill = {name: "miner_drill", cost: {base: 120000, calc: 120000, cur
 const jackhammer = {name: "jackhammer", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: (b) => upgradesFunc(jackhammer, b), freeUp: false, img: "molot_trasparent_450x450.png"};
 const miner_jackhammer = {name: "miner_jackhammer", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: (b) => upgradesFunc(miner_jackhammer, b), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60}
 
-const upgrades = [shovel, miner_shovel, helmet, pickaxe, miner_pickaxe, drill, miner_drill, jackhammer, miner_jackhammer]; //массив с объектами улучшений;
+const upgrades2 = [shovel, miner_shovel, helmet, pickaxe, miner_pickaxe, drill, miner_drill, jackhammer, miner_jackhammer]; //массив с объектами улучшений;
+window.upgrades2 = upgrades2;
 const upgradesAuto = [miner_shovel, miner_pickaxe, miner_drill, miner_jackhammer];//массив с объектами улучшений, только автоудары
 
 const layer_hardness = {
@@ -83,6 +85,7 @@ const xp_gain = {name: "xp_gain", value: 1, valueStep: 0.1, parameter:{type: "%"
 const lycki = false;
 
 const upgradesExp = [layer_hardness, mining_profit, upgrade_cost, auto_bonus_duration, money_keep, auto_mine_speed, xp_gain];
+window.upgradesExp = upgradesExp;
 
 let currentSecondsStart, currentSeconds;
 
@@ -101,10 +104,13 @@ let layerUpIntervalID;
 // })
 
 loadHTMLs().then(()=>{
-    HTMLLoaded = true; 
     generateHTML().then(()=>{
         startingCreationGUI().then(()=>{
+            HTMLLoaded = true; 
+            loadLocalStorage();
             startingValues();
+            finance(0);
+            updateInfo();
         })
     })
 });
@@ -112,11 +118,39 @@ async function loadHTMLs(){
     const load = await fetch('HTML.json').then(r => r.json());
     Object.assign(HTMLs, load);
 }
-function generateHTML(){
+async function generateHTML(){
     for(const key in HTMLs){
-        console.log(key);
-        console.log(HTMLs[key]);
-        DOM.Create({Parent: HTMLs[key]?.Parent, Id: key, Class: HTMLs[key]?.Class});
+        let isСycle = key.substring(0, 1);
+        if(isСycle == "$"){
+
+            if(isNaN(HTMLs[key].arrayName$)){
+                const array = window[HTMLs[key].arrayName$];
+                let id = key.substring(1);
+                let parent = HTMLs[key]?.Parent;
+                for(let i = 0; i < array.length; i++){
+                    if(HTMLs[key]?.Parent.substring(0, 1) == "_"){
+                        parent = array[i].name + HTMLs[key]?.Parent.substring(1);
+                    } 
+                    if(HTMLs[key]?.Id.substring(0, 1) == "_"){
+                        id = array[i].name + HTMLs[key]?.Id.substring(1); //Не нравиться что используеться .name не универсально скорее всего надо переходить  на глобальный объект и тогда можно получать их имена через key
+                    }
+                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});   
+                }
+            } 
+            // else{
+            //     let i = array;
+            //     console.log(i)
+            // }
+    //         ,
+    // "$_bossLevelBonusContainerID":{
+    //     "arrayName$": 3,
+    //     "Parent": "bossLevelBonusID",
+    //     "Id": "bossLevelBonusContainerID",
+    //     "Class": "bonusContainer"
+    // }
+        }else{
+            DOM.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});
+        }
     }
 }
 loadLangTexts().then(()=>{textsLoaded = true; loadedGame()});
@@ -137,12 +171,6 @@ function changeTextsLang(){
         toChangeText(key, getText(key));
     }
 }
-
-
-// startingCreationGUI();
-// startingValues();
-finance(0);
-updateInfo();
 
 consoleCreateBtnsCP(["coins", "exp", "hit", "autohit"])//создание панели управления в консоле
 
@@ -165,9 +193,15 @@ function loadedGame(load) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    for(let i = 0; i < upgrades.length; i++){
-        if(localStorage.getItem(upgrades[i].name)){
-            Object.assign(upgrades[i], JSON.parse(localStorage.getItem(upgrades[i].name)));
+    DOMContentLoaded = true;
+    loadLocalStorage();
+})
+
+function loadLocalStorage(){
+    if(DOMContentLoaded && HTMLLoaded){
+    for(let i = 0; i < upgrades2.length; i++){
+        if(localStorage.getItem(upgrades2[i].name)){
+            Object.assign(upgrades2[i], JSON.parse(localStorage.getItem(upgrades2[i].name)));
         }
     }
     for(let i = 0; i < upgradesExp.length; i++){
@@ -202,7 +236,8 @@ document.addEventListener('DOMContentLoaded', function() {
     toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
     toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
     updateInfo();
-})
+    }
+}
 
 window.addEventListener('beforeunload', () => {
     localStorage.setItem("money", money);
@@ -215,8 +250,8 @@ window.addEventListener('beforeunload', () => {
     localStorage.setItem("allBonusFree", allBonusFree);
     localStorage.setItem(layer.name, JSON.stringify(layer));
     localStorage.setItem(prize.name, JSON.stringify(prize));
-    for(let i = 0; i < upgrades.length; i++){
-        localStorage.setItem(upgrades[i].name, JSON.stringify(upgrades[i]));
+    for(let i = 0; i < upgrades2.length; i++){
+        localStorage.setItem(upgrades2[i].name, JSON.stringify(upgrades2[i]));
     }
     for(let i = 0; i < upgradesExp.length; i++){
         localStorage.setItem(upgradesExp[i].name, JSON.stringify(upgradesExp[i]));
@@ -270,68 +305,38 @@ window.addEventListener('focus', ()=>{
     }
 })
 
-function startingCreationGUI(){
+async function startingCreationGUI(){
     //Боковое меню
-    // DOM.Create({Parent: "ret", Id: "menuForCoins", Class: "sideMenuLeft"});
-        // DOM.Create({Parent: "menuForCoins", Id: "upgrades", Class: "sideMenuTitle"});
-    for(let i = 0; i < upgrades.length; i++){
-        let id = upgrades[i].name;
-        DOM.Create({Parent: "menuForCoins", Id: id+"ID", Class: "sideMenuElement disabled"});
-            DOM.Create({Parent: id+"ID", Id: id+"IconID", Class: "sideMenuElementIconLeft"});
-                DOM.Create({Parent: id+"IconID", Id: id+"LevelID", Class: "sideMenuElementIconParametrTopLeft level"});
-                DOM.Create({Parent: id+"IconID", Tag: "img", Id: id+"ImgID", Class: "sideMenuElementIconLeftIMG", Src: "img/" + upgrades[i].img});
-                    toStyle("#"+id+"ImgID", "filter", "grayscale(50%)");
-            DOM.Create({Parent: id+"ID", Id: id+"InfoID", Class: "sideMenuElementInfo"});
-                DOM.Create({Parent: id+"InfoID", Id: id, Class: "sideMenuElementTitle"});
-                DOM.Create({Parent: id+"InfoID", Tag: "span", Id: id+"_desc", Class: "sideMenuElementDescription"});
-                DOM.Create({Parent: id+"InfoID", Tag: "span", Id: id+"ValueID", Class: "sideMenuElementDescription"});
-            DOM.Create({Parent: id+"ID", Tag: "button", Id: id+"BtnID", Class: "sideMenuElementBtn", OnClick: function(){upgrades[i].func();}});
-                DOM.Create({Parent: id+"BtnID", Tag: "img", Id: id+"BtnImgID", Class: "coinCl", Src: "img/coin.png", Disabled: "true"});
-                DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
+    for(let i = 0; i < upgrades2.length; i++){
+        let id = upgrades2[i].name;
+        DOM.Create({Parent: id+"IconID", Tag: "img", Id: id+"ImgID", Class: "sideMenuElementIconLeftIMG", Src: "img/" + upgrades2[i].img});
+            toStyle("#"+id+"ImgID", "filter", "grayscale(50%)");
+        DOM.Create({Parent: id+"ID", Tag: "button", Id: id+"BtnID", Class: "sideMenuElementBtn", OnClick: function(){upgrades2[i].func();}});
+            DOM.Create({Parent: id+"BtnID", Tag: "img", Id: id+"BtnImgID", Class: "coinCl", Src: "img/coin.png", Disabled: "true"});
+            DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
     }
     // Центральное меню
-    DOM.Create({Parent: "ret", Id: "menuForExpBack", Class: "centralMenuBackground", Hidden: "true"});
-        DOM.Create({Parent: "menuForExpBack", Id: "menuForExp", Class: "centralMenu"});
-            DOM.Create({Parent: "menuForExp", Tag: "button", Id: "menuForExpBtnClose", Class: "btnCloseCircule", Text: "X", OnClick: function(){menuTreePump(true)}});
-            DOM.Create({Parent: "menuForExp", Id: "expTitleID", Class: "moneyTopRight"});
-                DOM.Create({Parent: "expTitleID", Tag: "img", Id: "expImgID", Class: "expCl", Src: "img/exp.png"});
-                DOM.Create({Parent: "expTitleID", Id: "expID", Class: "moneyTopRightNum"});
-            DOM.Create({Parent: "menuForExp", Id: "infoExpID", Class: "centralMenuInfo"});
-                DOM.Create({Parent: "infoExpID", Tag: "span", Id: "prestige_info", Class: "centralMenuInfoElement"});
-                DOM.Create({Parent: "infoExpID", Id: "rebootExpID", Class: "centralMenuInfoElement"});
-                    DOM.Create({Parent: "rebootExpID", Tag: "img", Id: "rebootExpImgID", Class: "expCl", Src: "img/exp.png"});
-                    DOM.Create({Parent: "rebootExpID", Id: "rebootExpCostID", Class: "inline-block cost", Text: "0"});
-                DOM.Create({Parent: "infoExpID", Tag: "button", Id: "rebootExpBtnID", Class: "centralMenuElementBtn", Text: "⟳", OnClick: function(){expBonus()}});
-            DOM.Create({Parent: "menuForExp", Id: "infoID", Class: "centralMenuInfo"});
-        for(let i = 0; i < upgradesExp.length; i++){
-            let id = upgradesExp[i].name;
-                DOM.Create({Parent: "infoID", Id: id+"InfoID", Class: "centralMenuInfoElement"});
-                    DOM.Create({Parent: id+"InfoID", Tag: "span", Id: id, Class: "centralMenuInfoElementValue"});
-                    DOM.Create({Parent: id+"InfoID", Tag: "span", Id: id+"InfoValueID", Class: "centralMenuInfoElementValue"});
-            DOM.Create({Parent: "menuForExp", Id: id+"ID", Class: "centralMenuElement inline-block"});
-                DOM.Create({Parent: id+"ID", Id: id+"_title", Class: "centralMenuElementTitle"});
-                DOM.Create({Parent: id+"ID", Id: id+"LevelID", Class: "btnCloseCircule", Text: "0"}); 
-                DOM.Create({Parent: id+"ID", Tag: "p", Id: id+"_desc", Class: "centralMenuElementDescription"});
-                DOM.Create({Parent: id+"ID", Tag: "button", Id: id+"BtnID", Class: "centralMenuElementBtn", OnClick: function(){upgradesExp[i].func();}}); 
-                    DOM.Create({Parent: id+"BtnID", Tag: "img", Id: id+"ImgBtnID", Class: "expCl", Src: "img/exp.png"});
-                    DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
-        }
-        //бонусное меню
-        DOM.Create({Parent: "ret", Id: "bossLevelBonusID", Hidden: "true"});
-            DOM.Create({Parent: "bossLevelBonusID", Id: "bonus_available", Text: "Доступен бонус!"});
-            DOM.Create({Parent: "bossLevelBonusID", Id: "timeID"});
-                DOM.Create({Parent: "timeID", Tag: "span", Id: "auto_select"});
-                DOM.Create({Parent: "timeID", Tag: "span", Id: "autoSelectValue"});
-                DOM.Create({Parent: "timeID", Tag: "span", Id: "auto_select_second"});
-            for(let i = 0; i < 3; i++){
-                DOM.Create({Parent: "bossLevelBonusID", Id: "bossLevelBonusContainerID"+i, Class: "bonusContainer"});
-                    DOM.Create({Parent: "bossLevelBonusContainerID"+i, Tag: "img", Id: "bossLevelBonusIMGID"+i, Class: "bossLevelBonusIMG"});
-                    DOM.Create({Parent: "bossLevelBonusContainerID"+i, Tag: "span", Id: "bossLevelBonusValueID"+i, Class: "bossLevelBonusValue"}); 
-            }
-            DOM.Create({Parent: "bossLevelBonusID", Id: "bossLevelBonusConteinerRerollID"});
-                DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claim_all", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All");}});
-                DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
-                    DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
+    DOM.Create({Parent: "menuForExp", Tag: "button", Id: "menuForExpBtnClose", Class: "btnCloseCircule", Text: "X", OnClick: function(){menuTreePump(true)}});
+        DOM.Create({Parent: "expTitleID", Tag: "img", Id: "expImgID", Class: "expCl", Src: "img/exp.png"});
+            DOM.Create({Parent: "rebootExpID", Tag: "img", Id: "rebootExpImgID", Class: "expCl", Src: "img/exp.png"});
+        DOM.Create({Parent: "infoExpID", Tag: "button", Id: "rebootExpBtnID", Class: "centralMenuElementBtn", Text: "⟳", OnClick: function(){expBonus()}});
+            
+    for(let i = 0; i < upgradesExp.length; i++){
+        let id = upgradesExp[i].name;
+        DOM.Create({Parent: id+"ID", Tag: "button", Id: id+"BtnID", Class: "centralMenuElementBtn", OnClick: function(){upgradesExp[i].func();}}); 
+            DOM.Create({Parent: id+"BtnID", Tag: "img", Id: id+"ImgBtnID", Class: "expCl", Src: "img/exp.png"});
+            DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
+    }
+    //Бонусное меню
+    for(let i = 0; i < 3; i++){
+        DOM.Create({Parent: "bossLevelBonusID", Id: "bossLevelBonusContainerID"+i, Class: "bonusContainer"});
+            DOM.Create({Parent: "bossLevelBonusContainerID"+i, Tag: "img", Id: "bossLevelBonusIMGID"+i, Class: "bossLevelBonusIMG"});
+            DOM.Create({Parent: "bossLevelBonusContainerID"+i, Tag: "span", Id: "bossLevelBonusValueID"+i, Class: "bossLevelBonusValue"}); 
+    }
+    DOM.Create({Parent: "bossLevelBonusID", Id: "bossLevelBonusConteinerRerollID"});
+        DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claim_all", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All");}});
+        DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
+            DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
     updateInfo();
 }
 
@@ -376,18 +381,18 @@ function startingValues(){
     DOM.Disable("claim_all", false);
     DOM.Id("claim_all").classList.remove("disabled");
 
-    for (let i = 0; i < upgrades.length; i++){
-        upgrades[i].level = 0;
-        upgrades[i].cost.current = upgrades[i].cost.calc = upgrades[i].cost.base;
-        switchingElementMenu(false, upgrades[i]);
+    for (let i = 0; i < upgrades2.length; i++){
+        upgrades2[i].level = 0;
+        upgrades2[i].cost.current = upgrades2[i].cost.calc = upgrades2[i].cost.base;
+        switchingElementMenu(false, upgrades2[i]);
     }
     openingLayerUp();
 }
 
 function expCalc(){
     let expProfit = money*moneyExp + layer.level*layer.expBonus || 0;
-    for(let i = 0; i < upgrades.length; i++){
-        expProfit += upgrades[i].level*upgrades[i].expBonus;
+    for(let i = 0; i < upgrades2.length; i++){
+        expProfit += upgrades2[i].level*upgrades2[i].expBonus;
     }
     expProfit = Math.round(expProfit * xp_gain.value);
     DOM.Hide("warningID", !(expProfit >=10 || exp >= 10))
@@ -523,18 +528,18 @@ function layerUp(layerID){
 }
 
 function openingLayerUp(){
-    for (let i = 0; i < upgrades.length; i++){
-        if (layer.level >= upgrades[i].openingLayer){
-            switchingElementMenu(true, upgrades[i]);
+    for (let i = 0; i < upgrades2.length; i++){
+        if (layer.level >= upgrades2[i].openingLayer){
+            switchingElementMenu(true, upgrades2[i]);
         }
     }
 }
 
 function onOffBtn(){
             // myLog(1)
-    for (let i = 0; i < upgrades.length; i++){
-        const id = upgrades[i].name + "BtnID";
-        const bool = !(money >= upgrades[i].cost.current && upgrades[i].switch == "on");
+    for (let i = 0; i < upgrades2.length; i++){
+        const id = upgrades2[i].name + "BtnID";
+        const bool = !(money >= upgrades2[i].cost.current && upgrades2[i].switch == "on");
         DOM.Disable(id, bool)
     }
     for (let i = 0; i < upgradesExp.length; i++){
@@ -564,7 +569,7 @@ function upgradesFunc(item, bool) {
     } else if(money >= cost.current){
         up();
         finance(-Math.floor(cost.current));
-        cost.calc = Math.round(softProgress(cost.calc, upgrades.indexOf(item)-1));
+        cost.calc = Math.round(softProgress(cost.calc, upgrades2.indexOf(item)-1));
         cost.current = Math.round(cost.calc * upgrade_cost.value);
         colorNumbers(name+"CostID", "red");
     }
@@ -590,8 +595,8 @@ function upgradesExpFunc(upgrade){
             upgradesExp[i].parameter.value += upgradesExp[i].parameter.step;
             upgradesExp[i].value += upgradesExp[i].valueStep;
             if(upgrade == "upgrade_cost"){
-                for(let i = 0; i < upgrades.length; i++){
-                    upgrades[i].cost.current = Math.round(upgrades[i].cost.calc * upgrade_cost.value);
+                for(let i = 0; i < upgrades2.length; i++){
+                    upgrades2[i].cost.current = Math.round(upgrades2[i].cost.calc * upgrade_cost.value);
                 }
             } else if (upgrade == "auto_bonus_duration"){
                 if (!auto_bonus_duration.enabled){auto_bonus_duration.enabled = true};
@@ -612,11 +617,11 @@ function bossLevelBonus(){
     trw = [];
     let switchsOn = 0;
     let lowCost;
-    for (let i = 0; i < upgrades.length; i++){
-        if(upgrades[i].switch == "on"){
-            moneyBonus += upgrades[i].cost.current;
-            if (!lowCost || lowCost > upgrades[i].cost.current){
-                lowCost = upgrades[i].cost.current;
+    for (let i = 0; i < upgrades2.length; i++){
+        if(upgrades2[i].switch == "on"){
+            moneyBonus += upgrades2[i].cost.current;
+            if (!lowCost || lowCost > upgrades2[i].cost.current){
+                lowCost = upgrades2[i].cost.current;
             }
             switchsOn++;
         }
@@ -650,8 +655,8 @@ function bossLevelBonus(){
     }
     switchsHit(false);
     bossBonus = true;
-    for (let i = 0; i < upgrades.length; i++){
-        DOM.Disable(upgrades[i].name + "BtnID", true);
+    for (let i = 0; i < upgrades2.length; i++){
+        DOM.Disable(upgrades2[i].name + "BtnID", true);
     }
     if (auto_bonus_duration.enabled){
         currentSecondsStart = new Date().getSeconds();
@@ -666,8 +671,8 @@ function bossLevelBonusRandom(switchsOn){
     let test = switchsOn;
     for(let i = 0; i < test; i++){
         if(random - switchsOn <= 0 ){
-            myLog(upgrades[i].name);
-            return upgrades[i];
+            myLog(upgrades2[i].name);
+            return upgrades2[i];
         }  else {
             random -= switchsOn;
             switchsOn--;
@@ -689,10 +694,10 @@ function bossLevelBonusBtn(bonus){
     } else if(bonus == "moneyBonus"){
         finance(Math.floor(moneyBonus));
     } else {
-        for (let i = 0; i < upgrades.length; i++){
-            if (bonus == upgrades[i].name){
+        for (let i = 0; i < upgrades2.length; i++){
+            if (bonus == upgrades2[i].name){
                 // upgrades[i].freeUp = true;
-                upgrades[i].func(true);
+                upgrades2[i].func(true);
             } 
         }
     }
@@ -710,13 +715,13 @@ function updateInfo(){
     toChangeText("prizeID", toCompactNotation(prize.profitC * doubleMoney));
     toChangeText("depthLevelID", layer.level);
     autoHit = 0;
-    for(let i = 0; i < upgrades.length; i++){
-        toChangeText(upgrades[i].name+"CostID", toCompactNotation(upgrades[i].cost.current));
-        toChangeText(upgrades[i].name+"LevelID", upgrades[i].level);
-        if( upgrades[i].typeValue == "auto"){
+    for(let i = 0; i < upgrades2.length; i++){
+        toChangeText(upgrades2[i].name+"CostID", toCompactNotation(upgrades2[i].cost.current));
+        toChangeText(upgrades2[i].name+"LevelID", upgrades2[i].level);
+        if( upgrades2[i].typeValue == "auto"){
             // if(upgrades[i].value > 1){text = " Автоудар - "}
-            let damage = Math.round(upgrades[i].value*upgrades[i].level/(auto_mine_speed.parameter.value*upgrades[i].timeHit)*100)/100;
-            toChangeText(upgrades[i].name+"ValueID", damage + " hp/s");
+            let damage = Math.round(upgrades2[i].value*upgrades2[i].level/(auto_mine_speed.parameter.value*upgrades2[i].timeHit)*100)/100;
+            toChangeText(upgrades2[i].name+"ValueID", damage + " hp/s");
             autoHit += damage;
         }
     } 

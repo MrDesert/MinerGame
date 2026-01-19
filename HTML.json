@@ -6,5 +6,157 @@
     "upgrades": {
         "Parent": "menuForCoins",  
         "Class": "sideMenuTitle"
+    },
+    "$_ID":{
+        "arrayName$": "upgrades2",
+        "Parent": "menuForCoins",
+        "Id": "_ID",
+        "Class": "sideMenuElement disabled"
+    },
+    "$_IconID":{
+        "arrayName$": "upgrades2",
+        "Parent": "_ID",
+        "Id": "_IconID",
+        "Class": "sideMenuElementIconLeft"        
+    },
+    "$_LevelID":{
+        "arrayName$": "upgrades2",
+        "Parent": "_IconID",
+        "Id": "_LevelID",
+        "Class": "sideMenuElementIconParametrTopLeft level"  
+    },
+    "$_InfoID":{
+        "arrayName$": "upgrades2",
+        "Parent": "_ID",
+        "Id": "_InfoID",
+        "Class": "sideMenuElementInfo" 
+    },
+    "$_":{
+        "arrayName$": "upgrades2",
+        "Parent": "_InfoID",
+        "Id": "_",
+        "Class": "sideMenuElementTitle" 
+    },
+    "$__desc":{
+        "arrayName$": "upgrades2",
+        "Parent": "_InfoID",
+        "Id": "__desc",
+        "Tag": "span",
+        "Class": "sideMenuElementDescription" 
+    },
+    "$_ValueID":{
+        "arrayName$": "upgrades2",
+        "Parent": "_InfoID",
+        "Id": "_ValueID",
+        "Tag": "span",
+        "Class": "sideMenuElementDescription" 
+    },
+    "menuForExpBack": {
+        "Parent": "ret",
+        "Class": "centralMenuBackground",
+        "Hidden": "true"
+    },
+    "menuForExp": {
+        "Parent": "menuForExpBack",
+        "Class": "centralMenu"
+    },
+    "expTitleID": {
+        "Parent": "menuForExp",
+        "Class": "moneyTopRight"
+    },
+    "expID": {
+        "Parent": "expTitleID",
+        "Class": "moneyTopRightNum"
+    },
+    "infoExpID": {
+        "Parent": "menuForExp",
+        "Class": "centralMenuInfo"
+    },
+    "prestige_info": {
+        "Parent": "infoExpID",
+        "Tag": "span",
+        "Class": "centralMenuInfoElement"
+    },
+    "rebootExpID": {
+        "Parent": "infoExpID",
+        "Class": "centralMenuInfoElement"
+    },
+    "rebootExpCostID": {
+        "Parent": "rebootExpID",
+        "Class": "inline-block cost",
+        "Text": "0"
+    },
+    "infoID": {
+        "Parent": "menuForExp",
+        "Class": "centralMenuInfo"
+    },
+    "$_InfoID2":{
+        "arrayName$": "upgradesExp",
+        "Parent": "infoID",
+        "Id": "_InfoID",
+        "Class": "centralMenuInfoElement"
+    },
+    "$_2":{
+        "arrayName$": "upgradesExp",
+        "Parent": "_InfoID",
+        "Id": "_",
+        "Tag": "span",
+        "Class": "centralMenuInfoElementValue"
+    },
+    "$_InfoValueID":{
+        "arrayName$": "upgradesExp",
+        "Parent": "_InfoID",
+        "Id": "_InfoValueID",
+        "Tag": "span",
+        "Class": "centralMenuInfoElementValue"
+    },
+    "$_ID2":{
+        "arrayName$": "upgradesExp",
+        "Parent": "menuForExp",
+        "Id": "_ID",
+        "Class": "centralMenuElement inline-block"
+    },
+    "$__title":{
+        "arrayName$": "upgradesExp",
+        "Parent": "_ID",
+        "Id": "__title",
+        "Class": "centralMenuElementTitle"
+    },
+    "$_LevelID2":{
+        "arrayName$": "upgradesExp",
+        "Parent": "_ID",
+        "Id": "_LevelID",
+        "Class": "btnCloseCircule",
+        "Text": "0"
+    },
+    "$__desc2":{
+        "arrayName$": "upgradesExp",
+        "Parent": "_ID",
+        "Id": "__desc",
+        "Tag": "p",
+        "Class": "centralMenuElementDescription"
+    },
+    "bossLevelBonusID": {
+        "Parent": "ret",
+        "Hidden": "true"
+    },
+    "bonus_available": {
+        "Parent": "bossLevelBonusID",
+        "Text": "Доступен бонус!"
+    },
+    "timeID": {
+        "Parent": "bossLevelBonusID"
+    },
+    "auto_select": {
+        "Parent": "timeID",
+        "Tag": "span"
+    },
+    "autoSelectValue": {
+        "Parent": "timeID",
+        "Tag": "span"
+    },
+    "auto_select_second": {
+        "Parent": "timeID",
+        "Tag": "span"
     }
 }
