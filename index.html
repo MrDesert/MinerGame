@@ -4,6 +4,7 @@
         <title>MinerGame</title>
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="main.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
     </head>
     <body id="ret" style="height: 100vh;">
@@ -40,14 +41,14 @@
 
         <div id="blurID" hidden><span id="continue">Продолжить</span></div>
 
-        <footer>© by MrDesert - beta v0.3.2.3</footer>
+        <footer>© by MrDesert - beta v0.3.3.0</footer>
 
 
 <script src="console.js" onload="createConsole(true, 'F2')"></script>
 <script>
     const useYSDK = false;
-    // let resurses = false;
-    // let sdkLoad = false;
+    let resurses = false;
+    let sdkLoad = false;
     // const script = document.createElement('script');
     // script.src = "https://yandex.ru/games/sdk/v2";
     // script.async = true;
@@ -103,7 +104,7 @@
     // myLog?.("Язык - " + YaGames.locale());
 
 if(!useYSDK){
-     setTimeout(function(){loadedGame(true);}, 500);
+     setTimeout(function(){ sdkLoad =true; resurses=true; loadedGame();}, 500);
 }
 
 </script>

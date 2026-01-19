@@ -122,7 +122,6 @@ async function generateHTML(){
     for(const key in HTMLs){
         let isСycle = key.substring(0, 1);
         if(isСycle == "$"){
-
             if(isNaN(HTMLs[key].arrayName$)){
                 const array = window[HTMLs[key].arrayName$];
                 let id = key.substring(1);
@@ -137,17 +136,19 @@ async function generateHTML(){
                     DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});   
                 }
             } 
-            // else{
-            //     let i = array;
-            //     console.log(i)
-            // }
-    //         ,
-    // "$_bossLevelBonusContainerID":{
-    //     "arrayName$": 3,
-    //     "Parent": "bossLevelBonusID",
-    //     "Id": "bossLevelBonusContainerID",
-    //     "Class": "bonusContainer"
-    // }
+            else{
+                let id = key.slice(0, -1);
+                let parent = HTMLs[key]?.Parent;
+                for(let i = 0; i < HTMLs[key].arrayName$; i++){
+                    if(HTMLs[key]?.Parent.slice(-1) == "_"){
+                        parent = HTMLs[key]?.Parent.slice(0, -1) + i;
+                    }
+                    if(HTMLs[key]?.Id.slice(-1) == "_"){
+                        id = HTMLs[key]?.Id.slice(0, -1) + i;
+                    }
+                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});   
+                } 
+            }
         }else{
             DOM.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});
         }
@@ -184,8 +185,10 @@ function consBtnReturn(value, parameter) {
     updateInfo;
 }
 
-function loadedGame(load) {
-    if(load && textsLoaded){
+function loadedGame() {
+    console.log(textsLoaded+" textsLoaded")
+    console.log(sdkLoad+"sdkLoad")
+    if(sdkLoad && textsLoaded){
         document.getElementById("preloaderID").hidden = "hidden";
         loadImgs = true;
         changeTextsLang();
@@ -319,8 +322,7 @@ async function startingCreationGUI(){
     DOM.Create({Parent: "menuForExp", Tag: "button", Id: "menuForExpBtnClose", Class: "btnCloseCircule", Text: "X", OnClick: function(){menuTreePump(true)}});
         DOM.Create({Parent: "expTitleID", Tag: "img", Id: "expImgID", Class: "expCl", Src: "img/exp.png"});
             DOM.Create({Parent: "rebootExpID", Tag: "img", Id: "rebootExpImgID", Class: "expCl", Src: "img/exp.png"});
-        DOM.Create({Parent: "infoExpID", Tag: "button", Id: "rebootExpBtnID", Class: "centralMenuElementBtn", Text: "⟳", OnClick: function(){expBonus()}});
-            
+        DOM.Create({Parent: "infoExpID", Tag: "button", Id: "rebootExpBtnID", Class: "centralMenuElementBtn", Text: "⟳", OnClick: function(){expBonus()}});   
     for(let i = 0; i < upgradesExp.length; i++){
         let id = upgradesExp[i].name;
         DOM.Create({Parent: id+"ID", Tag: "button", Id: id+"BtnID", Class: "centralMenuElementBtn", OnClick: function(){upgradesExp[i].func();}}); 
@@ -328,15 +330,9 @@ async function startingCreationGUI(){
             DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
     }
     //Бонусное меню
-    for(let i = 0; i < 3; i++){
-        DOM.Create({Parent: "bossLevelBonusID", Id: "bossLevelBonusContainerID"+i, Class: "bonusContainer"});
-            DOM.Create({Parent: "bossLevelBonusContainerID"+i, Tag: "img", Id: "bossLevelBonusIMGID"+i, Class: "bossLevelBonusIMG"});
-            DOM.Create({Parent: "bossLevelBonusContainerID"+i, Tag: "span", Id: "bossLevelBonusValueID"+i, Class: "bossLevelBonusValue"}); 
-    }
-    DOM.Create({Parent: "bossLevelBonusID", Id: "bossLevelBonusConteinerRerollID"});
-        DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claim_all", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All");}});
-        DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
-            DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
+    DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claim_all", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All");}});
+    DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
+        DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
     updateInfo();
 }
 
@@ -641,11 +637,11 @@ function bossLevelBonus(){
 
     for (let i = 0; i < trw.length; i++){
         let valueBtn = trw[i].name;
-        let title = "+1 "+ getText(valueBtn);
+        let title = "+1";
         let img = trw[i].img;
         if (trw[i] == moneyBonus){
             valueBtn = "moneyBonus";
-            title = "+"+ toCompactNotation(trw[i]) + " Монет!";
+            title = "+"+toCompactNotation(trw[i]);
             img = "coin.png";
         }
         const id = "bossLevelBonusIMGID"+i;
@@ -659,6 +655,7 @@ function bossLevelBonus(){
         DOM.Disable(upgrades2[i].name + "BtnID", true);
     }
     if (auto_bonus_duration.enabled){
+        DOM.Hide("timeID", false);
         currentSecondsStart = new Date().getSeconds();
         rerollTimer = true;
         timer = setTimeout(function(){document.getElementById("bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)).click()}, auto_bonus_duration.value*1000);
@@ -688,7 +685,7 @@ function bossLevelBonusBtn(bonus){
             DOM.Disable("claim_all", true);
             DOM.Id("claim_all").classList.add("disabled");
             for (let i = 0; i < trw.length; i++){
-                simulateClick("#bossLevelBonusContainerID" + i);
+                simulateClick("#bossLevelBonusIMGID" + i);
             }
         } 
     } else if(bonus == "moneyBonus"){

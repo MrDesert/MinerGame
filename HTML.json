@@ -126,7 +126,7 @@
         "arrayName$": "upgradesExp",
         "Parent": "_ID",
         "Id": "_LevelID",
-        "Class": "btnCloseCircule",
+        "Class": "btnCloseCircule levelForExp",
         "Text": "0"
     },
     "$__desc2":{
@@ -145,7 +145,8 @@
         "Text": "Доступен бонус!"
     },
     "timeID": {
-        "Parent": "bossLevelBonusID"
+        "Parent": "bossLevelBonusID",
+        "Hidden": "true"
     },
     "auto_select": {
         "Parent": "timeID",
@@ -158,5 +159,28 @@
     "auto_select_second": {
         "Parent": "timeID",
         "Tag": "span"
+    },
+    "$bossLevelBonusContainerID_":{
+        "arrayName$": 3,
+        "Parent": "bossLevelBonusID",
+        "Id": "bossLevelBonusContainerID_",
+        "Class": "bonusContainer"
+    },
+    "$bossLevelBonusIMGID_":{
+        "arrayName$": 3,
+        "Parent": "bossLevelBonusContainerID_",
+        "Id": "bossLevelBonusIMGID_",
+        "Tag": "img",
+        "Class": "bossLevelBonusIMG"
+    },
+    "$bossLevelBonusValueID_":{
+        "arrayName$": 3,
+        "Parent": "bossLevelBonusContainerID_",
+        "Id": "bossLevelBonusValueID_",
+        "Tag": "span",
+        "Class": "bossLevelBonusValue"
+    },
+    "bossLevelBonusConteinerRerollID": {
+        "Parent": "bossLevelBonusID"
     }
 }

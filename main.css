@@ -32,8 +32,10 @@
     height: 100%;
     background: #000;
     z-index: 999;
-    font-size: 90px;
+    /* font-size: 90px; */
     color: white;
+    font-size: clamp(52px, 11vw, 84px);
+    font-weight: bold;
 }
 #blurID {
     opacity: 50%;
