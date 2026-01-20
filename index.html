@@ -15,7 +15,7 @@
         </div>
         <div id="hitZoneID" style="position: fixed; height: 100%; width: 100%;" onclick="hit(shovel)"></div>
         <h1>MinerGame</h1>
-        <button id="langBtnID" class="btnCloseCircule" onclick="changeLang()"></button>
+        <button id="langBtnID" class="btnCloseCircule" value="ru" onclick="changeLang(this.value)"></button>
         <h2><span id="currentDepth">Текущая глубина:</span> <span id="depthLevelID">0</span></h2>
 
         <div id="menuID" onclick="menuTreePump(false)"><img id="bookID" class="sideMenuElementIconLeftIMG" src="img/book.png" alt=""><div id="warningID" hidden></div></div>
@@ -37,11 +37,9 @@
             <div id="hpBarID">
             </div>
         </div>
-        
-
         <div id="blurID" hidden><span id="continue">Продолжить</span></div>
 
-        <footer>© by MrDesert - beta v0.3.3.0</footer>
+        <footer>© by MrDesert - beta v0.3.3.0.1</footer>
 
 
 <script src="console.js" onload="createConsole(true, 'F2')"></script>
@@ -49,59 +47,58 @@
     const useYSDK = false;
     let resurses = false;
     let sdkLoad = false;
-    // const script = document.createElement('script');
-    // script.src = "https://yandex.ru/games/sdk/v2";
-    // script.async = true;
 
-    // document.getElementsByTagName('footer')[0].innerHTML = "© MrDesert - v0.3.0.3"; //Заменяю версию для яндекса
-    // document.addEventListener('contextmenu', e => e.preventDefault()); //Отключение контекстного меню на ПКМ
+    const script = document.createElement('script');
+    script.src = "https://yandex.ru/games/sdk/v2";
+    script.async = true;
 
-    // document.head.appendChild(script);
+    document.getElementsByTagName('footer')[0].innerHTML = "© MrDesert - v0.3.3.0"; //Заменяю версию для яндекса
+    document.addEventListener('contextmenu', e => e.preventDefault()); //Отключение контекстного меню на ПКМ
+    document.head.appendChild(script);
     
-    // script.onload = function(){
-    //     myLog?.("script.onload");
-    //     YaGames.init()
-    //         .then(ysdk => {
-    //             myLog?.("язык - " + ysdk.environment?.i18n?.lang); //Запрашиваем язык у YSDK
-    //             document.documentElement.lang = 'ru';
-    //             window.ysdk = ysdk;
-    //             if(window.ysdk){
-    //                 sdkLoad = true;
-    //                 myLog?.("SDK загружен - " + sdkLoad);
-    //             }
-    //         })
-    //         .then(()=>{
-    //             return new Promise((resolve)=>{
-    //                 const chekcInterval = setInterval(()=>{
-    //                     if (sdkLoad && resurses){
-    //                         myLog?.("Загруженны ресурсы и SDK");
-    //                         ysdk.features?.GameplayAPI?.start?.();
-    //                         clearInterval(chekcInterval);
-    //                         resolve();
-    //                     }
-    //                     else if(sdkLoad){myLog?.("Ожидание ресурсов - " + resurses)}
-    //                     else if (resurses){myLog?.("Ожидание SDK - " + sdkLoad)}
-    //                     else{myLog?.("Ожидание ресурсов и CDK");}
-    //                 }, 400);
-    //             })
-    //         })
-    //         .then(()=>{
-                                                        
-                                        
-    //             ysdk.features.LoadingAPI.ready();
-    //         })
-    //         .then(()=>{
-    //             setTimeout(function(){
-    //                 loadedGame(true);}, 500);
-    //         })
-    //         .catch(console.error);
-    // };
-    // window.addEventListener('load', function(){
-    //     resurses = true;
-    //     myLog?.("Ресурсы загруженны - " + resurses);
-    // })
-    
-    // myLog?.("Язык - " + YaGames.locale());
+    script.onload = function(){
+        myLog?.("script.onload");
+        YaGames.init()
+            .then(ysdk => {
+                const langSDK = ysdk.environment?.i18n?.lang; //Запрашиваем язык у YSDK
+                myLog?.("язык - " + ysdk.environment?.i18n?.lang);
+                changeLang(langSDK);
+                document.documentElement.lang = langSDK;
+                window.ysdk = ysdk;
+                if(window.ysdk){
+                    sdkLoad = true;
+                    myLog?.("SDK загружен - " + sdkLoad);
+                }
+            })
+            .then(()=>{
+                return new Promise((resolve)=>{
+                    const chekcInterval = setInterval(()=>{
+                        if (sdkLoad && resurses){
+                            myLog?.("Загруженны ресурсы и SDK");
+                            ysdk.features?.GameplayAPI?.start?.();
+                            clearInterval(chekcInterval);
+                            resolve();
+                        }
+                        else if(sdkLoad){myLog?.("Ожидание ресурсов - " + resurses)}
+                        else if (resurses){myLog?.("Ожидание SDK - " + sdkLoad)}
+                        else{myLog?.("Ожидание ресурсов и CDK");}
+                    }, 400);
+                })
+            })
+            .then(()=>{                 
+                ysdk.features.LoadingAPI.ready();
+            })
+            .then(()=>{
+                setTimeout(function(){
+                    loadedGame();}, 500);
+            })
+            .catch(console.error);
+    };
+    window.addEventListener('load', function(){
+        resurses = true;
+        myLog?.("Ресурсы загруженны - " + resurses);
+    }) 
+
 
 if(!useYSDK){
      setTimeout(function(){ sdkLoad =true; resurses=true; loadedGame();}, 500);
@@ -111,6 +108,8 @@ if(!useYSDK){
         <script src="math.js"></script>
         <script src="https://mrdesert.github.io/Tools/main.js"></script>
         <script src="https://mrdesert.github.io/Tools/DOM.js"></script>
+        <script src="main.js"></script>
+        <script src="DOM.js"></script>
         <script src="script.js"></script>
     </body>
 </html>

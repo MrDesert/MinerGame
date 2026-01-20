@@ -107,10 +107,7 @@ loadHTMLs().then(()=>{
     generateHTML().then(()=>{
         startingCreationGUI().then(()=>{
             HTMLLoaded = true; 
-            loadLocalStorage();
-            startingValues();
-            finance(0);
-            updateInfo();
+            loadedGame()
         })
     })
 });
@@ -154,7 +151,10 @@ async function generateHTML(){
         }
     }
 }
-loadLangTexts().then(()=>{textsLoaded = true; loadedGame()});
+loadLangTexts().then(()=>{
+    textsLoaded = true; 
+    changeTextsLang(); 
+    loadedGame()});
 async function loadLangTexts(){
     const texts = await fetch('lang.json').then(r => r.json());
     Object.assign(langTexts, texts);
@@ -162,8 +162,13 @@ async function loadLangTexts(){
 function getText(key) {
     return langTexts[key]?.[langGame];
 }
-function changeLang(){
-    langGame = langGame == "ru" ? "en" : "ru";
+function changeLang(lang){
+    if(lang != undefined){
+        langGame = lang;
+        document.getElementById("langBtnID").value = lang == "ru" ? "en" : "ru";
+    } else{
+        langGame = langGame == "ru" ? "en" : "ru";
+    }
     toChangeText("langBtnID", langGame);
     changeTextsLang() 
 }
@@ -186,12 +191,13 @@ function consBtnReturn(value, parameter) {
 }
 
 function loadedGame() {
-    console.log(textsLoaded+" textsLoaded")
-    console.log(sdkLoad+"sdkLoad")
-    if(sdkLoad && textsLoaded){
+    if(sdkLoad && resurses && HTMLLoaded && textsLoaded){
         document.getElementById("preloaderID").hidden = "hidden";
         loadImgs = true;
-        changeTextsLang();
+        startingValues();
+        loadLocalStorage();
+        finance(0);
+        updateInfo();
     }
 }
 
@@ -201,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
 })
 
 function loadLocalStorage(){
+
     if(DOMContentLoaded && HTMLLoaded){
     for(let i = 0; i < upgrades2.length; i++){
         if(localStorage.getItem(upgrades2[i].name)){
@@ -532,7 +539,6 @@ function openingLayerUp(){
 }
 
 function onOffBtn(){
-            // myLog(1)
     for (let i = 0; i < upgrades2.length; i++){
         const id = upgrades2[i].name + "BtnID";
         const bool = !(money >= upgrades2[i].cost.current && upgrades2[i].switch == "on");
@@ -555,7 +561,6 @@ function switchingElementMenu(switchType, btn){
         toStyle("#"+btn.name+"ImgID", "filter", "grayscale(50%)");
     }
     onOffBtn();
-    // myLog("switch")
 }
 
 function upgradesFunc(item, bool) {
@@ -668,7 +673,6 @@ function bossLevelBonusRandom(switchsOn){
     let test = switchsOn;
     for(let i = 0; i < test; i++){
         if(random - switchsOn <= 0 ){
-            myLog(upgrades2[i].name);
             return upgrades2[i];
         }  else {
             random -= switchsOn;

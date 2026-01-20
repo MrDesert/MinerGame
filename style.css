@@ -37,7 +37,10 @@
     text-align: right;
     line-height: 1.2;
     vertical-align: middle;
-    height: 24px;
+    font-size: clamp(16px, 2vw, 20px);
+ }
+ #prifitLayerID{
+   font-size: clamp(14px, 2vw, 18px);
  }
  #hpTitleID, #prifitLayerID, #bossLevelBonusID{
     width: 100%;
@@ -98,6 +101,7 @@
  #hpBarBorderID {
     background-color: rgb(253, 117, 117);
     width: 30%;
+    min-width: 110px;
     height: 20px;
     position: fixed;
     left: 35%;
