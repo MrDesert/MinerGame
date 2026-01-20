@@ -11,6 +11,9 @@
    #upgrades{
       font-size: clamp(24px, 5vw, 32px); 
    }
+   #menuID{   
+      top: 5px
+   };
  }
  @media (orientation: portrait){
     #bossLevelBonusID{
@@ -23,16 +26,30 @@
    #upgrades{
       font-size: clamp(20px, 5vw, 21px); 
    }
+   #menuID{   
+      top: 10%;
+   };
 }
+ @media (max-width: 670px){
+   .bossLevelBonusIMG{
+      height: 60px;
+    }
+        #bossLevelBonusID{
+      top: 10%;
+      max-width: 25%;
+   } 
+   #upgrades{
+      font-size: clamp(20px, 5vw, 21px); 
+   }
+ }
 
  *{
-    font-family: 'Courier New', Courier, monospace;
-    touch-action: manipulation; /*  отключить двойной тап на сенсорных устройствах для увеличения  */
-    user-select: none;
-    -webkit-tap-highlight-color: transparent; /* убираем синию подсветку при тапе на элементы */
-    overflow: hidden; /* что бы экран не расширялся на телефоне из-за появления элементов за границей*/
- }
+    font-family: 'Courier New', Courier, monospace;    
+}
 .rightText{
+   position: absolute;
+   right: 0px;
+   top: 110px;
    margin-right: 10px;
     text-align: right;
     line-height: 1.2;
@@ -61,9 +78,15 @@
     border-radius: 25px;
     width: auto;
    left: 50%;
-   transform: translateX(-50%);
+   top: 50%;
+   transform: translate(-50%, -50%);
+   /* transform: translateX(-50%); */
+   /* transform: translateY(-50%); */
     /* height: 90px; */
     min-width: 130px;
+   z-index: 3;
+   padding: 15px;
+   color: white;
  }
  #pupmsTitle{
     font-size: 25pt;
@@ -101,11 +124,12 @@
  #hpBarBorderID {
     background-color: rgb(253, 117, 117);
     width: 30%;
-    min-width: 110px;
+    min-width: 140px;
     height: 20px;
-    position: fixed;
-    left: 35%;
-    top: 13%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: clamp(65px, 13%, 75px);
     border: solid 2px;
  }
  .level {
@@ -236,7 +260,6 @@ body {
 }
 #menuID{
    position: absolute;
-   top: 5px;
    left: 5px;
    /* position: relative;  */
 
@@ -250,16 +273,12 @@ body {
    height: 20px;
    vertical-align: middle;
 }
-#bossLevelBonusID{
-   position: absolute;
-   z-index: 3;
-   padding: 15px;
-   color: white;
-   width: auto;
-}
+
 .bonusContainer{
    position: relative;
-   width: 90px;
+   max-width: 90px;
+   width: 10%;
+   min-width: 80px;
    margin-left: 20px;
    margin-right: 20px;
      justify-content: center; /*Выравнивание по горизантали*/

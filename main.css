@@ -1,6 +1,6 @@
 @media (orientation: landscape){
     .sideMenuLeft{ 
-        min-width: 250px;
+        min-width: 200px;
         max-width: 30%; 
     }
     .sideMenuElement {
@@ -9,6 +9,9 @@
     .sideMenuElementBtn {
         position: absolute;
         min-width: 25%;
+    }
+    #preloaderID, #blurID{
+        font-size: clamp(52px, 11vw, 84px);
     }
 }
 @media (orientation: portrait){
@@ -22,7 +25,26 @@
     .sideMenuElementTitle{
         text-align: center;
     }
+    #preloaderID, #blurID{
+        font-size: clamp(38px, 1vw, 80px);
+    }
 }
+ @media (max-width: 670px){
+    .sideMenuLeft{ 
+        min-width: 120px;
+        max-width: 20%; 
+    }
+    .sideMenuElementBtn {
+        position: relative;
+        min-width: 83%;
+    }
+    .sideMenuElementTitle{
+        text-align: center;
+    }
+        .sideMenuElement {
+        display:block;
+    }
+ }
 
 #preloaderID, #blurID{
     position: fixed;
@@ -34,7 +56,6 @@
     z-index: 999;
     /* font-size: 90px; */
     color: white;
-    font-size: clamp(52px, 11vw, 84px);
     font-weight: bold;
 }
 #blurID {

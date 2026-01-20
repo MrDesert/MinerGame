@@ -4,6 +4,7 @@
         <title>MinerGame</title>
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="https://mrdesert.github.io/Tools/forGame.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
     </head>
@@ -19,13 +20,13 @@
         <h2><span id="currentDepth">Текущая глубина:</span> <span id="depthLevelID">0</span></h2>
 
         <div id="menuID" onclick="menuTreePump(false)"><img id="bookID" class="sideMenuElementIconLeftIMG" src="img/book.png" alt=""><div id="warningID" hidden></div></div>
-
-        <div class="rightText"><span id="wallet">Кошелёк: </span><img id="coinID" class="coinCl" src="img/coin.png" alt=""><span id="moneyID">0</span></div>
-        <div class="rightText"><span id="clicks">Кликов: </span><span id="counterID">0</span></div>
-        <div class="rightText"><span id="resets">Перезапусков: </span><span id="counterRebootID">0</span></div>
-        <div class="rightText"><span id="hand_damage">Сила удара: </span><span id="hitID">1</span></div>
-        <div class="rightText"><span id="auto_mine">Автоудар: </span><span id="autoHitInfoID">0</span></div>
-
+        <div  class="rightText">
+        <div><span id="wallet">Кошелёк: </span><img id="coinID" class="coinCl" src="img/coin.png" alt=""><span id="moneyID">0</span></div>
+        <div><span id="clicks">Кликов: </span><span id="counterID">0</span></div>
+        <div><span id="resets">Перезапусков: </span><span id="counterRebootID">0</span></div>
+        <div><span id="hand_damage">Сила удара: </span><span id="hitID">1</span></div>
+        <div><span id="auto_mine">Автоудар: </span><span id="autoHitInfoID">0</span></div>
+        </div>
         <div id="hpTitleID" hidden>Ударов до победы: <div id="hpID" class="inline-block">4</div></div>
         <div id="hpBarBorderID">
                 <div style="position: absolute;" id="prifitLayerID">
@@ -39,9 +40,9 @@
         </div>
         <div id="blurID" hidden><span id="continue">Продолжить</span></div>
 
-        <footer>© by MrDesert - beta v0.3.3.0.1</footer>
+        <footer>© by MrDesert - beta v0.3.3.3</footer>
 
-
+<script src="https://mrdesert.github.io/Tools/forGame.js"></script>
 <script src="console.js" onload="createConsole(true, 'F2')"></script>
 <script>
     const useYSDK = false;
@@ -53,7 +54,6 @@
     script.async = true;
 
     document.getElementsByTagName('footer')[0].innerHTML = "© MrDesert - v0.3.3.0"; //Заменяю версию для яндекса
-    document.addEventListener('contextmenu', e => e.preventDefault()); //Отключение контекстного меню на ПКМ
     document.head.appendChild(script);
     
     script.onload = function(){
@@ -106,8 +106,8 @@ if(!useYSDK){
 
 </script>
         <script src="math.js"></script>
-        <script src="https://mrdesert.github.io/Tools/main.js"></script>
-        <script src="https://mrdesert.github.io/Tools/DOM.js"></script>
+        <!-- <script src="https://mrdesert.github.io/Tools/main.js"></script>
+        <script src="https://mrdesert.github.io/Tools/DOM.js"></script> -->
         <script src="main.js"></script>
         <script src="DOM.js"></script>
         <script src="script.js"></script>
