@@ -57,7 +57,11 @@
     font-size: clamp(16px, 2vw, 20px);
  }
  #prifitLayerID{
+   display: flex;
+   gap: 6px;  
+
    font-size: clamp(14px, 2vw, 18px);
+   text-align: center;
    justify-content: center; /*Выравнивание по горизантали*/
    align-items: center; /*Выравнивание по вертикале*/
  }

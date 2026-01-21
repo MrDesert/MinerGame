@@ -9,7 +9,7 @@
         <meta charset="utf-8">
     </head>
     <body id="ret" style="height: 100vh;">
-        <div id="preloaderID"><div id="preloaderCentr"><span id="loading">Загрузка</span><span id="preloaderTextID">...</span></div></div>
+        <div id="preloaderID"><div id="preloaderCentr"><span id="loading"></span><span id="preloaderTextID">...</span></div></div>
         <div id="layerID">
             <img id="layerImgID" src="img/layer.png" alt=""> 
             <img id="cracksID" src="img/cracks.png" alt="">
@@ -31,7 +31,7 @@
         <div id="hpBarBorderID">
                 <div style="position: absolute;" id="prifitLayerID">
                     <span id="profit">Прибыль: </span>
-                    <div id="prizeID" class="inline-block">1</div>
+                    <span id="prizeID">1</span>
                     <img id="coinID" class="coinCl" src="img/coin.png" alt="">
                     <!-- <div id="luckyID"></div> -->
                 </div>
@@ -40,10 +40,10 @@
         </div>
         <div id="blurID" hidden><span id="continue">Продолжить</span></div>
 
-        <footer>© by MrDesert - beta v0.3.3.5</footer>
+        <footer>© by MrDesert - beta v0.3.3.6</footer>
 
 <script src="forGame.js" onerror="this.onerror=null; const newScript = document.createElement('script'); newScript.src = 'https://mrdesert.github.io/Tools/forGame.js'; document.head.appendChild(newScript);"></script><!-- Локальный файл для релиза, сетевой для разработки -->
-<script src="console.js" onload="createConsole(true, 'F2')"></script><!--Установить false перед релизом-->
+<script src="console.js" onload="createConsole(false, 'F2')"></script><!--Установить false перед релизом-->
 <script>
     const useYSDK = false; //Установить true перед релизом
     let resurses = false;
@@ -61,6 +61,8 @@
         YaGames.init()
             .then(ysdk => {
                 const langSDK = ysdk.environment?.i18n?.lang; //Запрашиваем язык у YSDK
+                if(langSDK == "ru"){document.getElementById("loading").textContent = "Загрузка"}
+                else{document.getElementById("loading").textContent = "Loading"};
                 myLog?.("язык - " + ysdk.environment?.i18n?.lang);
                 changeLang(langSDK);
                 document.documentElement.lang = langSDK;
