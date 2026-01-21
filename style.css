@@ -58,6 +58,8 @@
  }
  #prifitLayerID{
    font-size: clamp(14px, 2vw, 18px);
+   justify-content: center; /*Выравнивание по горизантали*/
+   align-items: center; /*Выравнивание по вертикале*/
  }
  #hpTitleID, #prifitLayerID, #bossLevelBonusID{
     width: 100%;
@@ -129,7 +131,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: clamp(65px, 13%, 75px);
+    top: clamp(70px, 13%, 75px);
     border: solid 2px;
  }
  .level {

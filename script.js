@@ -649,9 +649,8 @@ function bossLevelBonus(){
             title = "+"+toCompactNotation(trw[i]);
             img = "coin.png";
         }
-        const id = "bossLevelBonusIMGID"+i;
-        DOM.Id(id).src = "img/" + img;
-        DOM.Id(id).onclick = ()=> bossLevelBonusBtn(valueBtn);
+        DOM.Id("bossLevelBonusIMGID"+i).src = "img/" + img;
+        DOM.Id("bossLevelBonusContainerID"+i).onclick = ()=> bossLevelBonusBtn(valueBtn);
         toChangeText("bossLevelBonusValueID"+i, title);
     }
     switchsHit(false);
