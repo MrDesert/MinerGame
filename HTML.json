@@ -144,6 +144,10 @@
         "Parent": "bossLevelBonusID",
         "Text": "Доступен бонус!"
     },
+    "bonus_offline": {
+        "Parent": "bossLevelBonusID",
+        "Text": "Офлайн бонус!"
+    },
     "timeID": {
         "Parent": "bossLevelBonusID",
         "Hidden": "true"

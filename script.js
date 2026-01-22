@@ -245,6 +245,7 @@ function loadLocalStorage(){
     openingLayerUp();
     toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
     toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
+    offlineProfit(Math.ceil((new Date() - new Date(localStorage.getItem("exitTime") || new Date()))/1000))
     updateInfo();
     }
 }
@@ -266,6 +267,7 @@ window.addEventListener('beforeunload', () => {
     for(let i = 0; i < upgradesExp.length; i++){
         localStorage.setItem(upgradesExp[i].name, JSON.stringify(upgradesExp[i]));
     }
+    localStorage.setItem("exitTime", new Date())
 })
 
 function tick(time){
@@ -708,6 +710,35 @@ function bossLevelBonusBtn(bonus){
 
 function menuTreePump(open){
     DOM.Hide("menuForExpBack", open);
+}
+
+function offlineProfit(offlineSeconds){ 
+    const hourlyRate = [null, 1, 0.9, 0.81, 0.73, 0.66, 0.59, 0.53, 0.48, 0.43, 0.39, 0.35, 0.31];
+    const damage = autoHit + handHit/10; //Офлайн урон
+    const secForWin = layer.hp.calc / damage; //Кол-во секунд на 1 слой
+    const wins = offlineSeconds / secForWin; //Кол-во побед за отсутствие
+    const offlineMoney = wins * prize.profitC //Кол-во монет за отстутсвие
+    const result = Math.ceil(offlineMoney * hourlyRate[1] * 0.01); // итогове количество монет с учётом часовой ставки и процента
+    if(result > 0){
+        DOM.Hide("bonus_available", true);
+        DOM.Hide("bossLevelBonusID", false);
+        DOM.Id("bossLevelBonusIMGID1").src = "img/coin.png";
+        toChangeText("bossLevelBonusValueID1", "+" + result);
+        DOM.Disable("claim_all", false);
+        DOM.Id("claim_all").onclick = function(){offlineProfit2(result);}
+    } else{
+        DOM.Hide("bonus_offline", true);
+    }
+    myLog(result); 
+}
+
+function offlineProfit2(result){
+    myLog("вошул")
+    finance(result);
+    DOM.Hide("bonus_available", false);
+    DOM.Hide("bonus_offline", true);
+    DOM.Hide("bossLevelBonusID", true);
+    DOM.Id("claim_all").onclick = function(){bossLevelBonusBtn("All");};
 }
 
 function updateInfo(){

@@ -199,6 +199,10 @@
     "ru": "Доступен бонус!",
     "en": "Bonus Available!"
   },
+  "bonus_offline": {
+    "ru": "Офлайн бонус!",
+    "en": "Offline bonus!"
+  },
   "claim_all": {
     "ru": "Получить всё",
     "en": "Claim All"
