@@ -730,6 +730,11 @@ function offlineProfit(offlineSeconds){
     } else{
         DOM.Hide("bonus_offline", true);
     }
+    // myLog(damage + " damage");
+    // myLog(secForWin + " secForWin");
+    // myLog(wins + " wins");
+    // myLog(offlineSeconds + " offlineSeconds");
+    // myLog(offlineMoney + " offlineMoney");
     myLog(result); 
 }
 
