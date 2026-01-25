@@ -256,6 +256,7 @@ function loadLocalStorage(){
     toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
     toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
     // offlineProfit(Math.ceil((new Date() - new Date(localStorage.getItem("exitTime") || new Date()))/1000))
+    toStyle("#ret", "backgroundPositionY", layer.level*-200 + "px");
     updateInfo();
     }
 }
@@ -425,13 +426,12 @@ function expBonus(){
     startingValues();    
     money = Math.round(m * money_keep.value);
     finance(0);
-    ysdk?.adv?.showFullscreenAdv?.();
     toStyle("#ret", "backgroundPositionY", "0%");
     toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current+ "%");
     toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
-
     toChangeText("counterRebootID", expBonus.count=(expBonus.count || 0) + 1);
     updateInfo();
+    ysdk?.adv?.showFullscreenAdv?.();
 }
 
 function hit(object) {
@@ -467,7 +467,7 @@ function animationAutoHit(autoDamage){
     let rotate = Math.floor(Math.random()*80)+1060 + autoDamage.rotate;
     let element = DOM.Id(id);
         element.src = "img/"+autoDamage.autoImg;
-        element.style.left = Math.floor(Math.random()*100)+"%";
+        element.style.left = (Math.floor(Math.random()*94)+3)+"%";
         element.offsetHeight;
         element.style.transform = "rotate("+rotate+"deg)";
         element.style.top = "65%";
@@ -487,18 +487,14 @@ function trembling(){
     let id = DOM.Id("layerID");
     // let instrumets = document.querySelectorAll('.death');
     let random = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%"
-    id.style.left = random;
+    let randomY = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%"
+    id.style.transform = "scale(1.01) translateX(" + random + ") translateY(" + randomY + ")";
     // instrumets.forEach( i => {i.style.left = random});
-    // id.style.bottom = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%";
-    // toStyle("#layerID", "bottom", Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%");
 
     id.addEventListener('transitionend', () =>{
-        id.style.left = "0%";
+        id.style.transform = "scale(1) translateX(0%) translateY(0%)"
         // instrumets.forEach( i => {i.style.left = "0%"});
-        // id.style.bottom = "0%";
     }, {once: true});
-        
-        // toStyle("#layerID", "bottom", "0%");
 }
 
 function switchsHit(bool){
@@ -540,7 +536,6 @@ function layerUp(layerID){
     layerID.style.transition = "top 0.4s linear"
     layerID.style.top = "0px";
     toStyle("#ret", "backgroundPositionY", layer.level*-200 + "px");
-    
     layerID.addEventListener('transitionend', (e) => {
         switchsHit(true); 
     }, {once: true});
@@ -558,6 +553,10 @@ function onOffBtn(){
     for (let i = 0; i < upgrades2.length; i++){
         const id = upgrades2[i].name + "BtnID";
         const bool = !(money >= upgrades2[i].cost.current && upgrades2[i].switch == "on");
+        if (id == "shovelBtnID"){
+        console.log(money  + " - money  - upgrades2[i].cost.current -" + upgrades2[i].cost.current)
+        console.log(id + " - " + bool)
+        }
         DOM.Disable(id, bool)
     }
     for (let i = 0; i < upgradesExp.length; i++){
@@ -589,6 +588,7 @@ function upgradesFunc(item, bool) {
         cost.calc = Math.round(softProgress(cost.calc, upgrades2.indexOf(item)-1));
         cost.current = Math.round(cost.calc * upgrade_cost.value);
         colorNumbers(name+"CostID", "red");
+        onOffBtn();
     }
     function up(){
         switch(item.typeValue){
