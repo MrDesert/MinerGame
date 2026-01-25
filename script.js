@@ -147,7 +147,7 @@ async function generateHTML(){
                 } 
             }
         }else{
-            console.log(key);
+            // console.log(key);
             DOM?.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});
         }
     }
@@ -205,8 +205,10 @@ function loadedGame() {
 document.addEventListener('visibilitychange', ()=>{
     if(document.hidden){
         safeInLocalStorage();
+        myLog("странца переключена")
     }else{
         loadLocalStorage();
+       myLog("с возвращением")
     }
 })
 
