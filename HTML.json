@@ -220,30 +220,30 @@
     "skillpanel": {
         "Parent": "ret"
     },
-    "$skillContainerID_":{
-        "arrayName$": 3,
+    "$_skillID":{
+        "arrayName$": "skills",
         "Parent": "skillpanel",
-        "Id": "skillContainerID_",
+        "Id": "_skillID",
         "Class": "skillContainer"
     },
-    "$skillIMGID_":{
-        "arrayName$": 3,
-        "Parent": "skillContainerID_",
-        "Id": "skillIMGID_",
+    "$_skillIMGID":{
+        "arrayName$": "skills",
+        "Parent": "_skillID",
+        "Id": "_skillIMGID",
         "Tag": "img",
         "Class": "skillIMG"
     },
-    "$skillValueID_":{
-        "arrayName$": 3,
-        "Parent": "skillContainerID_",
-        "Id": "skillValueID_",
+    "$_skillValueID":{
+        "arrayName$": "skills",
+        "Parent": "_skillID",
+        "Id": "_skillValueID",
         "Tag": "span",
         "Class": "skillValue"
     },
-    "$skillTimeID_":{
-        "arrayName$": 3,
-        "Parent": "skillContainerID_",
-        "Id": "skillTimeID_",
+    "$_skillTimeID":{
+        "arrayName$": "skills",
+        "Parent": "_skillID",
+        "Id": "_skillTimeID",
         "Tag": "span",
         "Class": "skillTime"
     }

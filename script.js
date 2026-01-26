@@ -13,12 +13,13 @@ let rerollTimer = false;
 
 const moneyExp = 0.0001;
 let exp = 0;
-let doubleMoney = 1;
-let autospeedDouble = 1;
-let speedFallsDouble = 1;
+
 let switchHit = true;
+let layerAnimat = false;
 let bossBonus = false;
 let offlineBonus = false;
+let pausescreen = false;
+
 let countAutoHit = 0;
 
 
@@ -90,6 +91,15 @@ const lycki = true;
 
 const upgradesExp = [layer_hardness, mining_profit, upgrade_cost, auto_bonus_duration, money_keep, auto_mine_speed, xp_gain];
 window.upgradesExp = upgradesExp;
+
+const profitX2 = {name: "profitX2", value: 1, count: 0, time: 120, text: "Х2 прибыль", func: () => skill(profitX2), img: ""};
+const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 0, time: 120, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), img: ""}
+const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 0, time: 120, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: ""}
+const damageX2 = {name: "damageX2", value: 1, count: 0, time: 120, text: "Х2 весь урон", func: () => skill(damageX2), img: ""}
+const multiSkill = {name: "multiSkill", value: 1, count: 0, time: 120, text: "Мультибонус", func: () => skill(multiSkill), img: ""}
+
+const skills = [profitX2, emergenceSpeedX2, fallSpeedX2, damageX2, multiSkill];
+window.skills = skills;
 
 let currentSecondsStart, currentSeconds;
 
@@ -207,13 +217,8 @@ function loadedGame() {
 }
 
 document.addEventListener('visibilitychange', ()=>{
-    if(document.hidden){
-        safeInLocalStorage();
-        myLog("странца переключена")
-    }else{
-        loadLocalStorage();
-       myLog("с возвращением")
-    }
+    if(document.hidden){safeInLocalStorage();}
+    else{loadLocalStorage();}
 })
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -266,11 +271,15 @@ function loadLocalStorage(){
 }
 
 window.addEventListener('beforeunload', () => {
+    if(bossBonus){
+        document.getElementById("bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)).click()
+    }
     safeInLocalStorage();
 })
 
 function safeInLocalStorage(){
-    localStorage.setItem("money", money);
+    localStorage.setItem("money", money + offBonus);
+    offBonus = 0;
     localStorage.setItem("exp", exp);
     localStorage.setItem("handHit", handHit);
     localStorage.setItem("autoHit", autoHit);
@@ -295,7 +304,7 @@ function tick(time){
         if(!loadImgs && tick.count % 8 === 0){preloaderTextChange();}
         tick.count++;
         for(let i = 0; i < upgradesAuto.length; i++){
-            if(tick.count / (Math.round(upgradesAuto[i].timeHit*10 - auto_mine_speed.value*(i+1)*10)/10)*autospeedDouble % 10 === 0){
+            if(tick.count / (Math.round(upgradesAuto[i].timeHit*10 - auto_mine_speed.value*(i+1)*10)/10)*emergenceSpeedX2.value % 10 === 0){
                 hit(upgradesAuto[i]);
             }
         }
@@ -324,13 +333,13 @@ function preloaderTextChange(){
 
 window.addEventListener('blur', ()=> {
     DOM.Hide("blurID", false);
-    switchHit = false;
+    pausescreen = true;
     ysdk?.features?.GameplayAPI?.stop?.();
 })
 
 window.addEventListener('focus', ()=>{
     DOM.Hide("blurID");
-    switchHit = !bossBonus;
+    pausescreen = false;
     if (sdkLoad && resurses){
         ysdk.features?.GameplayAPI?.start?.();
     }
@@ -363,22 +372,21 @@ async function startingCreationGUI(){
     DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
         DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
     
-    DOM.Id("skillContainerID0").onclick = function(){skill("money")};
-    toChangeText("skillContainerID0", "Х2 прибыль");
-    DOM.Id("skillContainerID1").onclick = function(){skill("autospeed")};
-    toChangeText("skillContainerID1", "Х2 поялвения инструментов");
-    DOM.Id("skillContainerID2").onclick = function(){skill("speedfalls")};
-    toChangeText("skillContainerID2", "Х2 скорость падения инструментов");
+    for(let i = 0; i < skills.length; i++){
+        let id = skills[i].name;
+        DOM.Id(id+"skillID").onclick = function(){skills[i].func();};
+        toChangeText(id+"skillID", skills[i].text);
+    }
     updateInfo();
 }
 
-function skill(s){
-    if(s == "money"){
-        doubleMoney = doubleMoney == 1 ? 2 : 1;
-    } else if (s == "autospeed") {
-        autospeedDouble = autospeedDouble == 1? 2 : 1;
-    } else {
-        speedFallsDouble = speedFallsDouble == 1? 2 : 1;
+function skill(id){
+    if(id.name == "multiSkill"){
+        for(let i = 0; i < skills.length; i++){
+            skills[i].value = skills[i].value == 1 ? 2 : 1;
+        }
+    }else{
+        id.value = id.value == 1 ? 2 : 1;
     }
     updateInfo();
 }
@@ -475,7 +483,7 @@ function damage(object){
         if (object.typeValue == "hit"){
             layer.hp.current -= handHit;
         } else {
-            layer.hp.current -= object.value * object.level;
+            layer.hp.current -= object.value * object.level * damageX2.value;
         }
         toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
         toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
@@ -489,7 +497,7 @@ function animationAutoHit(autoDamage){
     DOM.Create({Parent: "ret", Tag: "img", Id: id, Class: "imgAutoHit"});
     let rotate = Math.floor(Math.random()*80)+1060 + autoDamage.rotate;
     let element = DOM.Id(id);
-        if(speedFallsDouble == 2){
+        if(fallSpeedX2.value == 2){
             element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
         }
         element.src = "img/"+autoDamage.autoImg;
@@ -523,20 +531,22 @@ function trembling(){
     }, {once: true});
 }
 
-function switchsHit(bool){
-    if (!bossBonus && !offlineBonus){switchHit = bool;}
+function switchsHit(){
+    if (bossBonus || offlineBonus || pausescreen || layerAnimat){switchHit = false;}
+    if (!bossBonus && !offlineBonus && !pausescreen && !layerAnimat){switchHit = true;}
 }
 
 function finishLevel(){
     if (layer.hp.current <= 0){
-        switchsHit(false)
+        layerAnimat = true;
+        switchsHit();
         let layerID = DOM.Id('layerImgID');
             layerID.style.top = "100%";
             layerID.style.transition = "none";
         let death = document.querySelectorAll(".death");
             death.forEach( det => {det.remove()});
         toStyle("#cracksID", "height", "0%");
-        finance(Math.floor(prize.profitC * doubleMoney));
+        finance(Math.floor(prize.profitC * profitX2.value));
         layer.hp.calc = softProgress(layer.hp.calc, -1);
         layer.hp.round = layer.hp.current = Math.floor(layer.hp.calc * layer_hardness.value);
         prize.profit = prize.profitC = Math.round(softProgress(prize.profit, -2));
@@ -563,7 +573,8 @@ function layerUp(layerID){
     layerID.style.top = "0px";
     toStyle("#ret", "backgroundPositionY", layer.level*-200 + "px");
     layerID.addEventListener('transitionend', (e) => {
-        switchsHit(true); 
+        layerAnimat = false;
+        switchsHit(); 
     }, {once: true});
 }
 
@@ -691,7 +702,7 @@ function bossLevelBonus(){
         DOM.Id("bossLevelBonusContainerID"+i).onclick = ()=> bossLevelBonusBtn(valueBtn);
         toChangeText("bossLevelBonusValueID"+i, title);
     }
-    switchsHit(false);
+    switchsHit();
     bossBonus = true;
     for (let i = 0; i < upgrades2.length; i++){
         DOM.Disable(upgrades2[i].name + "BtnID", true);
@@ -740,7 +751,7 @@ function bossLevelBonusBtn(bonus){
         }
     }
     bossBonus = false;
-    switchsHit(true);
+    switchsHit();
     DOM.Hide("bossLevelBonusID");
 }
 
@@ -766,9 +777,9 @@ function offlineProfit(offlineSeconds){
     for (let i = 0; i < hours; i++){
         let offlineSec = offlineSeconds
         if(offlineSec <= 3600){
-            offBonus = offBonus + offlineSec / secForWin * hourlyRate[i+1] * 0.01; // итогове количество монет с учётом часовой ставки и процента
+            offBonus = offBonus + offlineSec / secForWin * prize.profitC * hourlyRate[i+1] * 0.01; // итогове количество монет с учётом часовой ставки и процента
         } else {
-            offBonus = offBonus + 3600 / secForWin * hourlyRate[i+1] * 0.01;
+            offBonus = offBonus + 3600 / secForWin * prize.profitC * hourlyRate[i+1] * 0.01;
             offlineSec -= 3600;
         }
     }
@@ -778,26 +789,27 @@ function offlineProfit(offlineSeconds){
         DOM.Hide("offlineBonusID", false);
         DOM.Id("offlineBonusIMGID").src = "img/coin.png";
         toChangeText("offlineBonusValueID", "+" + offBonus);
+        offlineBonus = true;
+        switchsHit();
     }
-    offlineBonus = true;
-    switchsHit(false);
 }
 
 function offlineProfit2(){
     finance(offBonus);
+    offBonus = 0;
     DOM.Hide("offlineBonusID", true);
     if(bossBonus){DOM.Hide("bossLevelBonusID", false);}
     offlineBonus = false;
-    switchsHit(true);
+    switchsHit();
 }
 
 function updateInfo(){
     if(HTMLLoaded){
     toChangeText("prizeID", toCompactNotation(prize.profitC));
-    if (doubleMoney > 1){
+    if (profitX2.value > 1){
         DOM.Id("prizeID").classList.add("strike");
         DOM.Hide("luckyID", false);
-        toChangeText("prizeID2", toCompactNotation(prize.profitC * doubleMoney));
+        toChangeText("prizeID2", toCompactNotation(prize.profitC * profitX2.value));
     }else{
         DOM.Id("prizeID").classList.remove("strike");
         DOM.Hide("luckyID", true);

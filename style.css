@@ -349,7 +349,7 @@ body {
    bottom: 50%;
    right: 0px;
    transform: translateY(50%);
-   height: 250px;
+   height: 300px;
    width: 70px;
    border: outset 3px black;
    border-radius: 20px 0px 0px 20px; 
@@ -360,6 +360,6 @@ body {
    align-items: center; /*Выравнивание по вертикале*/
    border: 3px outset rgb(150, 150, 150);
    background: rgba(140, 140, 140, 0.3);
-   height: 70px;
+   height: 60px;
    width: 70px;
 }
