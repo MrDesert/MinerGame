@@ -5,6 +5,7 @@ const HTMLs = {};
 let HTMLLoaded = false;
 let loadImgs = false;
 let DOMContentLoaded = false;
+let offBonus = 0;
 
 let money, handHit, autoHit;
 let allBonusFree = true;
@@ -13,8 +14,11 @@ let rerollTimer = false;
 const moneyExp = 0.0001;
 let exp = 0;
 let doubleMoney = 1;
+let autospeedDouble = 1;
+let speedFallsDouble = 1;
 let switchHit = true;
 let bossBonus = false;
+let offlineBonus = false;
 let countAutoHit = 0;
 
 
@@ -82,7 +86,7 @@ const auto_bonus_duration = {name: "auto_bonus_duration", value: 11, valueStep: 
 const money_keep = {name: "money_keep", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, func: () => upgradesExpFunc("money_keep")};
 const auto_mine_speed = {name: "auto_mine_speed", value: 0, valueStep: 0.1, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("auto_mine_speed")};
 const xp_gain = {name: "xp_gain", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("xp_gain")};
-const lycki = false;
+const lycki = true;
 
 const upgradesExp = [layer_hardness, mining_profit, upgrade_cost, auto_bonus_duration, money_keep, auto_mine_speed, xp_gain];
 window.upgradesExp = upgradesExp;
@@ -255,7 +259,7 @@ function loadLocalStorage(){
     openingLayerUp();
     toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
     toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
-    // offlineProfit(Math.ceil((new Date() - new Date(localStorage.getItem("exitTime") || new Date()))/1000))
+    offlineProfit(Math.ceil((new Date() - new Date(localStorage.getItem("exitTime") || new Date()))/1000))
     toStyle("#ret", "backgroundPositionY", layer.level*-200 + "px");
     updateInfo();
     }
@@ -291,7 +295,7 @@ function tick(time){
         if(!loadImgs && tick.count % 8 === 0){preloaderTextChange();}
         tick.count++;
         for(let i = 0; i < upgradesAuto.length; i++){
-            if(tick.count / (Math.round(upgradesAuto[i].timeHit*10 - auto_mine_speed.value*(i+1)*10)/10) % 10 === 0){
+            if(tick.count / (Math.round(upgradesAuto[i].timeHit*10 - auto_mine_speed.value*(i+1)*10)/10)*autospeedDouble % 10 === 0){
                 hit(upgradesAuto[i]);
             }
         }
@@ -354,9 +358,28 @@ async function startingCreationGUI(){
             DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
     }
     //Бонусное меню
-    DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claim_all", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All");}});
+    DOM.Create({Parent: "offlineBonusConteinerRerollID", Tag: "button", Id: "claim_offBonus", Class: "bossLevelBonusCls", OnClick: function(){offlineProfit2();}});
+    DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claim_all", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All")}});
     DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
         DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
+    
+    DOM.Id("skillContainerID0").onclick = function(){skill("money")};
+    toChangeText("skillContainerID0", "Х2 прибыль");
+    DOM.Id("skillContainerID1").onclick = function(){skill("autospeed")};
+    toChangeText("skillContainerID1", "Х2 поялвения инструментов");
+    DOM.Id("skillContainerID2").onclick = function(){skill("speedfalls")};
+    toChangeText("skillContainerID2", "Х2 скорость падения инструментов");
+    updateInfo();
+}
+
+function skill(s){
+    if(s == "money"){
+        doubleMoney = doubleMoney == 1 ? 2 : 1;
+    } else if (s == "autospeed") {
+        autospeedDouble = autospeedDouble == 1? 2 : 1;
+    } else {
+        speedFallsDouble = speedFallsDouble == 1? 2 : 1;
+    }
     updateInfo();
 }
 
@@ -466,8 +489,11 @@ function animationAutoHit(autoDamage){
     DOM.Create({Parent: "ret", Tag: "img", Id: id, Class: "imgAutoHit"});
     let rotate = Math.floor(Math.random()*80)+1060 + autoDamage.rotate;
     let element = DOM.Id(id);
+        if(speedFallsDouble == 2){
+            element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
+        }
         element.src = "img/"+autoDamage.autoImg;
-        element.style.left = (Math.floor(Math.random()*94)+3)+"%";
+        element.style.left = (Math.floor(Math.random()*94)+1)+"%";
         element.offsetHeight;
         element.style.transform = "rotate("+rotate+"deg)";
         element.style.top = "65%";
@@ -498,7 +524,7 @@ function trembling(){
 }
 
 function switchsHit(bool){
-    if (!bossBonus){switchHit = bool;}
+    if (!bossBonus && !offlineBonus){switchHit = bool;}
 }
 
 function finishLevel(){
@@ -553,10 +579,6 @@ function onOffBtn(){
     for (let i = 0; i < upgrades2.length; i++){
         const id = upgrades2[i].name + "BtnID";
         const bool = !(money >= upgrades2[i].cost.current && upgrades2[i].switch == "on");
-        if (id == "shovelBtnID"){
-        console.log(money  + " - money  - upgrades2[i].cost.current -" + upgrades2[i].cost.current)
-        console.log(id + " - " + bool)
-        }
         DOM.Disable(id, bool)
     }
     for (let i = 0; i < upgradesExp.length; i++){
@@ -726,43 +748,61 @@ function menuTreePump(open){
     DOM.Hide("menuForExpBack", open);
 }
 
-// function offlineProfit(offlineSeconds){ 
-//     const hourlyRate = [null, 1, 0.9, 0.81, 0.73, 0.66, 0.59, 0.53, 0.48, 0.43, 0.39, 0.35, 0.31];
-//     const damage = autoHit + handHit/10; //Офлайн урон
-//     const secForWin = layer.hp.calc / damage; //Кол-во секунд на 1 слой
-//     const wins = offlineSeconds / secForWin; //Кол-во побед за отсутствие
-//     const offlineMoney = wins * prize.profitC //Кол-во монет за отстутсвие
-//     const result = Math.ceil(offlineMoney * hourlyRate[1] * 0.01); // итогове количество монет с учётом часовой ставки и процента
-//     if(result > 0){
-//         DOM.Hide("bonus_available", true);
-//         DOM.Hide("bossLevelBonusID", false);
-//         DOM.Id("bossLevelBonusIMGID1").src = "img/coin.png";
-//         toChangeText("bossLevelBonusValueID1", "+" + result);
-//         DOM.Disable("claim_all", false);
-//         DOM.Id("claim_all").onclick = function(){offlineProfit2(result);}
-//     } else{
-//         DOM.Hide("bonus_offline", true);
-//     }
-//     // myLog(damage + " damage");
-//     // myLog(secForWin + " secForWin");
-//     // myLog(wins + " wins");
-//     // myLog(offlineSeconds + " offlineSeconds");
-//     // myLog(offlineMoney + " offlineMoney");
-//     myLog(result); 
-// }
+function offlineProfit(offlineSeconds){
+    offlineSeconds = offlineSeconds > 43200 ? 43200 : offlineSeconds;
+    const h = Math.floor(offlineSeconds/3600);
+    const m = Math.floor((offlineSeconds - h*3600) /60);
+    const s = offlineSeconds - h*3600 - m*60
+    const H = h > 0 ? h + "h " : "" ;
+    const M = m > 0 ? m + "m " : "" ;
+    const S = s > 0 ? s + "s" : "";
+    toChangeText("time_offline", H + M + S);
+    const hours = Math.ceil(offlineSeconds/3600)
+    const hourlyRate = [null, 1, 0.9, 0.81, 0.73, 0.66, 0.59, 0.53, 0.48, 0.43, 0.39, 0.35, 0.31];
+    const damage = autoHit + handHit/10; //Офлайн урон
+    const secForWin = layer.hp.calc / damage; //Кол-во секунд на 1 слой
+    // const wins = offlineSeconds / secForWin; //Кол-во побед за отсутствие
+    // const offlineMoney = wins * prize.profitC //Кол-во монет за отстутсвие
+    for (let i = 0; i < hours; i++){
+        let offlineSec = offlineSeconds
+        if(offlineSec <= 3600){
+            offBonus = offBonus + offlineSec / secForWin * hourlyRate[i+1] * 0.01; // итогове количество монет с учётом часовой ставки и процента
+        } else {
+            offBonus = offBonus + 3600 / secForWin * hourlyRate[i+1] * 0.01;
+            offlineSec -= 3600;
+        }
+    }
+    offBonus = Math.ceil(offBonus);
+    if(offBonus > 0 && offlineSeconds > 3){
+        DOM.Hide("bossLevelBonusID", true);
+        DOM.Hide("offlineBonusID", false);
+        DOM.Id("offlineBonusIMGID").src = "img/coin.png";
+        toChangeText("offlineBonusValueID", "+" + offBonus);
+    }
+    offlineBonus = true;
+    switchsHit(false);
+}
 
-// function offlineProfit2(result){
-//     myLog("вошул")
-//     finance(result);
-//     DOM.Hide("bonus_available", false);
-//     DOM.Hide("bonus_offline", true);
-//     DOM.Hide("bossLevelBonusID", true);
-//     DOM.Id("claim_all").onclick = function(){bossLevelBonusBtn("All");};
-// }
+function offlineProfit2(){
+    finance(offBonus);
+    DOM.Hide("offlineBonusID", true);
+    if(bossBonus){DOM.Hide("bossLevelBonusID", false);}
+    offlineBonus = false;
+    switchsHit(true);
+}
 
 function updateInfo(){
     if(HTMLLoaded){
-    toChangeText("prizeID", toCompactNotation(prize.profitC * doubleMoney));
+    toChangeText("prizeID", toCompactNotation(prize.profitC));
+    if (doubleMoney > 1){
+        DOM.Id("prizeID").classList.add("strike");
+        DOM.Hide("luckyID", false);
+        toChangeText("prizeID2", toCompactNotation(prize.profitC * doubleMoney));
+    }else{
+        DOM.Id("prizeID").classList.remove("strike");
+        DOM.Hide("luckyID", true);
+        toChangeText("prizeID2", "");
+    }
     toChangeText("depthLevelID", layer.level);
     autoHit = 0;
     for(let i = 0; i < upgrades2.length; i++){

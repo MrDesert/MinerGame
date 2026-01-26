@@ -203,6 +203,10 @@
     "ru": "Офлайн бонус!",
     "en": "Offline bonus!"
   },
+  "claim_offBonus": {
+    "ru": "Забрать",
+    "en": "Claim"
+  },
   "claim_all": {
     "ru": "Получить всё",
     "en": "Claim All"

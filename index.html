@@ -47,17 +47,18 @@
         <div id="hpTitleID" hidden>Ударов до победы: <div id="hpID" class="inline-block">4</div></div>
         <div id="hpBarBorderID">
                 <div style="position: absolute;" id="prifitLayerID">
+                    <span id="luckyID">X2</span>
                     <span id="profit">Прибыль: </span>
                     <span id="prizeID">1</span>
-                    <img id="coinID" class="coinCl" src="img/coin.png" alt="">
-                    <!-- <div id="luckyID"></div> -->
+                    <span id="prizeID2"></span>
+                    <img id="coinID2" class="coinCl" src="img/coin.png" alt="">
                 </div>
             <div id="hpBarID">
             </div>
         </div>
         <div id="blurID" hidden><span id="continue">Продолжить</span></div>
 
-        <footer>© by MrDesert - beta v0.3.4.5</footer>
+        <footer>© by MrDesert - beta v0.3.5</footer>
 
 <script>
     const useYSDK = false; //Установить true перед релизом
@@ -119,7 +120,7 @@
 
 
 if(!useYSDK){
-     setTimeout(function(){ sdkLoad =true; resurses=true; loadedGame();}, 500);
+     setTimeout(function(){ sdkLoad =true; resurses=true; loadedGame();}, 1000);
 }
 
 </script>

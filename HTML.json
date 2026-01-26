@@ -138,15 +138,12 @@
     },
     "bossLevelBonusID": {
         "Parent": "ret",
-        "Hidden": "true"
+        "Hidden": "true",
+        "Class": "bonusMenu"
     },
     "bonus_available": {
         "Parent": "bossLevelBonusID",
         "Text": "Доступен бонус!"
-    },
-    "bonus_offline": {
-        "Parent": "bossLevelBonusID",
-        "Text": "Офлайн бонус!"
     },
     "timeID": {
         "Parent": "bossLevelBonusID",
@@ -186,5 +183,68 @@
     },
     "bossLevelBonusConteinerRerollID": {
         "Parent": "bossLevelBonusID"
+    },
+    "offlineBonusID": {
+        "Parent": "ret",
+        "Hidden": "true",
+        "Class": "bonusMenu"
+    },
+    "bonus_offline": {
+        "Parent": "offlineBonusID",
+        "Text": "Офлайн бонус!"
+    },
+    "time_offline": {
+        "Parent": "offlineBonusID",
+        "Text": "Офлайн бонус!"
+    },
+    "offlineBonusContainerID":{
+        "Parent": "offlineBonusID",
+        "Id": "offlineBonusContainerID",
+        "Class": "bonusContainer"
+    },
+    "offlineBonusIMGID":{
+        "Parent": "offlineBonusContainerID",
+        "Id": "offlineBonusIMGID",
+        "Tag": "img",
+        "Class": "bossLevelBonusIMG"
+    },
+    "offlineBonusValueID":{
+        "Parent": "offlineBonusContainerID",
+        "Id": "offlineBonusValueID",
+        "Tag": "span",
+        "Class": "bossLevelBonusValue"
+    },
+    "offlineBonusConteinerRerollID": {
+        "Parent": "offlineBonusID"
+    },
+    "skillpanel": {
+        "Parent": "ret"
+    },
+    "$skillContainerID_":{
+        "arrayName$": 3,
+        "Parent": "skillpanel",
+        "Id": "skillContainerID_",
+        "Class": "skillContainer"
+    },
+    "$skillIMGID_":{
+        "arrayName$": 3,
+        "Parent": "skillContainerID_",
+        "Id": "skillIMGID_",
+        "Tag": "img",
+        "Class": "skillIMG"
+    },
+    "$skillValueID_":{
+        "arrayName$": 3,
+        "Parent": "skillContainerID_",
+        "Id": "skillValueID_",
+        "Tag": "span",
+        "Class": "skillValue"
+    },
+    "$skillTimeID_":{
+        "arrayName$": 3,
+        "Parent": "skillContainerID_",
+        "Id": "skillTimeID_",
+        "Tag": "span",
+        "Class": "skillTime"
     }
 }
