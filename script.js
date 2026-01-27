@@ -94,7 +94,7 @@ window.upgradesExp = upgradesExp;
 
 const profitX2 = {name: "profitX2", value: 1, count: 10, time: 120, timeCur: 0, text: "Х2 прибыль", func: () => skill(profitX2), img: "profitX2.png"};
 const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 10, time: 60, timeCur: 0, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), img: "emergenceSpeedX2.png"}
-const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 10, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: "pickaxe_transparent_390x390.png"}
+const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 10, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: "tailMeteor.png"}
 const damageX2 = {name: "damageX2", value: 1, count: 10, time: 60, timeCur: 0, text: "Х2 весь урон", func: () => skill(damageX2), img: "pickaxe_transparent_redShadow_390x390.png"}
 const multiSkill = {name: "multiSkill", value: 1, count: 10, time: 30, timeCur: 0, text: "Мультибонус", func: () => skill(multiSkill), img: "coin.png"}
 
@@ -538,23 +538,35 @@ function damage(object){
 }
 
 function animationAutoHit(autoDamage){
-    let id = "imgID" + countAutoHit++;
+    let id = "fallTool" + countAutoHit++;
+    let id2 = "fallToolTailMeteor" + countAutoHit
+    DOM.Create({Parent: "ret", Tag: "img", Id: id2, Class: "imgTailMeteor"});
     DOM.Create({Parent: "ret", Tag: "img", Id: id, Class: "imgAutoHit"});
     let rotate = Math.floor(Math.random()*80)+1060 + autoDamage.rotate;
-    let element = DOM.Id(id);
+        let tailMeteor = DOM.Id(id2);
+        let element = DOM.Id(id);
         if(fallSpeedX2.value == 2){
+            rotate = Math.floor(Math.random()*80)+700 + autoDamage.rotate;
             element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
+            let mirror = Math.round(Math.random()*1) == 1 ? 1 : -1;
+            tailMeteor.style.transform = "scaleX("+ mirror +")";
+            tailMeteor.src = "img/tailMeteor.png";
         }
         element.src = "img/"+autoDamage.autoImg;
         if(damageX2.value == 2){
             element.classList.add("redShadow");
         }
-        element.style.left = (Math.floor(Math.random()*94)+1)+"%";
+        let leftRandom = (Math.floor(Math.random()*94)+1)+"%";
+        let leftRandom2 = "calc("+leftRandom+" - 40px)"
+        tailMeteor.style.left = leftRandom2;
+        element.style.left = leftRandom;
         element.offsetHeight;
         element.style.transform = "rotate("+rotate+"deg)";
+        tailMeteor.style.top = "43%";
         element.style.top = "65%";
         element.addEventListener('transitionend', function opacity(e){
             if (e.propertyName === 'top'){
+                tailMeteor.style.opacity = "0%";
                 element.style.opacity = "0%";
                 element.classList.add("death");
                 damage(autoDamage);
@@ -612,8 +624,7 @@ function finishLevel(){
 } 
 
 function layerUp(layerID){
-    let mirror = Math.round(Math.random()*1);
-    if(mirror == 0){mirror = -1;}
+    let mirror = Math.round(Math.random()*1) == 1 ? 1 : -1;
     layerID.offsetHeight;
     layerID.style.transform = "scaleX("+ mirror +")";
     toStyle("#cracksID", "transform", "scaleX("+ mirror +")");

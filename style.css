@@ -237,11 +237,23 @@ body {
 
 .imgAutoHit{
    position: absolute;
-   height: 10%;
+   height: 65px;
    top: -10%;
    opacity: 100%;
    pointer-events:  none; /*отключаем реакцию мыши на неё*/
    transition: top 3s ease-in, transform 3s ease-in, opacity 3s ease-in;
+}
+.imgTailMeteor{
+   position: absolute;
+   height: 160px;
+   top: -32%;
+   opacity: 100%;
+   pointer-events:  none; /*отключаем реакцию мыши на неё*/
+   transition: top 1.5s ease-in, opacity 50ms ease-in;
+       filter: 
+    drop-shadow(0 0 3px rgb(190, 22, 0))
+    drop-shadow(0 0 6px rgb(190, 22, 0))
+    drop-shadow(0 0 10px rgb(190, 22, 0));
 }
 
 #menuForCoins{
