@@ -250,10 +250,30 @@ body {
    opacity: 100%;
    pointer-events:  none; /*отключаем реакцию мыши на неё*/
    transition: top 1.5s ease-in, opacity 50ms ease-in;
-       filter: 
-    drop-shadow(0 0 3px rgb(190, 22, 0))
-    drop-shadow(0 0 6px rgb(190, 22, 0))
-    drop-shadow(0 0 10px rgb(190, 22, 0));
+
+    animation: fire 0.5s infinite alternate, shake 0.1s infinite alternate;
+}
+
+@keyframes fire {
+   0% {
+             filter: 
+    drop-shadow(0 0 1px rgb(255, 60, 0))
+    drop-shadow(0 0 2px rgb(255, 60, 0))
+    drop-shadow(0 0 4px rgb(255, 60, 0));
+   }
+   100% {
+                   filter: 
+    drop-shadow(0 0 3px rgb(255, 30, 0))
+    drop-shadow(0 0 6px rgb(255, 30, 0))
+    drop-shadow(0 0 10px rgb(255, 30, 0));
+   }
+}
+
+@keyframes shake {
+   0%, 100% {transform: translateX(-2px) scaleY(1);}
+   25% {transform: translateX(4px) scaleY(1.2);}
+   50% {transform: translateX(-4px) scaleY(0.8);}
+   75% {transform: translateX(2px) scaleY(1.1);}
 }
 
 #menuForCoins{
