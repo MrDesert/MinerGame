@@ -226,6 +226,13 @@
         "Id": "_skillID",
         "Class": "skillContainer"
     },
+    "$_skillTimeID":{
+        "arrayName$": "skills",
+        "Parent": "_skillID",
+        "Id": "_skillTimeID",
+        "Tag": "span",
+        "Class": "skillTime"
+    },
     "$_skillIMGID":{
         "arrayName$": "skills",
         "Parent": "_skillID",
@@ -233,18 +240,11 @@
         "Tag": "img",
         "Class": "skillIMG"
     },
-    "$_skillValueID":{
+    "$_skillCountID":{
         "arrayName$": "skills",
         "Parent": "_skillID",
-        "Id": "_skillValueID",
+        "Id": "_skillCountID",
         "Tag": "span",
         "Class": "skillValue"
-    },
-    "$_skillTimeID":{
-        "arrayName$": "skills",
-        "Parent": "_skillID",
-        "Id": "_skillTimeID",
-        "Tag": "span",
-        "Class": "skillTime"
     }
 }

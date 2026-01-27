@@ -292,3 +292,27 @@
     text-decoration: line-through;
     text-decoration-color: black;
 }
+.unavailable{
+    filter: grayscale(50%);
+}
+.backlight{
+    box-shadow: 0px 0px 15px 5px rgba(255, 217, 0, 0.4), inset 0px 0px 15px 11px rgba(255, 217, 0, 0.4);
+    border: 3px inset rgb(255, 216, 41); 
+    background: rgba(250, 238, 183, 0.3);
+    transition: border 0.1s linear, box-shadow 0.1s linear, background 0.1s linear;
+}
+.timer{
+    color: rgb(145, 0, 0);
+    font-size: 18px;
+    text-shadow: 
+    1px 0 0 black,
+    0 1px 0 black,
+    1px 1px 0 rgb(145, 0, 0);
+}
+.redShadow{
+    /* filter: drop-shadow(0 0 10px rgba(163, 0, 0, 0.8)); */
+    filter: 
+    drop-shadow(0 0 3px rgb(255, 30, 0))
+    drop-shadow(0 0 6px rgb(255, 30, 0))
+    drop-shadow(0 0 10px rgb(255, 30, 0));
+}

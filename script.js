@@ -55,14 +55,14 @@ const shovel = {
     img: "shovel_transparent_390x390.png"
 };
 
-const miner_shovel = {name: "miner_shovel", cost: {base: 100, calc: 100, current: 100}, level: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: (b) => upgradesFunc(miner_shovel, b), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80};
+const miner_shovel = {name: "miner_shovel", cost: {base: 100, calc: 100, current: 100}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: (b) => upgradesFunc(miner_shovel, b), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80};
 const helmet = {name: "helmet", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(helmet, b), freeUp: false, img: "helmet5.png"};
 const pickaxe = {name: "pickaxe", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(pickaxe, b), freeUp: false, img: "pickaxe_transparent_390x390.png"};
-const miner_pickaxe = {name: "miner_pickaxe", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: (b) => upgradesFunc(miner_pickaxe, b), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0};
+const miner_pickaxe = {name: "miner_pickaxe", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: (b) => upgradesFunc(miner_pickaxe, b), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0};
 const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: (b) => upgradesFunc(drill, b), freeUp: false, img: "drill_transparent_450x450.png"};
-const miner_drill = {name: "miner_drill", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: (b) => upgradesFunc(miner_drill, b), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60};
+const miner_drill = {name: "miner_drill", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: (b) => upgradesFunc(miner_drill, b), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60};
 const jackhammer = {name: "jackhammer", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: (b) => upgradesFunc(jackhammer, b), freeUp: false, img: "molot_trasparent_450x450.png"};
-const miner_jackhammer = {name: "miner_jackhammer", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: (b) => upgradesFunc(miner_jackhammer, b), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60}
+const miner_jackhammer = {name: "miner_jackhammer", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: (b) => upgradesFunc(miner_jackhammer, b), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60}
 
 const upgrades2 = [shovel, miner_shovel, helmet, pickaxe, miner_pickaxe, drill, miner_drill, jackhammer, miner_jackhammer]; //массив с объектами улучшений;
 window.upgrades2 = upgrades2;
@@ -92,11 +92,11 @@ const lycki = true;
 const upgradesExp = [layer_hardness, mining_profit, upgrade_cost, auto_bonus_duration, money_keep, auto_mine_speed, xp_gain];
 window.upgradesExp = upgradesExp;
 
-const profitX2 = {name: "profitX2", value: 1, count: 0, time: 120, text: "Х2 прибыль", func: () => skill(profitX2), img: ""};
-const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 0, time: 120, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), img: ""}
-const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 0, time: 120, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: ""}
-const damageX2 = {name: "damageX2", value: 1, count: 0, time: 120, text: "Х2 весь урон", func: () => skill(damageX2), img: ""}
-const multiSkill = {name: "multiSkill", value: 1, count: 0, time: 120, text: "Мультибонус", func: () => skill(multiSkill), img: ""}
+const profitX2 = {name: "profitX2", value: 1, count: 10, time: 120, timeCur: 0, text: "Х2 прибыль", func: () => skill(profitX2), img: "profitX2.png"};
+const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 10, time: 60, timeCur: 0, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), img: "emergenceSpeedX2.png"}
+const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 10, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: "pickaxe_transparent_390x390.png"}
+const damageX2 = {name: "damageX2", value: 1, count: 10, time: 60, timeCur: 0, text: "Х2 весь урон", func: () => skill(damageX2), img: "pickaxe_transparent_redShadow_390x390.png"}
+const multiSkill = {name: "multiSkill", value: 1, count: 10, time: 30, timeCur: 0, text: "Мультибонус", func: () => skill(multiSkill), img: "coin.png"}
 
 const skills = [profitX2, emergenceSpeedX2, fallSpeedX2, damageX2, multiSkill];
 window.skills = skills;
@@ -301,6 +301,7 @@ function safeInLocalStorage(){
 function tick(time){
     tick.count = (tick.count || 0)
     if(time - (tick.lastTime || 0) >= 100){
+        if(tick.count % 10 === 0){skillTimer();}
         if(!loadImgs && tick.count % 8 === 0){preloaderTextChange();}
         tick.count++;
         for(let i = 0; i < upgradesAuto.length; i++){
@@ -326,6 +327,32 @@ function textTimer(){
     }
 }
 
+function skillTimer(){
+    if(HTMLLoaded && !pausescreen && !bossBonus && !offlineBonus){
+        myLog(switchHit)
+        for(let i = 0; i < skills.length; i++){
+            if(skills[i].value == 2){
+                skills[i].timeCur -= 1;
+                let m = Math.floor(skills[i].timeCur / 60);
+                let s = skills[i].timeCur - m * 60;
+                if(skills[i].timeCur <= 0){
+                    skills[i].value = 1;
+                    m = Math.floor(skills[i].time / 60);
+                    s = skills[i].time - m * 60;
+                    DOM.Id(skills[i].name+"skillID").classList.remove("backlight");
+                    DOM.Id(skills[i].name+"skillTimeID").classList.remove("timer");
+                    if(skills[i].name == "multiSkill"){
+                        for(let i = 0; i < upgradesAuto.length; i++){
+                            upgradesAuto[i].levelTemp = 0;
+                        }
+                    }
+                }
+                toChangeText(skills[i].name+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
+            }
+        }
+    }   
+}
+
 function preloaderTextChange(){
     const id = document.getElementById("preloaderTextID");
     id.textContent = id.textContent == "..." ? "." : id.textContent == "." ? ".." : "...";
@@ -349,8 +376,7 @@ async function startingCreationGUI(){
     //Боковое меню
     for(let i = 0; i < upgrades2.length; i++){
         let id = upgrades2[i].name;
-        DOM.Create({Parent: id+"IconID", Tag: "img", Id: id+"ImgID", Class: "sideMenuElementIconLeftIMG", Src: "img/" + upgrades2[i].img});
-            toStyle("#"+id+"ImgID", "filter", "grayscale(50%)");
+        DOM.Create({Parent: id+"IconID", Tag: "img", Id: id+"ImgID", Class: "sideMenuElementIconLeftIMG unavailable", Src: "img/" + upgrades2[i].img});
         DOM.Create({Parent: id+"ID", Tag: "button", Id: id+"BtnID", Class: "sideMenuElementBtn", OnClick: function(){upgrades2[i].func();}});
             DOM.Create({Parent: id+"BtnID", Tag: "img", Id: id+"BtnImgID", Class: "coinCl", Src: "img/coin.png", Disabled: "true"});
             DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
@@ -375,20 +401,39 @@ async function startingCreationGUI(){
     for(let i = 0; i < skills.length; i++){
         let id = skills[i].name;
         DOM.Id(id+"skillID").onclick = function(){skills[i].func();};
-        toChangeText(id+"skillID", skills[i].text);
+        DOM.Id(id+"skillIMGID").src = "img/"+skills[i].img;
+        const m = Math.floor(skills[i].time / 60);
+        const s = skills[i].time - m * 60;
+        toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
     }
     updateInfo();
 }
 
 function skill(id){
-    if(id.name == "multiSkill"){
-        for(let i = 0; i < skills.length; i++){
-            skills[i].value = skills[i].value == 1 ? 2 : 1;
+    if(id.count > 0 && id.timeCur == 0){
+        colorNumbers(id.name + "skillCountID" , "red");
+        id.count -= 1;
+        id.timeCur = id.time;
+        if(id.name == "multiSkill"){
+            for(let i = 0; i < skills.length; i++){
+                skills[i].value = 2;
+                if(skills[i].name != "multiSkill"){
+                    skills[i].timeCur += multiSkill.timeCur;
+                }
+                DOM.Id(skills[i].name+"skillID").classList.add("backlight");
+                DOM.Id(skills[i].name+"skillTimeID").classList.add("timer");
+                myLog(skills[i].timeCur)
+            }
+            for(let i = 0; i < upgradesAuto.length; i++){
+                upgradesAuto[i].levelTemp = upgradesAuto[i].level * 2 + 1;
+            }
+        }else{
+            id.value = 2;
         }
-    }else{
-        id.value = id.value == 1 ? 2 : 1;
+        DOM.Id(id.name+"skillID").classList.add("backlight");
+        DOM.Id(id.name+"skillTimeID").classList.add("timer");
+        updateInfo();
     }
-    updateInfo();
 }
 
 function reroll(){
@@ -472,7 +517,7 @@ function hit(object) {
             toChangeText("counterID", hit.count=(hit.count || 0) + 1);
         }
         else {
-            if(object.level > 0){animationAutoHit(object);}
+            if((object.level + object.levelTemp) > 0){animationAutoHit(object);}
         } 
     }
 }
@@ -481,9 +526,9 @@ function damage(object){
     trembling();
     if (switchHit && layer.hp.current > 0){
         if (object.typeValue == "hit"){
-            layer.hp.current -= handHit;
+            layer.hp.current -= handHit * damageX2.value;
         } else {
-            layer.hp.current -= object.value * object.level * damageX2.value;
+            layer.hp.current -= object.value * (object.level + object.levelTemp) * damageX2.value;
         }
         toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
         toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
@@ -501,6 +546,9 @@ function animationAutoHit(autoDamage){
             element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
         }
         element.src = "img/"+autoDamage.autoImg;
+        if(damageX2.value == 2){
+            element.classList.add("redShadow");
+        }
         element.style.left = (Math.floor(Math.random()*94)+1)+"%";
         element.offsetHeight;
         element.style.transform = "rotate("+rotate+"deg)";
@@ -690,16 +738,20 @@ function bossLevelBonus(){
     trw.push(bonus3);
 
     for (let i = 0; i < trw.length; i++){
-        let valueBtn = trw[i].name;
-        let title = "+1";
-        let img = trw[i].img;
+        let valueBtn, valueLevel, title, img
         if (trw[i] == moneyBonus){
             valueBtn = "moneyBonus";
+            valueLevel = ""
             title = "+"+toCompactNotation(trw[i]);
             img = "coin.png";
+        } else{
+            valueBtn = trw[i].name;
+            valueLevel = Math.floor(Math.random()*(trw[i].level/10)) + 1;
+            title = "+" + valueLevel;
+            img = trw[i].img;
         }
         DOM.Id("bossLevelBonusIMGID"+i).src = "img/" + img;
-        DOM.Id("bossLevelBonusContainerID"+i).onclick = ()=> bossLevelBonusBtn(valueBtn);
+        DOM.Id("bossLevelBonusContainerID"+i).onclick = ()=> bossLevelBonusBtn(valueBtn, valueLevel);
         toChangeText("bossLevelBonusValueID"+i, title);
     }
     switchsHit();
@@ -729,7 +781,7 @@ function bossLevelBonusRandom(switchsOn){
     }
 }
 
-function bossLevelBonusBtn(bonus){
+function bossLevelBonusBtn(bonus, count){
     clearTimeout(timer);
     if(bonus === "All"){
         if(allBonusFree){
@@ -746,7 +798,9 @@ function bossLevelBonusBtn(bonus){
         for (let i = 0; i < upgrades2.length; i++){
             if (bonus == upgrades2[i].name){
                 // upgrades[i].freeUp = true;
-                upgrades2[i].func(true);
+                for (let j = 0; j < count; j++){
+                    upgrades2[i].func(true);
+                }
             } 
         }
     }
@@ -840,6 +894,10 @@ function updateInfo(){
         if (upgradesExp[i].level >= 10){
             toChangeText(upgradesExp[i].name+"CostID", "Максимум");
         }
+    }
+
+    for(let i = 0; i < skills.length; i++){
+        toChangeText(skills[i].name + "skillCountID", skills[i].count);
     }
 
     toChangeText("hitID", handHit);

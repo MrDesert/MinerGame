@@ -339,27 +339,57 @@ body {
 
  #skillpanel{
    z-index: 2;
-   padding: 15px;
+   padding: 14px;
+   padding-right: 10px;
    display: flex;
    flex-wrap: wrap;
-   gap: 5px;
+   row-gap: 5px;
 	background: rgba(90, 90, 90, 0.8);
 	box-shadow: 0px 0px 15px 15px rgba(0, 0, 0, 0.2);
    position: absolute;
    bottom: 50%;
    right: 0px;
    transform: translateY(50%);
-   height: 300px;
-   width: 70px;
+   /* height: 370px; */
+   width: 75px;
    border: outset 3px black;
    border-radius: 20px 0px 0px 20px; 
    border: 3px outset rgb(150, 150, 150);
  }
  .skillContainer{
+   position: relative;
    justify-content: center; /*Выравнивание по горизантали*/
    align-items: center; /*Выравнивание по вертикале*/
    border: 3px outset rgb(150, 150, 150);
    background: rgba(140, 140, 140, 0.3);
-   height: 60px;
-   width: 70px;
+   height: 70px;
+   width: 100%;
+}
+.skillIMG{
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   transform: translateX(-50%) translateY(-50%);
+   object-fit: contain;
+   width: 80%;
+}
+.skillValue{
+   position: absolute;
+   letter-spacing: -3px;
+   padding-right: 2px;
+   left: -1px;
+   bottom: -7px;
+   font-size: 22px;
+   font-weight: bold;
+   padding-right: 6px;
+   background: rgba(201, 201, 201, 0.4);
+   border-radius: 0px 10px 0px 0px;
+}
+.skillTime{
+   position: absolute;
+   padding-right: 3px;
+   z-index: 1;
+   font-weight: bold;
+   background: rgba(201, 201, 201, 0.4);
+   border-radius: 0px 0px 10px 0px;
 }
