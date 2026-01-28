@@ -94,9 +94,21 @@ window.upgradesExp = upgradesExp;
 
 const profitX2 = {name: "profitX2", value: 1, count: 10, time: 120, timeCur: 0, text: "Х2 прибыль", func: () => skill(profitX2), img: "profitX2.png"};
 const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 10, time: 60, timeCur: 0, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), img: "emergenceSpeedX2.png"}
-const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 10, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: "tailMeteor.png"}
+const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 10, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: "fallSpeedX2.png"}
 const damageX2 = {name: "damageX2", value: 1, count: 10, time: 60, timeCur: 0, text: "Х2 весь урон", func: () => skill(damageX2), img: "pickaxe_transparent_redShadow_390x390.png"}
-const multiSkill = {name: "multiSkill", value: 1, count: 10, time: 30, timeCur: 0, text: "Мультибонус", func: () => skill(multiSkill), img: "coin.png"}
+const multiSkill = {name: "multiSkill", value: 1, count: 10, time: 30, timeCur: 0, text: "Мультибонус", func: () => skill(multiSkill), img: "multiSkill.png"}
+
+const dailyGift = {
+    day1: {profitX2: 3},
+    day2: {emergenceSpeedX2: 3},
+    day3: {damageX2: 3},
+    day4: {fallSpeedX2: 3},
+    day5: {profitX2: 3, emergenceSpeedX2: 2},
+    day6: {damageX2: 3, fallSpeedX2: 2},
+    day7: {multiSkill: 3}
+}
+let daysdDailyGift = 0; 
+let weeksDailyGift = 1;
 
 const skills = [profitX2, emergenceSpeedX2, fallSpeedX2, damageX2, multiSkill];
 window.skills = skills;
@@ -255,6 +267,8 @@ function loadLocalStorage(){
     autoHit = Number(localStorage.getItem("autoHit")) || 0;
     bossLevel = Number(localStorage.getItem("bossLevel")) || 1;
     allBonusFree = localStorage.getItem("allBonusFree") === 'false' ? false : true;
+    daysdDailyGift = Number(localStorage.getItem("daysdDailyGift"));
+    weeksDailyGift = Number(localStorage.getItem("weeksDailyGift"));
     if(!allBonusFree){
         document.getElementById("claim_all").disabled = "disabled";
         document.getElementById("claim_all").classList.add("disabled");
@@ -266,6 +280,8 @@ function loadLocalStorage(){
     toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
     offlineProfit(Math.ceil((new Date() - new Date(localStorage.getItem("exitTime") || new Date()))/1000))
     toStyle("#ret", "backgroundPositionY", layer.level*-200 + "px");
+    dailyGift_F(new Date(localStorage.getItem("lastLogon")), new Date());
+    localStorage.setItem("lastLogon", new Date());
     updateInfo();
     }
 }
@@ -287,6 +303,8 @@ function safeInLocalStorage(){
     localStorage.setItem("expBonus.count", expBonus.count);
     localStorage.setItem("bossLevel", bossLevel);
     localStorage.setItem("allBonusFree", allBonusFree);
+    localStorage.setItem("daysdDailyGift", daysdDailyGift);
+    localStorage.setItem("weeksDailyGift", weeksDailyGift);
     localStorage.setItem(layer.name, JSON.stringify(layer));
     localStorage.setItem(prize.name, JSON.stringify(prize));
     for(let i = 0; i < upgrades2.length; i++){
@@ -392,8 +410,31 @@ async function startingCreationGUI(){
             DOM.Create({Parent: id+"BtnID", Tag: "img", Id: id+"ImgBtnID", Class: "expCl", Src: "img/exp.png"});
             DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
     }
-    //Бонусное меню
+    //Офлайн меню
     DOM.Create({Parent: "offlineBonusConteinerRerollID", Tag: "button", Id: "claim_offBonus", Class: "bossLevelBonusCls", OnClick: function(){offlineProfit2();}});
+    //Ежедневный подарок меню
+    DOM.Create({Parent: "dailyGiftMenuConteinerRerollID", Tag: "button", Id: "claim_dailyGift", Class: "bossLevelBonusCls", OnClick: function(){claimDailyGift();}});
+    for(let i = 0; i < 7; i++){
+        const keys = Object.keys(dailyGift["day"+(i+1)]);
+        if(i == daysdDailyGift){
+            DOM.Id("dailyGiftDayContID"+i).classList.add("backlight");
+        } else if (i < daysdDailyGift){
+            DOM.Id("dailyGiftDayContID"+i).classList.add("disabled");
+            DOM.Id("dailyGiftDayContID"+i).classList.add("dis");
+        }
+        for (let j = 0; j < keys.length; j++){
+            DOM.Create({Parent: "dailyGiftDayContID"+i, Id: "dailyGiftDaySkillContID"+i+j, Class: "skillContainer"});
+            for (let k = 0; k < skills.length; k++){
+
+                if(skills[k].name == keys[j]){
+                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillIMGID"+j+k, Tag: "img", Class: "skillIMG", Src: "img/"+skills[k].img});
+                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillCountID"+i+j+k, Tag: "span", Class: "skillValue", Text: dailyGift["day"+(i+1)][keys[j]]})
+                    break;
+                }
+            }
+        }
+    }    
+    //Бонусное меню
     DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claim_all", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All")}});
     DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
         DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
@@ -482,6 +523,9 @@ function startingValues(){
         upgrades2[i].cost.current = upgrades2[i].cost.calc = upgrades2[i].cost.base;
         switchingElementMenu(false, upgrades2[i]);
     }
+    DOM.Id(emergenceSpeedX2.name+"skillID").classList.add("disabled");
+    DOM.Id(fallSpeedX2.name+"skillID").classList.add("disabled");
+    DOM.Id(damageX2.name+"skillID").classList.add("disabled");
     openingLayerUp();
 }
 
@@ -517,7 +561,14 @@ function hit(object) {
             toChangeText("counterID", hit.count=(hit.count || 0) + 1);
         }
         else {
-            if((object.level + object.levelTemp) > 0){animationAutoHit(object);}
+            if((object.level + object.levelTemp) > 0){
+                animationAutoHit(object);
+
+        DOM.Id(emergenceSpeedX2.name+"skillID").classList.remove("disabled");
+        DOM.Id(fallSpeedX2.name+"skillID").classList.remove("disabled");
+        DOM.Id(damageX2.name+"skillID").classList.remove("disabled");
+
+            }
         } 
     }
 }
@@ -562,7 +613,7 @@ function animationAutoHit(autoDamage){
         element.style.left = leftRandom;
         element.offsetHeight;
         element.style.transform = "rotate("+rotate+"deg)";
-        tailMeteor.style.top = "43%";
+        tailMeteor.style.top = "calc(65% - 110px)";
         element.style.top = "65%";
         element.addEventListener('transitionend', function opacity(e){
             if (e.propertyName === 'top'){
@@ -757,7 +808,7 @@ function bossLevelBonus(){
             img = "coin.png";
         } else{
             valueBtn = trw[i].name;
-            valueLevel = Math.floor(Math.random()*(trw[i].level/10)) + 1;
+            valueLevel = Math.floor(Math.random()*(trw[i].level/20)) + 1;
             title = "+" + valueLevel;
             img = trw[i].img;
         }
@@ -866,6 +917,45 @@ function offlineProfit2(){
     if(bossBonus){DOM.Hide("bossLevelBonusID", false);}
     offlineBonus = false;
     switchsHit();
+}
+
+function dailyGift_F(lastLogon, currentLogon){
+    if(!lastLogon){lastLogon = new Date(new Date()-172800000)}
+    const lastDay = lastLogon.getDate();
+    const today = currentLogon.getDate();
+        myLog(today + " today")
+        myLog(lastDay + " lastDay")
+    if(today != lastDay){
+        let raznica = today - lastDay;
+        let raznicaMonth = currentLogon.getMonth() - lastLogon.getMonth()
+        if(raznica > 1){
+            daysdDailyGift = 1;
+            weeksDailyGift = 1;
+        } else if (raznica == 1 || raznica < 0 && raznicaMonth == 1 && today == 1 || raznicaMonth == -11 && today == 1){
+            daysdDailyGift++;
+            raznica = 1;
+        }
+        if(raznica > 0){
+            DOM.Hide("dailyGiftMenuID", false);
+        }
+    }
+}
+
+function claimDailyGift(){
+    const keys = Object.keys(dailyGift["day"+daysdDailyGift]);
+    for (let i = 0; i < keys.length; i++){
+        for (let j = 0; j < skills.length; j++){
+            if(skills[j].name == keys[i]){
+                skills[j].count += dailyGift["day"+daysdDailyGift][keys[i]] * weeksDailyGift;
+            }
+        }
+    }
+    DOM.Hide("dailyGiftMenuID", true);
+    if(daysdDailyGift >=7){
+        daysdDailyGift -= 7;
+        weeksDailyGift++;
+    }
+    updateInfo();
 }
 
 function updateInfo(){

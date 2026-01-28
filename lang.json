@@ -215,8 +215,40 @@
     "ru": "Автовыбор через: ",
     "en": "Auto-select in: "
   },
-    "auto_select_second": {
+  "auto_select_second": {
     "ru": " секунд",
     "en": " seconds"
+  },
+  "dailyGiftDayID0": {
+    "ru": "День 1",
+    "en": "Day 1"
+  },
+  "dailyGiftDayID1": {
+    "ru": "День 2",
+    "en": "Day 2"
+  },
+  "dailyGiftDayID2": {
+    "ru": "День 3",
+    "en": "Day 3"
+  },
+  "dailyGiftDayID3": {
+    "ru": "День 4",
+    "en": "Day 4"
+  },
+  "dailyGiftDayID4": {
+    "ru": "День 5",
+    "en": "Day 5"
+  }, 
+  "dailyGiftDayID5": {
+    "ru": "День 6",
+    "en": "Day 6"
+  },
+  "dailyGiftDayID6": {
+    "ru": "День 7",
+    "en": "Day 7"
+  },
+  "claim_dailyGift": {
+    "ru": "Claim",
+    "en": "Забрать"
   }
 }

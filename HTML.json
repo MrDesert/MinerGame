@@ -194,8 +194,7 @@
         "Text": "Офлайн бонус!"
     },
     "time_offline": {
-        "Parent": "offlineBonusID",
-        "Text": "Офлайн бонус!"
+        "Parent": "offlineBonusID"
     },
     "offlineBonusContainerID":{
         "Parent": "offlineBonusID",
@@ -246,5 +245,31 @@
         "Id": "_skillCountID",
         "Tag": "span",
         "Class": "skillValue"
+    },
+    "dailyGiftMenuID": {
+        "Parent": "ret",
+        "Hidden": "true",
+        "Class": "bonusMenu"
+    },
+    "$dailyGiftContainerID_":{
+        "arrayName$": 7,
+        "Parent": "dailyGiftMenuID",
+        "Id": "dailyGiftContainerID_",
+        "Class": "bonusContainer"
+    },
+    "$dailyGiftDayID_":{
+        "arrayName$": 7,
+        "Parent": "dailyGiftContainerID_",
+        "Id": "dailyGiftDayID_",
+        "Tag": "span"
+    },
+    "$dailyGiftDayContID_":{
+        "arrayName$": 7,
+        "Parent": "dailyGiftContainerID_",
+        "Id": "dailyGiftDayContID_",
+        "Class": "dailyGiftDayCont"
+    },
+    "dailyGiftMenuConteinerRerollID": {
+        "Parent": "dailyGiftMenuID"
     }
 }

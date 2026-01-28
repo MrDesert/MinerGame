@@ -246,34 +246,35 @@ body {
 .imgTailMeteor{
    position: absolute;
    height: 160px;
-   top: -32%;
+   top: calc(-10% - 110px);
    opacity: 100%;
    pointer-events:  none; /*отключаем реакцию мыши на неё*/
    transition: top 1.5s ease-in, opacity 50ms ease-in;
-
-    animation: fire 0.5s infinite alternate, shake 0.1s infinite alternate;
+   animation: fire 1s infinite alternate, shake 0.1s infinite alternate;
 }
 
 @keyframes fire {
-   0% {
+   0%, 100% {
              filter: 
-    drop-shadow(0 0 1px rgb(255, 60, 0))
-    drop-shadow(0 0 2px rgb(255, 60, 0))
-    drop-shadow(0 0 4px rgb(255, 60, 0));
+    drop-shadow(0 0 1px rgb(240, 60, 0))
+    drop-shadow(0 0 2px rgb(240, 60, 0))
+    drop-shadow(0 0 4px rgb(240, 60, 0))
+    blur(1px) brightness(1) contrast(1) hue-rotate(0deg);
    }
-   100% {
+   50% {
                    filter: 
     drop-shadow(0 0 3px rgb(255, 30, 0))
     drop-shadow(0 0 6px rgb(255, 30, 0))
-    drop-shadow(0 0 10px rgb(255, 30, 0));
+    drop-shadow(0 0 10px rgb(255, 30, 0))
+    blur(3px) brightness(1.1) contrast(1.1) hue-rotate(10deg);
    }
 }
 
 @keyframes shake {
-   0%, 100% {transform: translateX(-2px) scaleY(1);}
-   25% {transform: translateX(4px) scaleY(1.2);}
-   50% {transform: translateX(-4px) scaleY(0.8);}
-   75% {transform: translateX(2px) scaleY(1.1);}
+   0%, 100% {transform: translateX(-1px) scaleY(1);}
+   25% {transform: translateX(2px) scaleY(1.1);}
+   50% {transform: translateX(-2px) scaleY(0.9);}
+   75% {transform: translateX(1px) scaleY(1.05);}
 }
 
 #menuForCoins{
@@ -379,9 +380,9 @@ body {
 	background: rgba(90, 90, 90, 0.8);
 	box-shadow: 0px 0px 15px 15px rgba(0, 0, 0, 0.2);
    position: absolute;
-   bottom: 50%;
+   top: 50%;
    right: 0px;
-   transform: translateY(50%);
+   transform: translateY(-40%);
    /* height: 370px; */
    width: 75px;
    border: outset 3px black;
