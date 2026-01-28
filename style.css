@@ -426,3 +426,15 @@ body {
    background: rgba(201, 201, 201, 0.4);
    border-radius: 0px 0px 10px 0px;
 }
+#inerectiveBonusContID2{
+   height: 40px;
+   position: absolute;
+   top: 1px;
+   z-index: 3;
+   opacity: 0%;
+   transition: opacity 5s linear;
+}
+#inerectiveBonusID{
+   object-fit: contain;
+   height: 100%;
+}

@@ -92,11 +92,11 @@ const lycki = true;
 const upgradesExp = [layer_hardness, mining_profit, upgrade_cost, auto_bonus_duration, money_keep, auto_mine_speed, xp_gain];
 window.upgradesExp = upgradesExp;
 
-const profitX2 = {name: "profitX2", value: 1, count: 10, time: 120, timeCur: 0, text: "Х2 прибыль", func: () => skill(profitX2), img: "profitX2.png"};
-const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 10, time: 60, timeCur: 0, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), img: "emergenceSpeedX2.png"}
-const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 10, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: "fallSpeedX2.png"}
-const damageX2 = {name: "damageX2", value: 1, count: 10, time: 60, timeCur: 0, text: "Х2 весь урон", func: () => skill(damageX2), img: "pickaxe_transparent_redShadow_390x390.png"}
-const multiSkill = {name: "multiSkill", value: 1, count: 10, time: 30, timeCur: 0, text: "Мультибонус", func: () => skill(multiSkill), img: "multiSkill.png"}
+const profitX2 = {name: "profitX2", value: 1, count: 10, time: 120, timeCur: 0, text: "Х2 прибыль", func: () => skill(profitX2), img: "profitX2.png", disable: true, autoHit: false};
+const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 0, time: 60, timeCur: 0, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), img: "emergenceSpeedX2.png", disable: true, autoHit: true}
+const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 0, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: "fallSpeedX2.png", disable: true, autoHit: true}
+const damageX2 = {name: "damageX2", value: 1, count: 0, time: 60, timeCur: 0, text: "Х2 весь урон", func: () => skill(damageX2), img: "pickaxe_transparent_redShadow_390x390.png", disable: true, autoHit: true}
+const multiSkill = {name: "multiSkill", value: 1, count: 0, time: 30, timeCur: 0, text: "Мультибонус", func: () => skill(multiSkill), img: "multiSkill.png", disable: true, autoHit: false}
 
 const dailyGift = {
     day1: {profitX2: 3},
@@ -110,6 +110,7 @@ const dailyGift = {
 let daysdDailyGift = 0; 
 let weeksDailyGift = 1;
 
+const autohitSkill = [emergenceSpeedX2, fallSpeedX2, damageX2]
 const skills = [profitX2, emergenceSpeedX2, fallSpeedX2, damageX2, multiSkill];
 window.skills = skills;
 
@@ -236,10 +237,11 @@ document.addEventListener('visibilitychange', ()=>{
 document.addEventListener('DOMContentLoaded', function() {
     DOMContentLoaded = true;
     loadLocalStorage();
-})
+}, {once: true});
 
 function loadLocalStorage(){
     if(DOMContentLoaded && HTMLLoaded){
+    myLog("Парс")
     for(let i = 0; i < upgrades2.length; i++){
         if(localStorage.getItem(upgrades2[i].name)){
             Object.assign(upgrades2[i], JSON.parse(localStorage.getItem(upgrades2[i].name)));
@@ -249,6 +251,11 @@ function loadLocalStorage(){
         if(localStorage.getItem(upgradesExp[i].name)){
             Object.assign(upgradesExp[i], JSON.parse(localStorage.getItem(upgradesExp[i].name)));
         }
+    }
+    for(let i = 0; i < skills.length; i++){
+        if(localStorage.getItem(skills[i].name)){
+            Object.assign(skills[i], JSON.parse(localStorage.getItem(skills[i].name)));
+        }    
     }
     if(localStorage.getItem('layer')){
          Object.assign(layer, JSON.parse(localStorage.getItem('layer')));
@@ -268,6 +275,7 @@ function loadLocalStorage(){
     bossLevel = Number(localStorage.getItem("bossLevel")) || 1;
     allBonusFree = localStorage.getItem("allBonusFree") === 'false' ? false : true;
     daysdDailyGift = Number(localStorage.getItem("daysdDailyGift"));
+    myLog(daysdDailyGift+" daysdDailyGift")
     weeksDailyGift = Number(localStorage.getItem("weeksDailyGift"));
     if(!allBonusFree){
         document.getElementById("claim_all").disabled = "disabled";
@@ -313,13 +321,17 @@ function safeInLocalStorage(){
     for(let i = 0; i < upgradesExp.length; i++){
         localStorage.setItem(upgradesExp[i].name, JSON.stringify(upgradesExp[i]));
     }
+    for(let i = 0; i< skills.length; i++){
+        localStorage.setItem(skills[i].name, JSON.stringify(skills[i]));
+    }
     localStorage.setItem("exitTime", new Date())
 }
 
 function tick(time){
     tick.count = (tick.count || 0)
     if(time - (tick.lastTime || 0) >= 100){
-        if(tick.count % 10 === 0){skillTimer();}
+        if(tick.count % 10 === 0){skillTimer(); interectiveBonusCreate.time--}
+        if(tick.count % 50 === 0){interectiveBonusCreate();}
         if(!loadImgs && tick.count % 8 === 0){preloaderTextChange();}
         tick.count++;
         for(let i = 0; i < upgradesAuto.length; i++){
@@ -347,7 +359,6 @@ function textTimer(){
 
 function skillTimer(){
     if(HTMLLoaded && !pausescreen && !bossBonus && !offlineBonus){
-        myLog(switchHit)
         for(let i = 0; i < skills.length; i++){
             if(skills[i].value == 2){
                 skills[i].timeCur -= 1;
@@ -416,12 +427,6 @@ async function startingCreationGUI(){
     DOM.Create({Parent: "dailyGiftMenuConteinerRerollID", Tag: "button", Id: "claim_dailyGift", Class: "bossLevelBonusCls", OnClick: function(){claimDailyGift();}});
     for(let i = 0; i < 7; i++){
         const keys = Object.keys(dailyGift["day"+(i+1)]);
-        if(i == daysdDailyGift){
-            DOM.Id("dailyGiftDayContID"+i).classList.add("backlight");
-        } else if (i < daysdDailyGift){
-            DOM.Id("dailyGiftDayContID"+i).classList.add("disabled");
-            DOM.Id("dailyGiftDayContID"+i).classList.add("dis");
-        }
         for (let j = 0; j < keys.length; j++){
             DOM.Create({Parent: "dailyGiftDayContID"+i, Id: "dailyGiftDaySkillContID"+i+j, Class: "skillContainer"});
             for (let k = 0; k < skills.length; k++){
@@ -438,7 +443,7 @@ async function startingCreationGUI(){
     DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claim_all", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All")}});
     DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
         DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
-    
+    //Меню скилов
     for(let i = 0; i < skills.length; i++){
         let id = skills[i].name;
         DOM.Id(id+"skillID").onclick = function(){skills[i].func();};
@@ -447,6 +452,7 @@ async function startingCreationGUI(){
         const s = skills[i].time - m * 60;
         toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
     }
+    interectiveBonusCreate()
     updateInfo();
 }
 
@@ -523,9 +529,6 @@ function startingValues(){
         upgrades2[i].cost.current = upgrades2[i].cost.calc = upgrades2[i].cost.base;
         switchingElementMenu(false, upgrades2[i]);
     }
-    DOM.Id(emergenceSpeedX2.name+"skillID").classList.add("disabled");
-    DOM.Id(fallSpeedX2.name+"skillID").classList.add("disabled");
-    DOM.Id(damageX2.name+"skillID").classList.add("disabled");
     openingLayerUp();
 }
 
@@ -563,11 +566,6 @@ function hit(object) {
         else {
             if((object.level + object.levelTemp) > 0){
                 animationAutoHit(object);
-
-        DOM.Id(emergenceSpeedX2.name+"skillID").classList.remove("disabled");
-        DOM.Id(fallSpeedX2.name+"skillID").classList.remove("disabled");
-        DOM.Id(damageX2.name+"skillID").classList.remove("disabled");
-
             }
         } 
     }
@@ -622,6 +620,7 @@ function animationAutoHit(autoDamage){
                 element.classList.add("death");
                 damage(autoDamage);
             } else if (e.propertyName === 'opacity'){
+                tailMeteor.remove();
                 element.remove();
                 element.removeEventListener('transitionend', opacity); 
             }
@@ -928,6 +927,13 @@ function dailyGift_F(lastLogon, currentLogon){
     if(today != lastDay){
         let raznica = today - lastDay;
         let raznicaMonth = currentLogon.getMonth() - lastLogon.getMonth()
+        for(let i = 0; i < 7; i++){
+        if(i == daysdDailyGift){
+            DOM.Id("dailyGiftDayContID"+i).classList.add("backlight");
+        } else if (i < daysdDailyGift){
+            DOM.Id("dailyGiftDayContID"+i).classList.add("disabled");
+        }
+        }
         if(raznica > 1){
             daysdDailyGift = 1;
             weeksDailyGift = 1;
@@ -942,6 +948,7 @@ function dailyGift_F(lastLogon, currentLogon){
 }
 
 function claimDailyGift(){
+    myLog(daysdDailyGift+" daysdDailyGift")
     const keys = Object.keys(dailyGift["day"+daysdDailyGift]);
     for (let i = 0; i < keys.length; i++){
         for (let j = 0; j < skills.length; j++){
@@ -956,6 +963,42 @@ function claimDailyGift(){
         weeksDailyGift++;
     }
     updateInfo();
+}   
+function interectiveBonusCreate(){
+    if(!interectiveBonusCreate.bool){
+        const r = Math.floor(Math.random()*1)
+        myLog(r + " r");
+        if(r == 0){
+            interectiveBonusCreate.bool = true;
+            interectiveBonusCreate.time = 30;
+        DOM.Create({Parent: "ret", Id: "inerectiveBonusContID2", OnClick: function(){interectiveBonus()}})
+        const id = DOM.Id("inerectiveBonusContID2");
+        id.style.top = (Math.floor(Math.random()*94)+1)+"%";
+        id.style.left = (Math.floor(Math.random()*94)+1)+"%";
+        id.offsetHeight;
+        id.style.opacity = "100%";
+        DOM.Create({Parent: "inerectiveBonusContID2", Id: "inerectiveBonusID", Tag: "img", Src: "img/coin.png"})
+        }
+    } else {
+        if(interectiveBonusCreate.time <= 0){
+            interectiveBonusCreate.bool = false;
+            DOM.Id("inerectiveBonusContID2").remove();
+        } else if (interectiveBonusCreate.time <= 5){
+            DOM.Id("inerectiveBonusContID2").style.opacity = "0%";
+        }
+    }
+ }
+function interectiveBonus(){
+    interectiveBonusCreate.bool = false;
+ const randomSkill = Math.floor(Math.random()*skills.length);
+ myLog(skills[randomSkill].name)
+ if(skills[randomSkill].value == 2 || skills[randomSkill].autoHit == true && autoHit <= 0){
+    finance(Math.floor(money/10)+1);
+ } else{
+    skills[randomSkill].count += 1;
+    skill(skills[randomSkill]);
+ }
+  DOM.Id("inerectiveBonusContID2").remove();
 }
 
 function updateInfo(){
@@ -969,6 +1012,26 @@ function updateInfo(){
         DOM.Id("prizeID").classList.remove("strike");
         DOM.Hide("luckyID", true);
         toChangeText("prizeID2", "");
+    }
+    for(let i = 0; i < skills.length; i++){
+        if(skills[i].disable){
+            DOM.Id(skills[i].name+"skillID").classList.add("disabled");
+        } else{
+            DOM.Id(skills[i].name+"skillID").classList.remove("disabled");
+        }
+        if(skills[i].autoHit){
+            if(skills[i].count > 0 && autoHit > 0){
+                skills[i].disable = false;
+            } else{
+                skills[i].disable = true;
+            }
+        } else {
+            if(skills[i].count > 0){
+                skills[i].disable = false;
+            } else {
+                skills[i].disable = true;
+            }
+        }
     }
     toChangeText("depthLevelID", layer.level);
     autoHit = 0;
