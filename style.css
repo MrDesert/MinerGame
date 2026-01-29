@@ -16,31 +16,54 @@
    };
  }
  @media (orientation: portrait){
+      .bonusContainer{
+      display: inline-block;
+   }
    .bonusMenu{
+      top: 30%;
+   } 
+   .bossLevelBonusIMG{
+      height: 80px;
+    }
+   #upgrades{
+      font-size: clamp(24px, 5vw, 32px); 
+   }
+   #menuID{   
+      top: 5px
+   };
+    .bonusMenu{
       top: 10%;
       max-width: 25%;
-   } 
+   }
     .bossLevelBonusIMG{
       height: 70px;
     }
+   #dailyGiftMenuID{
+      max-width: none !important;
+      width: clamp(110px, 60%, 500px);
+   }
    #upgrades{
       font-size: clamp(20px, 5vw, 21px); 
    }
    #menuID{   
       top: 10%;
-   };
+   }; 
 }
  @media (max-width: 670px){
-   .bossLevelBonusIMG{
+    .bossLevelBonusIMG{
       height: 60px;
     }
       .bonusMenu{
       top: 10%;
       max-width: 25%;
+   }
+   #dailyGiftMenuID{
+      max-width: none !important;
+      width: clamp(110px, 60%, 500px);
    } 
    #upgrades{
       font-size: clamp(20px, 5vw, 21px); 
-   }
+   } 
  }
 
  *{
@@ -432,9 +455,38 @@ body {
    top: 1px;
    z-index: 3;
    opacity: 0%;
-   transition: opacity 5s linear;
+   scale: 0;
+   transition:scale 1.3s ease-in, opacity 1.3s ease-in, transform 1.3s ease-in; 
 }
 #inerectiveBonusID{
    object-fit: contain;
    height: 100%;
+}
+.dailyGiftContainer{
+   background-color: #797979;
+   max-width: none;
+   margin: 7px;
+   width: auto;
+   min-width: auto;
+   padding: 8px;
+   padding-top: 0px;
+   border-radius: 15px 15px 0px 0px ;
+}
+.dailyGiftDayCont{
+   display: flex;
+   column-gap: 8px;
+   width: auto;
+   min-width: 50px;
+   max-width: 100%;
+   justify-content: center; /*Выравнивание по горизантали*/
+   align-items: center; /*Выравнивание по вертикале*/
+}
+.dailySkill{
+   border: white 1px solid;
+   background-color: #919191;
+   border-radius: 5px;
+   position: relative;
+   width: 60px;
+   height: 60px;
+   flex-shrink: 0 !important; /* Не позволит ужиматься */
 }

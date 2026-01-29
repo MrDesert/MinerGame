@@ -255,7 +255,7 @@
         "arrayName$": 7,
         "Parent": "dailyGiftMenuID",
         "Id": "dailyGiftContainerID_",
-        "Class": "bonusContainer"
+        "Class": "bonusContainer dailyGiftContainer"
     },
     "$dailyGiftDayID_":{
         "arrayName$": 7,

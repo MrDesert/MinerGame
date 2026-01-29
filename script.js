@@ -18,6 +18,7 @@ let switchHit = true;
 let layerAnimat = false;
 let bossBonus = false;
 let offlineBonus = false;
+let dailyGiftBonus = false
 let pausescreen = false;
 
 let countAutoHit = 0;
@@ -109,6 +110,7 @@ const dailyGift = {
 }
 let daysdDailyGift = 0; 
 let weeksDailyGift = 1;
+let DailyGiftCreate = 0;
 
 const autohitSkill = [emergenceSpeedX2, fallSpeedX2, damageX2]
 const skills = [profitX2, emergenceSpeedX2, fallSpeedX2, damageX2, multiSkill];
@@ -358,7 +360,7 @@ function textTimer(){
 }
 
 function skillTimer(){
-    if(HTMLLoaded && !pausescreen && !bossBonus && !offlineBonus){
+    if(HTMLLoaded && !pausescreen && !bossBonus && !offlineBonus && !dailyGiftBonus){
         for(let i = 0; i < skills.length; i++){
             if(skills[i].value == 2){
                 skills[i].timeCur -= 1;
@@ -423,17 +425,19 @@ async function startingCreationGUI(){
     }
     //Офлайн меню
     DOM.Create({Parent: "offlineBonusConteinerRerollID", Tag: "button", Id: "claim_offBonus", Class: "bossLevelBonusCls", OnClick: function(){offlineProfit2();}});
+    DOM.Id("offlineBonusIMGID").src = "img/coin.png";
     //Ежедневный подарок меню
     DOM.Create({Parent: "dailyGiftMenuConteinerRerollID", Tag: "button", Id: "claim_dailyGift", Class: "bossLevelBonusCls", OnClick: function(){claimDailyGift();}});
     for(let i = 0; i < 7; i++){
         const keys = Object.keys(dailyGift["day"+(i+1)]);
         for (let j = 0; j < keys.length; j++){
-            DOM.Create({Parent: "dailyGiftDayContID"+i, Id: "dailyGiftDaySkillContID"+i+j, Class: "skillContainer"});
+            DOM.Create({Parent: "dailyGiftDayContID"+i, Id: "dailyGiftDaySkillContID"+i+j, Class: "dailySkill"});
             for (let k = 0; k < skills.length; k++){
 
                 if(skills[k].name == keys[j]){
-                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillIMGID"+j+k, Tag: "img", Class: "skillIMG", Src: "img/"+skills[k].img});
-                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillCountID"+i+j+k, Tag: "span", Class: "skillValue", Text: dailyGift["day"+(i+1)][keys[j]]})
+                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillIMGID"+DailyGiftCreate, Tag: "img", Class: "skillIMG", Src: "img/"+skills[k].img});
+                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillCountID"+DailyGiftCreate, Tag: "span", Class: "skillValue", Text: (dailyGift["day"+(i+1)][keys[j]]*weeksDailyGift)})
+                    DailyGiftCreate++;
                     break;
                 }
             }
@@ -597,8 +601,8 @@ function animationAutoHit(autoDamage){
         if(fallSpeedX2.value == 2){
             rotate = Math.floor(Math.random()*80)+700 + autoDamage.rotate;
             element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
-            let mirror = Math.round(Math.random()*1) == 1 ? 1 : -1;
-            tailMeteor.style.transform = "scaleX("+ mirror +")";
+            let mirror = Math.round(Math.random()*1) == 1 ? 180 : 0;
+            tailMeteor.style.transform = "rotateY("+ mirror +"deg)";
             tailMeteor.src = "img/tailMeteor.png";
         }
         element.src = "img/"+autoDamage.autoImg;
@@ -642,8 +646,8 @@ function trembling(){
 }
 
 function switchsHit(){
-    if (bossBonus || offlineBonus || pausescreen || layerAnimat){switchHit = false;}
-    if (!bossBonus && !offlineBonus && !pausescreen && !layerAnimat){switchHit = true;}
+    if (bossBonus || offlineBonus || dailyGiftBonus || pausescreen || layerAnimat){switchHit = false;}
+    if (!bossBonus && !offlineBonus && !dailyGiftBonus && !pausescreen && !layerAnimat){switchHit = true;}
 }
 
 function finishLevel(){
@@ -902,8 +906,7 @@ function offlineProfit(offlineSeconds){
     if(offBonus > 0 && offlineSeconds > 3){
         DOM.Hide("bossLevelBonusID", true);
         DOM.Hide("offlineBonusID", false);
-        DOM.Id("offlineBonusIMGID").src = "img/coin.png";
-        toChangeText("offlineBonusValueID", "+" + offBonus);
+        toChangeText("offlineBonusValueID", "+" + toCompactNotation(offBonus));
         offlineBonus = true;
         switchsHit();
     }
@@ -927,13 +930,6 @@ function dailyGift_F(lastLogon, currentLogon){
     if(today != lastDay){
         let raznica = today - lastDay;
         let raznicaMonth = currentLogon.getMonth() - lastLogon.getMonth()
-        for(let i = 0; i < 7; i++){
-        if(i == daysdDailyGift){
-            DOM.Id("dailyGiftDayContID"+i).classList.add("backlight");
-        } else if (i < daysdDailyGift){
-            DOM.Id("dailyGiftDayContID"+i).classList.add("disabled");
-        }
-        }
         if(raznica > 1){
             daysdDailyGift = 1;
             weeksDailyGift = 1;
@@ -942,12 +938,25 @@ function dailyGift_F(lastLogon, currentLogon){
             raznica = 1;
         }
         if(raznica > 0){
+            dailyGiftBonus = true;
+            DOM.Hide("offlineBonusID", true);
+            for(let i = 0; i < DailyGiftCreate; i++){
+                toChangeText("dailyGiftDaySkillCountID"+i, (Number(DOM.Id("dailyGiftDaySkillCountID"+i).textContent)*weeksDailyGift))
+            }
             DOM.Hide("dailyGiftMenuID", false);
+            for(let i = 0; i < 7; i++){
+                if(i+1 == daysdDailyGift){
+                    DOM.Id("dailyGiftDayContID"+i).classList.add("backlight");
+                } else if (i < daysdDailyGift){
+                    DOM.Id("dailyGiftDayContID"+i).classList.add("disabled");
+                }
+            }
         }
     }
 }
 
 function claimDailyGift(){
+    DOM.Hide("offlineBonusID", false);
     myLog(daysdDailyGift+" daysdDailyGift")
     const keys = Object.keys(dailyGift["day"+daysdDailyGift]);
     for (let i = 0; i < keys.length; i++){
@@ -958,16 +967,18 @@ function claimDailyGift(){
         }
     }
     DOM.Hide("dailyGiftMenuID", true);
+    toChangeText("offlineBonusValueID", "+" + toCompactNotation(offBonus));
     if(daysdDailyGift >=7){
         daysdDailyGift -= 7;
         weeksDailyGift++;
     }
+    dailyGiftBonus = false;
     updateInfo();
 }   
 function interectiveBonusCreate(){
     if(!interectiveBonusCreate.bool){
         const r = Math.floor(Math.random()*1)
-        myLog(r + " r");
+        // myLog(r + " r");
         if(r == 0){
             interectiveBonusCreate.bool = true;
             interectiveBonusCreate.time = 30;
@@ -977,6 +988,7 @@ function interectiveBonusCreate(){
         id.style.left = (Math.floor(Math.random()*94)+1)+"%";
         id.offsetHeight;
         id.style.opacity = "100%";
+        id.style.scale = 1;
         DOM.Create({Parent: "inerectiveBonusContID2", Id: "inerectiveBonusID", Tag: "img", Src: "img/coin.png"})
         }
     } else {
@@ -989,16 +1001,29 @@ function interectiveBonusCreate(){
     }
  }
 function interectiveBonus(){
-    interectiveBonusCreate.bool = false;
  const randomSkill = Math.floor(Math.random()*skills.length);
  myLog(skills[randomSkill].name)
  if(skills[randomSkill].value == 2 || skills[randomSkill].autoHit == true && autoHit <= 0){
+    const target = DOM.Id("coinID").getBoundingClientRect();
+    const targetX = target.left + target.width;
+    const targetY = target.top + target.height;
+    const object = DOM.Id("inerectiveBonusContID2").getBoundingClientRect();
+    const objectX = object.left + object.width;
+    const objectY = object.top + object.height;
+    const moveX = targetX - objectX;
+    const moveY = targetY - objectY;
+    DOM.Id("inerectiveBonusContID2").style.transform = `translate(${moveX}px, ${moveY}px) scale(0.3)`;
+    DOM.Id("inerectiveBonusContID2").style.opacity = "30%";
     finance(Math.floor(money/10)+1);
  } else{
     skills[randomSkill].count += 1;
     skill(skills[randomSkill]);
  }
-  DOM.Id("inerectiveBonusContID2").remove();
+
+ DOM.Id("inerectiveBonusContID2").addEventListener('transitionend', function opacity(e){
+    DOM.Id("inerectiveBonusContID2").remove();
+    interectiveBonusCreate.bool = false;
+ })
 }
 
 function updateInfo(){
