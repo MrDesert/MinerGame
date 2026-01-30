@@ -997,7 +997,7 @@ function claimDailyGift(){
 }   
 function interectiveBonusCreate(){
     if(!interectiveBonusCreate.bool){
-        const r = Math.floor(Math.random()*15)
+        const r = Math.floor(Math.random()*1)
         // myLog(r + " r");
         if(r == 0){
             interectiveBonusCreate.bool = true;
@@ -1011,7 +1011,7 @@ function interectiveBonusCreate(){
         id.offsetHeight;
         id.style.opacity = "100%";
         id.style.scale = 1;
-        DOM.Create({Parent: "inerectiveBonusContID2", Id: "inerectiveBonusID", Tag: "img", Src: "img/coin.png"})
+        DOM.Create({Parent: "inerectiveBonusContID2", Id: "inerectiveBonusID", Tag: "img", Src: "img/nugget.png"})
         }
     } else {
         if(interectiveBonusCreate.time <= 0){

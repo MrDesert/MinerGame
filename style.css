@@ -469,7 +469,7 @@ body {
    border-radius: 0px 0px 10px 0px;
 }
 #inerectiveBonusContID2{
-   height: 45px;
+   height: 50px;
    position: absolute;
    top: 1px;
    z-index: 3;
@@ -495,7 +495,7 @@ body {
     filter: blur(1px);
 }.highlight::before {
     top: 15%;
-    left: 10%;
+    left: 50%;
     animation: random-spark 8s infinite;
 }
 
