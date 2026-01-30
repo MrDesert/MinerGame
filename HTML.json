@@ -271,5 +271,23 @@
     },
     "dailyGiftMenuConteinerRerollID": {
         "Parent": "dailyGiftMenuID"
+    },
+    "geodeConteinerID":{
+        "Parent": "leftTopMenu"
+    },
+    "geodeIMGID":{
+        "Parent": "geodeConteinerID",
+        "Tag": "img"
+    },
+    "geodeCraksIMGID":{
+        "Parent": "geodeConteinerID",
+        "Tag": "img"
+    },
+    "geodeValueID":{
+        "Parent": "geodeConteinerID",
+        "Tag": "span"
+    },
+    "geodeWarningID":{
+        "Parent": "geodeConteinerID"
     }
 }

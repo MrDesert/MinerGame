@@ -93,11 +93,11 @@ const lycki = true;
 const upgradesExp = [layer_hardness, mining_profit, upgrade_cost, auto_bonus_duration, money_keep, auto_mine_speed, xp_gain];
 window.upgradesExp = upgradesExp;
 
-const profitX2 = {name: "profitX2", value: 1, count: 10, time: 120, timeCur: 0, text: "Х2 прибыль", func: () => skill(profitX2), img: "profitX2.png", disable: true, autoHit: false};
-const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 0, time: 60, timeCur: 0, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), img: "emergenceSpeedX2.png", disable: true, autoHit: true}
-const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 0, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: "fallSpeedX2.png", disable: true, autoHit: true}
-const damageX2 = {name: "damageX2", value: 1, count: 0, time: 60, timeCur: 0, text: "Х2 весь урон", func: () => skill(damageX2), img: "pickaxe_transparent_redShadow_390x390.png", disable: true, autoHit: true}
-const multiSkill = {name: "multiSkill", value: 1, count: 0, time: 30, timeCur: 0, text: "Мультибонус", func: () => skill(multiSkill), img: "multiSkill.png", disable: true, autoHit: false}
+const profitX2 = {name: "profitX2", value: 1, count: 1, time: 120, timeCur: 0, text: "Х2 прибыль", func: () => skill(profitX2), img: "profitX2.png", disable: true, autoHit: false};
+const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 1, time: 60, timeCur: 0, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), img: "emergenceSpeedX2.png", disable: true, autoHit: true}
+const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 1, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: "fallSpeedX2.png", disable: true, autoHit: true}
+const damageX2 = {name: "damageX2", value: 1, count: 1, time: 60, timeCur: 0, text: "Х2 весь урон", func: () => skill(damageX2), img: "pickaxe_transparent_redShadow_390x390.png", disable: true, autoHit: true}
+const multiSkill = {name: "multiSkill", value: 1, count: 1, time: 30, timeCur: 0, text: "Мультибонус", func: () => skill(multiSkill), img: "multiSkill.png", disable: true, autoHit: false}
 
 const dailyGift = {
     day1: {profitX2: 3},
@@ -113,7 +113,7 @@ let weeksDailyGift = 1;
 let DailyGiftCreate = 0;
 
 const autohitSkill = [emergenceSpeedX2, fallSpeedX2, damageX2]
-const skills = [profitX2, emergenceSpeedX2, fallSpeedX2, damageX2, multiSkill];
+const skills = [profitX2, emergenceSpeedX2, damageX2, fallSpeedX2, multiSkill];
 window.skills = skills;
 
 let currentSecondsStart, currentSeconds;
@@ -232,7 +232,7 @@ function loadedGame() {
 }
 
 document.addEventListener('visibilitychange', ()=>{
-    if(document.hidden){safeInLocalStorage();}
+    if(document.hidden){claimDailyGift();safeInLocalStorage();}
     else{loadLocalStorage();}
 })
 
@@ -389,15 +389,17 @@ function preloaderTextChange(){
     id.textContent = id.textContent == "..." ? "." : id.textContent == "." ? ".." : "...";
 }
 
-window.addEventListener('blur', ()=> {
+window.addEventListener('blur', ()=>{
     DOM.Hide("blurID", false);
     pausescreen = true;
+    switchsHit();
     ysdk?.features?.GameplayAPI?.stop?.();
 })
 
 window.addEventListener('focus', ()=>{
     DOM.Hide("blurID");
     pausescreen = false;
+    switchsHit();
     if (sdkLoad && resurses){
         ysdk.features?.GameplayAPI?.start?.();
     }
@@ -456,8 +458,28 @@ async function startingCreationGUI(){
         const s = skills[i].time - m * 60;
         toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
     }
+    DOM.Id("geodeConteinerID").onclick = function(){geodeHit()};
     interectiveBonusCreate()
     updateInfo();
+}
+
+function geodeHit(){
+    geodeHit.count = geodeHit.count || 3;
+    geodeHit.count = geodeHit.count <= 0 ? 3 : geodeHit.count-1;
+    myLog(geodeHit.count);
+    DOM.Id("geodeCraksIMGID").style.height = geodeHit.count*33+"%";
+    if(geodeHit.count == 0){
+        const geodeBonus = ["exp", ...skills, "money"];
+        let choice = Math.ceil(Math.random()*mathTriangularNumber(geodeBonus.length));
+        let result = geodeBonus[Math.ceil(mathTriangularNumberInverse(choice))-1];
+        if(result == "money"){
+            finance(Math.floor(money/10)+1);
+        }else if(result == "exp"){
+            expChanges(1);
+        }else{
+            result.count += 1;
+        }
+    }
 }
 
 function skill(id){
@@ -471,9 +493,6 @@ function skill(id){
                 if(skills[i].name != "multiSkill"){
                     skills[i].timeCur += multiSkill.timeCur;
                 }
-                DOM.Id(skills[i].name+"skillID").classList.add("backlight");
-                DOM.Id(skills[i].name+"skillTimeID").classList.add("timer");
-                myLog(skills[i].timeCur)
             }
             for(let i = 0; i < upgradesAuto.length; i++){
                 upgradesAuto[i].levelTemp = upgradesAuto[i].level * 2 + 1;
@@ -481,8 +500,7 @@ function skill(id){
         }else{
             id.value = 2;
         }
-        DOM.Id(id.name+"skillID").classList.add("backlight");
-        DOM.Id(id.name+"skillTimeID").classList.add("timer");
+
         updateInfo();
     }
 }
@@ -601,8 +619,7 @@ function animationAutoHit(autoDamage){
         if(fallSpeedX2.value == 2){
             rotate = Math.floor(Math.random()*80)+700 + autoDamage.rotate;
             element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
-            let mirror = Math.round(Math.random()*1) == 1 ? 180 : 0;
-            tailMeteor.style.transform = "rotateY("+ mirror +"deg)";
+            tailMeteor.classList.add("imgTailMeteor"+Math.round(Math.random()*1));
             tailMeteor.src = "img/tailMeteor.png";
         }
         element.src = "img/"+autoDamage.autoImg;
@@ -646,6 +663,7 @@ function trembling(){
 }
 
 function switchsHit(){
+    myLog(pausescreen)
     if (bossBonus || offlineBonus || dailyGiftBonus || pausescreen || layerAnimat){switchHit = false;}
     if (!bossBonus && !offlineBonus && !dailyGiftBonus && !pausescreen && !layerAnimat){switchHit = true;}
 }
@@ -956,6 +974,7 @@ function dailyGift_F(lastLogon, currentLogon){
 }
 
 function claimDailyGift(){
+    if(dailyGiftBonus){
     DOM.Hide("offlineBonusID", false);
     myLog(daysdDailyGift+" daysdDailyGift")
     const keys = Object.keys(dailyGift["day"+daysdDailyGift]);
@@ -974,16 +993,19 @@ function claimDailyGift(){
     }
     dailyGiftBonus = false;
     updateInfo();
+    }
 }   
 function interectiveBonusCreate(){
     if(!interectiveBonusCreate.bool){
-        const r = Math.floor(Math.random()*1)
+        const r = Math.floor(Math.random()*15)
         // myLog(r + " r");
         if(r == 0){
             interectiveBonusCreate.bool = true;
             interectiveBonusCreate.time = 30;
         DOM.Create({Parent: "ret", Id: "inerectiveBonusContID2", OnClick: function(){interectiveBonus()}})
         const id = DOM.Id("inerectiveBonusContID2");
+        id.classList.add("highlight");
+        id.style.transform = "rotate("+Math.floor(Math.random()*360)+"deg)";
         id.style.top = (Math.floor(Math.random()*94)+1)+"%";
         id.style.left = (Math.floor(Math.random()*94)+1)+"%";
         id.offsetHeight;
@@ -1001,29 +1023,45 @@ function interectiveBonusCreate(){
     }
  }
 function interectiveBonus(){
- const randomSkill = Math.floor(Math.random()*skills.length);
- myLog(skills[randomSkill].name)
- if(skills[randomSkill].value == 2 || skills[randomSkill].autoHit == true && autoHit <= 0){
-    const target = DOM.Id("coinID").getBoundingClientRect();
-    const targetX = target.left + target.width;
-    const targetY = target.top + target.height;
-    const object = DOM.Id("inerectiveBonusContID2").getBoundingClientRect();
+ const rSkill = skills[Math.floor(Math.random()*skills.length)];
+ const nugget = DOM.Id("inerectiveBonusContID2");
+    const object = nugget.getBoundingClientRect();
     const objectX = object.left + object.width;
     const objectY = object.top + object.height;
-    const moveX = targetX - objectX;
-    const moveY = targetY - objectY;
-    DOM.Id("inerectiveBonusContID2").style.transform = `translate(${moveX}px, ${moveY}px) scale(0.3)`;
-    DOM.Id("inerectiveBonusContID2").style.opacity = "30%";
-    finance(Math.floor(money/10)+1);
+    let target;
+    let notSkill;
+ if(rSkill.value == 2 || rSkill.autoHit == true && autoHit <= 0){
+    if(Math.floor(Math.random()*10) == 0){
+        target = DOM.Id("menuID").getBoundingClientRect();
+        notSkill = "book";
+    } else{
+        target = DOM.Id("coinID").getBoundingClientRect();
+        notSkill = "coin";
+    }
  } else{
-    skills[randomSkill].count += 1;
-    skill(skills[randomSkill]);
+    target = DOM.Id(rSkill.name+"skillIMGID").getBoundingClientRect();
  }
+const targetX = target.left + target.width;
+const targetY = target.top + target.height;
+const moveX = targetX - objectX;
+const moveY = targetY - objectY;
+nugget.style.transform = `translate(${moveX}px, ${moveY}px) scale(0.3)`;
+nugget.style.opacity = "30%";
 
- DOM.Id("inerectiveBonusContID2").addEventListener('transitionend', function opacity(e){
-    DOM.Id("inerectiveBonusContID2").remove();
+ nugget.addEventListener('transitionend', function opacity(e){
+    if(notSkill){
+        if(notSkill == "coin"){
+            finance(Math.floor(money/10)+1);
+        } else {
+            expChanges(1);
+        }
+    } else{
+        rSkill.count += 1;
+        skill(rSkill);
+    }
+    nugget.remove();
     interectiveBonusCreate.bool = false;
- })
+ }, {once: true})
 }
 
 function updateInfo(){
@@ -1056,6 +1094,10 @@ function updateInfo(){
             } else {
                 skills[i].disable = true;
             }
+        }
+        if(skills[i].value == 2){
+            DOM.Id(skills[i].name+"skillID").classList.add("backlight");
+            DOM.Id(skills[i].name+"skillTimeID").classList.add("timer");
         }
     }
     toChangeText("depthLevelID", layer.level);

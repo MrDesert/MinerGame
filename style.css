@@ -11,7 +11,7 @@
    #upgrades{
       font-size: clamp(24px, 5vw, 32px); 
    }
-   #menuID{   
+   #leftTopMenu{   
       top: 5px
    };
  }
@@ -28,9 +28,6 @@
    #upgrades{
       font-size: clamp(24px, 5vw, 32px); 
    }
-   #menuID{   
-      top: 5px
-   };
     .bonusMenu{
       top: 10%;
       max-width: 25%;
@@ -45,8 +42,8 @@
    #upgrades{
       font-size: clamp(20px, 5vw, 21px); 
    }
-   #menuID{   
-      top: 10%;
+   #leftTopMenu{   
+      top: 100px; 
    }; 
 }
  @media (max-width: 670px){
@@ -272,8 +269,15 @@ body {
    top: calc(-10% - 110px);
    opacity: 100%;
    pointer-events:  none; /*отключаем реакцию мыши на неё*/
+   transform: matrix(-1, 0, 0, 1, 0, 0);
    transition: top 1.5s ease-in, opacity 50ms ease-in;
    animation: fire 1s infinite alternate, shake 0.1s infinite alternate;
+}
+.imgTailMeteor0{
+   animation: fire 1s infinite alternate, shake 0.1s infinite alternate;
+}
+.imgTailMeteor1{
+   animation: fire 1s infinite alternate, shake2 0.1s infinite alternate;
 }
 
 @keyframes fire {
@@ -299,6 +303,12 @@ body {
    50% {transform: translateX(-2px) scaleY(0.9);}
    75% {transform: translateX(1px) scaleY(1.05);}
 }
+@keyframes shake2 {
+   0%, 100% {transform: translateX(-1px) scaleY(1) scaleX(-1);}
+   25% {transform: translateX(2px) scaleY(1.1) scaleX(-1);}
+   50% {transform: translateX(-2px) scaleY(0.9) scaleX(-1);}
+   75% {transform: translateX(1px) scaleY(1.05) scaleX(-1);}
+}
 
 #menuForCoins{
    z-index: 2;
@@ -320,15 +330,24 @@ body {
    width: 100%;
    height: 100%;
 }
-#menuID{
+#leftTopMenu{
+   z-index: 1;
    position: absolute;
    left: 5px;
-   /* position: relative;  */
-
-   z-index: 1;  
-   width: 8%;
-   max-width: 100px;
-   min-width: 60px;
+   display: flex;
+   column-gap: 5px;
+}
+#menuID, #geodeConteinerID{
+   height: 65px; 
+}#geodeConteinerID{
+   height: 65px;
+   width: 65px;
+   background-color: green;
+}
+#geodeCraksIMGID{
+      height: 65px;
+   width: 65px;
+   background-color: red;
 }
 
 .coinCl, .expCl{
@@ -450,17 +469,45 @@ body {
    border-radius: 0px 0px 10px 0px;
 }
 #inerectiveBonusContID2{
-   height: 40px;
+   height: 45px;
    position: absolute;
    top: 1px;
    z-index: 3;
    opacity: 0%;
    scale: 0;
-   transition:scale 1.3s ease-in, opacity 1.3s ease-in, transform 1.3s ease-in; 
+   transition:scale 1.2s ease-in, opacity 1.2s ease-in, transform 1.2s ease-in; 
 }
 #inerectiveBonusID{
    object-fit: contain;
    height: 100%;
+}
+.highlight {
+    position: relative;
+    animation: simple-blink 8s infinite;
+}.highlight::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: rgb(245, 219, 105);
+    border-radius: 50%;
+    opacity: 0;
+    filter: blur(1px);
+}.highlight::before {
+    top: 15%;
+    left: 10%;
+    animation: random-spark 8s infinite;
+}
+
+@keyframes random-spark {
+    0%, 100% {opacity: 0; transform: scale(0.5);}
+    80% {opacity: 0; transform: scale(0.5);}
+    90% {opacity: 1; transform: scale(2);}
+}
+@keyframes simple-blink {
+    0%, 100% { filter: brightness(1) contrast(1);}
+    80% { filter: brightness(1) contrast(1);}
+    90% { filter: brightness(1.2) contrast(1.2);}
 }
 .dailyGiftContainer{
    background-color: #797979;
