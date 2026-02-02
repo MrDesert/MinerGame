@@ -16,7 +16,7 @@
    };
  }
  @media (orientation: portrait){
-      .bonusContainer{
+   .bonusContainer{
       display: inline-block;
    }
    .bonusMenu{
@@ -42,11 +42,40 @@
    #upgrades{
       font-size: clamp(20px, 5vw, 21px); 
    }
-   #leftTopMenu{   
-      top: 100px; 
-   }; 
+   #leftTopMenu{
+      top: 5px;
+      width: 65px;  
+      flex-wrap: wrap;
+   }
+        #skillpanel {
+    /* Перемещаем вниз */
+    top: auto !important; /* Сбрасываем top */
+    bottom: 0px !important; /* Отступ от нижнего края */
+    right: 50% !important; /* Центрируем по горизонтали */
+    transform: translateX(50%) !important; /* Центрируем точно */
+    
+    /* Меняем форму на горизонтальную */
+    width: clamp(100px, 80%, 670px) !important; /* Ширина по содержимому */
+    height: 80px !important; /* Фиксированная высота */
+    
+    /* Меняем направление flex */
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* Все в одну строку */
+    
+    /* Изменяем отступы */
+    padding: 10px 14px !important;
+    column-gap: 5px !important; /* Отступы между элементами */
+    row-gap: 0 !important;
+    
+    /* Изменяем скругление углов */
+    border-radius: 20px 20px 0px 0px !important; /* Все углы скруглены */
+    
+    /* Для очень маленьких экранов */
+    max-width: 95vw !important; /* Не шире 95% экрана */
+    overflow-x: auto !important; /* Скролл если не помещается */
+  }
 }
- @media (max-width: 670px){
+ @media (max-width: 670px) and (orientation: landscape) or (max-height: 430px){
     .bossLevelBonusIMG{
       height: 60px;
     }
@@ -61,6 +90,62 @@
    #upgrades{
       font-size: clamp(20px, 5vw, 21px); 
    } 
+        #skillpanel {
+    /* Перемещаем вниз */
+    top: auto !important; /* Сбрасываем top */
+    bottom: 0px !important; /* Отступ от нижнего края */
+    right: 0% !important; /* Центрируем по горизонтали */
+    transform: translateX(0%) !important; /* Центрируем точно */
+    
+    /* Меняем форму на горизонтальную */
+    width: clamp(100px, 70%, 670px) !important; /* Ширина по содержимому */
+    height: 80px !important; /* Фиксированная высота */
+    
+    /* Меняем направление flex */
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* Все в одну строку */
+    
+    /* Изменяем отступы */
+    padding: 10px 14px !important;
+    column-gap: 5px !important; /* Отступы между элементами */
+    row-gap: 0 !important;
+    
+    /* Изменяем скругление углов */
+    border-radius: 20px 20px 0px 0px !important; /* Все углы скруглены */
+    
+    /* Для очень маленьких экранов */
+    max-width: 95vw !important; /* Не шире 95% экрана */
+    overflow-x: auto !important; /* Скролл если не помещается */
+  }
+ }
+ @media (max-height: 430px){
+        #skillpanel {
+    /* Перемещаем вниз */
+    top: auto !important; /* Сбрасываем top */
+    bottom: 0px !important; /* Отступ от нижнего края */
+    right: 0% !important; /* Центрируем по горизонтали */
+    transform: translateX(0%) !important; /* Центрируем точно */
+    
+    /* Меняем форму на горизонтальную */
+    width: clamp(100px, 35%, 670px) !important; /* Ширина по содержимому */
+    height: 80px !important; /* Фиксированная высота */
+    
+    /* Меняем направление flex */
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* Все в одну строку */
+    
+    /* Изменяем отступы */
+    padding: 10px 14px !important;
+    column-gap: 5px !important; /* Отступы между элементами */
+    row-gap: 0 !important;
+    
+    /* Изменяем скругление углов */
+    border-radius: 20px 20px 0px 0px !important; /* Все углы скруглены */
+    
+    /* Для очень маленьких экранов */
+    max-width: 95vw !important; /* Не шире 95% экрана */
+    overflow-x: auto !important; /* Скролл если не помещается */
+  }
  }
 
  *{
@@ -342,12 +427,106 @@ body {
 }#geodeConteinerID{
    height: 65px;
    width: 65px;
-   background-color: green;
+   position: relative;
 }
 #geodeCraksIMGID{
-      height: 65px;
-   width: 65px;
-   background-color: red;
+   top: 0px;
+   left: 0px;
+   margin-left: auto;
+   margin-right: auto;
+   position: absolute;
+   height: 0%;
+   width: 100%;
+   min-width: 60%;
+   visibility: visible;
+   object-fit: cover;
+   object-position: top; 
+}
+#geodeBonusIMGID{
+   position: absolute;
+   width:  45px;
+   height: 45px;
+   transition: transform 1.2s ease-in, opacity 1.2s ease-in;
+   z-index: 4;
+   object-fit: contain;
+}
+#geodeIMGID, #geodeRift{
+   height: 100%;
+   object-fit: cover;
+}
+.geode-glow {
+  animation: rainbow-glow 2s infinite alternate;
+}
+
+@keyframes rainbow-glow {
+  0% {
+    filter: drop-shadow(0 0 1px #ff006a)
+            drop-shadow(0 0 2px #ff009d)
+            drop-shadow(0 0 3px #ff00f2);
+  }
+  33% {
+    filter: drop-shadow(0 0 1px #ff009d)
+            drop-shadow(0 0 2px #ff00f2)
+            drop-shadow(0 0 3px #a200ff);
+  }
+  66% {
+    filter: drop-shadow(0 0 1px #ff00f2)
+            drop-shadow(0 0 2px #a200ff)
+            drop-shadow(0 0 3px #c300ff);
+  }
+  100% {
+    filter: drop-shadow(0 0 1px #a200ff)
+            drop-shadow(0 0 2px #c300ff)
+            drop-shadow(0 0 3px #8c00ff);
+  }
+}
+#geodeRift {
+   position: relative;
+}
+.claet::before {
+  content: '';
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 40%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 200, 0.8) 0%,
+    rgba(255, 255, 100, 0.6) 20%,
+    rgba(255, 200, 50, 0.4) 30%,
+    rgba(255, 150, 0, 0.2) 40%,
+    transparent 60%
+  );
+  border-radius: 100%;
+  z-index: 4;
+  animation: pulse 2s infinite alternate;
+}
+
+/* Анимация пульсации */
+@keyframes pulse {
+    0%, 100% {opacity: 0; transform: scale(0.5);}
+    25% {opacity: 0; transform: scale(0.5);}
+    50% {opacity: 1; transform: scale(20);}
+}
+
+#geodeValueID{
+   position: absolute;
+   color:  white;
+   font-weight: 700;
+   font-size: 22px;
+   top: 45px;
+   left: 0px;
+}
+.anim_Trembling{
+   animation: trembling 0.3s 1 alternate;
+}
+@keyframes trembling {
+   0%, 100% {transform: translateX(-1px) scaleY(1) scaleX(1);}
+   25% {transform: translateX(2px) scaleY(1.03) scaleX(1.03);}
+   50% {transform: translateX(-2px) scaleY(0.97) scaleX(0.97);}
+   75% {transform: translateX(1px) scaleY(1.01)scaleX(1.01);}
 }
 
 .coinCl, .expCl{
@@ -424,10 +603,9 @@ body {
    position: absolute;
    top: 50%;
    right: 0px;
-   transform: translateY(-40%);
+   transform: translateY(-50%);
    /* height: 370px; */
    width: 75px;
-   border: outset 3px black;
    border-radius: 20px 0px 0px 20px; 
    border: 3px outset rgb(150, 150, 150);
  }
@@ -493,7 +671,6 @@ body {
     border-radius: 50%;
     opacity: 0;
     filter: blur(1px);
-}.highlight::before {
     top: 15%;
     left: 50%;
     animation: random-spark 8s infinite;

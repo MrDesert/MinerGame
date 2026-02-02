@@ -23,6 +23,8 @@ let pausescreen = false;
 
 let countAutoHit = 0;
 
+let geodeCount = 100;
+
 
 //C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое) P-Previos(Предыдующий)
 let layer = {
@@ -279,6 +281,7 @@ function loadLocalStorage(){
     daysdDailyGift = Number(localStorage.getItem("daysdDailyGift"));
     myLog(daysdDailyGift+" daysdDailyGift")
     weeksDailyGift = Number(localStorage.getItem("weeksDailyGift"));
+    geodeCount = Number(localStorage.getItem("geodeCount"));
     if(!allBonusFree){
         document.getElementById("claim_all").disabled = "disabled";
         document.getElementById("claim_all").classList.add("disabled");
@@ -315,6 +318,7 @@ function safeInLocalStorage(){
     localStorage.setItem("allBonusFree", allBonusFree);
     localStorage.setItem("daysdDailyGift", daysdDailyGift);
     localStorage.setItem("weeksDailyGift", weeksDailyGift);
+    localStorage.setItem("geodeCount", geodeCount);
     localStorage.setItem(layer.name, JSON.stringify(layer));
     localStorage.setItem(prize.name, JSON.stringify(prize));
     for(let i = 0; i < upgrades2.length; i++){
@@ -458,28 +462,92 @@ async function startingCreationGUI(){
         const s = skills[i].time - m * 60;
         toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
     }
+    DOM.Id("geodeIMGID").src = "img/geoda.png";
+    DOM.Id("geodeRift").src = "img/geodeRift.png";
+    DOM.Id("geodeCraksIMGID").src = "img/geoda_craks.png";
     DOM.Id("geodeConteinerID").onclick = function(){geodeHit()};
     interectiveBonusCreate()
     updateInfo();
 }
-
+geodeHit.bool =true;
 function geodeHit(){
+    if(geodeCount <= 0){
+        DOM.Id("geodeIMGID").style.filter = "grayscale(50%)"
+    }else{
+    if(geodeHit.bool){
     geodeHit.count = geodeHit.count || 3;
     geodeHit.count = geodeHit.count <= 0 ? 3 : geodeHit.count-1;
     myLog(geodeHit.count);
-    DOM.Id("geodeCraksIMGID").style.height = geodeHit.count*33+"%";
+    DOM.Id("geodeCraksIMGID").style.height = 100-(geodeHit.count*33)+"%";
+    animationOnce("geodeConteinerID", 'anim_Trembling');
     if(geodeHit.count == 0){
+        geodeHit.bool = false;
         const geodeBonus = ["exp", ...skills, "money"];
         let choice = Math.ceil(Math.random()*mathTriangularNumber(geodeBonus.length));
         let result = geodeBonus[Math.ceil(mathTriangularNumberInverse(choice))-1];
+        let srcImg;
+        let target;
         if(result == "money"){
-            finance(Math.floor(money/10)+1);
+            srcImg = "img/coin.png";
+            target = "coinID";
         }else if(result == "exp"){
-            expChanges(1);
+            srcImg = "img/exp.png";
+            target = "menuID";
+        }else{
+            srcImg = "img/"+result.img;
+            target = result.name+"skillIMGID";
+        }
+        DOM.Create({Parent: "ret", Id: "geodeBonusIMGID", Tag: "img", Hidden: "true", Src: srcImg})
+        const object = DOM.Id("geodeIMGID").getBoundingClientRect();
+        const bonus = DOM.Id("geodeBonusIMGID");
+                bonus.style.left = object.left+object.width/5 +"px";
+                bonus.style.top = object.top+"px";
+        DOM.Id("geodeCraksIMGID").style.height = "0%";
+        DOM.Hide("geodeBonusIMGID", false);
+        flightToTarget("geodeBonusIMGID", target)
+        bonus.style.opacity = "40%";
+        DOM.Hide("geodeIMGID", true);
+        DOM.Hide("geodeRift", false);
+        DOM.Id("geodeConteinerID").classList.add("claet");
+        bonus.addEventListener('transitionend', function opacity(e){
+        animationOnce("geodeConteinerID", 'anim_Trembling');
+            DOM.Hide("geodeIMGID", false);
+            DOM.Hide("geodeRift", true);
+            DOM.Id("geodeConteinerID").classList.remove("claet");
+            geodeHit.count == 3
+            bonus.remove();
+            geodeHit.bool = true;
+        if(result == "money"){finance(Math.floor(money/10)+1);
+        }else if(result == "exp"){expChanges(1);
         }else{
             result.count += 1;
-        }
+            colorNumbers(result.name+"skillCountID", "green")}
+            geodeCount--;
+            updateInfo();
+        }, {once: true})
     }
+}
+
+}
+}
+
+function flightToTarget(idObject, idTarget){
+    const object =  DOM.Id(idObject).getBoundingClientRect();
+    const objectX = object.left + object.width;
+    const objectY = object.top + object.height;
+    const target = DOM.Id(idTarget).getBoundingClientRect();
+    const targetX = target.left + target.width;
+    const targetY = target.top + target.height;
+    const moveX = targetX - objectX + 45/2;
+    const moveY = targetY - objectY + 45/2;
+    DOM.Id(idObject).style.transform = `translate(${moveX}px, ${moveY}px) scale(0.3)`;
+}
+
+function animationOnce(id, Class){
+    DOM.Id(id).classList.add(Class);
+    DOM.Id(id).addEventListener('animationend', () => {
+        DOM.Id(id).classList.remove(Class);
+    }, {once: true});
 }
 
 function skill(id){
@@ -946,6 +1014,7 @@ function dailyGift_F(lastLogon, currentLogon){
         myLog(today + " today")
         myLog(lastDay + " lastDay")
     if(today != lastDay){
+        geodeCount++;
         let raznica = today - lastDay;
         let raznicaMonth = currentLogon.getMonth() - lastLogon.getMonth()
         if(raznica > 1){
@@ -997,7 +1066,7 @@ function claimDailyGift(){
 }   
 function interectiveBonusCreate(){
     if(!interectiveBonusCreate.bool){
-        const r = Math.floor(Math.random()*1)
+        const r = Math.floor(Math.random()*15)
         // myLog(r + " r");
         if(r == 0){
             interectiveBonusCreate.bool = true;
@@ -1025,36 +1094,25 @@ function interectiveBonusCreate(){
 function interectiveBonus(){
  const rSkill = skills[Math.floor(Math.random()*skills.length)];
  const nugget = DOM.Id("inerectiveBonusContID2");
-    const object = nugget.getBoundingClientRect();
-    const objectX = object.left + object.width;
-    const objectY = object.top + object.height;
     let target;
     let notSkill;
  if(rSkill.value == 2 || rSkill.autoHit == true && autoHit <= 0){
     if(Math.floor(Math.random()*10) == 0){
-        target = DOM.Id("menuID").getBoundingClientRect();
+        target = "menuID";
         notSkill = "book";
     } else{
-        target = DOM.Id("coinID").getBoundingClientRect();
+        target = "coinID";
         notSkill = "coin";
     }
  } else{
-    target = DOM.Id(rSkill.name+"skillIMGID").getBoundingClientRect();
+    target = rSkill.name+"skillIMGID";
  }
-const targetX = target.left + target.width;
-const targetY = target.top + target.height;
-const moveX = targetX - objectX;
-const moveY = targetY - objectY;
-nugget.style.transform = `translate(${moveX}px, ${moveY}px) scale(0.3)`;
+flightToTarget("inerectiveBonusContID2", target);
 nugget.style.opacity = "30%";
-
  nugget.addEventListener('transitionend', function opacity(e){
     if(notSkill){
-        if(notSkill == "coin"){
-            finance(Math.floor(money/10)+1);
-        } else {
-            expChanges(1);
-        }
+        if(notSkill == "coin"){finance(Math.floor(money/10)+1);
+        } else {expChanges(1);}
     } else{
         rSkill.count += 1;
         skill(rSkill);
@@ -1066,6 +1124,14 @@ nugget.style.opacity = "30%";
 
 function updateInfo(){
     if(HTMLLoaded){
+    toChangeText("geodeValueID", geodeCount);
+    if(geodeCount <= 0){
+        DOM.Id("geodeIMGID").style.filter = "grayscale(60%)"
+        DOM.Id("geodeIMGID").classList.remove("geode-glow");
+    } else {
+        DOM.Id("geodeIMGID").style.filter = "grayscale(0%)"
+        DOM.Id("geodeIMGID").classList.add("geode-glow");
+    }
     toChangeText("prizeID", toCompactNotation(prize.profitC));
     if (profitX2.value > 1){
         DOM.Id("prizeID").classList.add("strike");

@@ -279,6 +279,11 @@
         "Parent": "geodeConteinerID",
         "Tag": "img"
     },
+    "geodeRift": {
+        "Parent": "geodeConteinerID",
+        "Tag": "img",
+        "Hidden": "true"
+    },
     "geodeCraksIMGID":{
         "Parent": "geodeConteinerID",
         "Tag": "img"
@@ -286,8 +291,5 @@
     "geodeValueID":{
         "Parent": "geodeConteinerID",
         "Tag": "span"
-    },
-    "geodeWarningID":{
-        "Parent": "geodeConteinerID"
     }
 }
