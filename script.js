@@ -1024,6 +1024,7 @@ function offlineProfit2(){
 }
 
 function dailyGift_F(lastLogon, currentLogon){
+    lastLogon = new Date(new Date()-86400000)
     if(!lastLogon){lastLogon = new Date(new Date()-172800000)}
     const lastDay = lastLogon.getDate();
     const today = currentLogon.getDate();
