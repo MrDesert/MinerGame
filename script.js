@@ -13,6 +13,7 @@ let rerollTimer = false;
 
 const moneyExp = 0.0001;
 let exp = 0;
+let gold_layer;
 
 let switchHit = true;
 let layerAnimat = false;
@@ -23,7 +24,7 @@ let pausescreen = false;
 
 let countAutoHit = 0;
 
-let geodeCount = 100;
+let geodeCount = 1;
 
 
 //C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое) P-Previos(Предыдующий)
@@ -245,7 +246,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function loadLocalStorage(){
     if(DOMContentLoaded && HTMLLoaded){
-    myLog("Парс")
     for(let i = 0; i < upgrades2.length; i++){
         if(localStorage.getItem(upgrades2[i].name)){
             Object.assign(upgrades2[i], JSON.parse(localStorage.getItem(upgrades2[i].name)));
@@ -466,6 +466,8 @@ async function startingCreationGUI(){
     DOM.Id("geodeRift").src = "img/geodeRift.png";
     DOM.Id("geodeCraksIMGID").src = "img/geoda_craks.png";
     DOM.Id("geodeConteinerID").onclick = function(){geodeHit()};
+    DOM.Create({Parent: "geodeConteinerID", Tag: "button", Id: "geodeRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll("geoda");}});
+    DOM.Create({Parent: "geodeRerolBtnID", Tag: "img", Id: "geodeRerolBtnImgID", Src: "img/ad.png"});
     interectiveBonusCreate()
     updateInfo();
 }
@@ -477,12 +479,11 @@ function geodeHit(){
     if(geodeHit.bool){
     geodeHit.count = geodeHit.count || 3;
     geodeHit.count = geodeHit.count <= 0 ? 3 : geodeHit.count-1;
-    myLog(geodeHit.count);
     DOM.Id("geodeCraksIMGID").style.height = 100-(geodeHit.count*33)+"%";
     animationOnce("geodeConteinerID", 'anim_Trembling');
     if(geodeHit.count == 0){
         geodeHit.bool = false;
-        const geodeBonus = ["exp", ...skills, "money"];
+        const geodeBonus = ["exp", ...[...skills].reverse(), "money"];
         let choice = Math.ceil(Math.random()*mathTriangularNumber(geodeBonus.length));
         let result = geodeBonus[Math.ceil(mathTriangularNumberInverse(choice))-1];
         let srcImg;
@@ -573,19 +574,28 @@ function skill(id){
     }
 }
 
-function reroll(){
+function reroll(t){
+    pausescreen = true;
+    if(t != "geoda"){
     rerollTimer = false;
     clearTimeout(timer);
+    }
     ysdk.adv.showRewardedVideo?.({
         callbacks: {
             onRewarded: () => {
+                if(t == "geoda"){
+                    geodeCount++;
+                }else{
                 allBonusFree = true;
                 DOM.Disable("claim_all", false);
                 DOM.Id("claim_all").classList.remove("disabled");
                 DOM.Hide("bossLevelBonusRerolBtnID");
+                }
+                pausescreen = false;
             }
         }
     });
+    updateInfo();
 }
 
 function finance(m){
@@ -731,7 +741,6 @@ function trembling(){
 }
 
 function switchsHit(){
-    myLog(pausescreen)
     if (bossBonus || offlineBonus || dailyGiftBonus || pausescreen || layerAnimat){switchHit = false;}
     if (!bossBonus && !offlineBonus && !dailyGiftBonus && !pausescreen && !layerAnimat){switchHit = true;}
 }
@@ -746,7 +755,7 @@ function finishLevel(){
         let death = document.querySelectorAll(".death");
             death.forEach( det => {det.remove()});
         toStyle("#cracksID", "height", "0%");
-        finance(Math.floor(prize.profitC * profitX2.value));
+        finance(Math.floor(prize.profitC * profitX2.value * (gold_layer == 0 ? 2 : 1)));
         layer.hp.calc = softProgress(layer.hp.calc, -1);
         layer.hp.round = layer.hp.current = Math.floor(layer.hp.calc * layer_hardness.value);
         prize.profit = prize.profitC = Math.round(softProgress(prize.profit, -2));
@@ -765,6 +774,13 @@ function finishLevel(){
 
 function layerUp(layerID){
     let mirror = Math.round(Math.random()*1) == 1 ? 1 : -1;
+    gold_layer = Math.floor(Math.random()*15);
+    if(gold_layer == 0){
+        DOM.Hide("layerGoldID", false)
+        toStyle("#layerGoldID", "transform", "scaleX("+ mirror +")");
+    } else {
+        DOM.Hide("layerGoldID", true)
+    }
     layerID.offsetHeight;
     layerID.style.transform = "scaleX("+ mirror +")";
     toStyle("#cracksID", "transform", "scaleX("+ mirror +")");
@@ -1067,7 +1083,6 @@ function claimDailyGift(){
 function interectiveBonusCreate(){
     if(!interectiveBonusCreate.bool){
         const r = Math.floor(Math.random()*15)
-        // myLog(r + " r");
         if(r == 0){
             interectiveBonusCreate.bool = true;
             interectiveBonusCreate.time = 30;
@@ -1097,10 +1112,14 @@ function interectiveBonus(){
     let target;
     let notSkill;
  if(rSkill.value == 2 || rSkill.autoHit == true && autoHit <= 0){
-    if(Math.floor(Math.random()*10) == 0){
+    const other = Math.floor(Math.random()*10);
+    if(other == 0){
         target = "menuID";
         notSkill = "book";
-    } else{
+    }else if(other == 1 || other == 2){
+        target = "geodeConteinerID";
+        notSkill = "geode";
+    }else{
         target = "coinID";
         notSkill = "coin";
     }
@@ -1112,7 +1131,8 @@ nugget.style.opacity = "30%";
  nugget.addEventListener('transitionend', function opacity(e){
     if(notSkill){
         if(notSkill == "coin"){finance(Math.floor(money/10)+1);
-        } else {expChanges(1);}
+        } else if (notSkill == "book"){expChanges(1);
+        } else {geodeCount++}
     } else{
         rSkill.count += 1;
         skill(rSkill);
@@ -1128,18 +1148,28 @@ function updateInfo(){
     if(geodeCount <= 0){
         DOM.Id("geodeIMGID").style.filter = "grayscale(60%)"
         DOM.Id("geodeIMGID").classList.remove("geode-glow");
+        DOM.Hide("geodeRerolBtnID", false);
     } else {
+        DOM.Hide("geodeRerolBtnID", true);
         DOM.Id("geodeIMGID").style.filter = "grayscale(0%)"
         DOM.Id("geodeIMGID").classList.add("geode-glow");
     }
     toChangeText("prizeID", toCompactNotation(prize.profitC));
-    if (profitX2.value > 1){
+    if (profitX2.value > 1 && gold_layer != 0 || profitX2.value <= 1 && gold_layer == 0){
         DOM.Id("prizeID").classList.add("strike");
         DOM.Hide("luckyID", false);
-        toChangeText("prizeID2", toCompactNotation(prize.profitC * profitX2.value));
-    }else{
+        toChangeText("luckyID", "X2");
+        toChangeText("prizeID2", toCompactNotation(prize.profitC * profitX2.value * (gold_layer == 0 ? 2 : 1)));
+    } else if (profitX2.value > 1 && gold_layer == 0){
+        DOM.Id("prizeID").classList.add("strike");
+        DOM.Hide("luckyID", false);
+        toChangeText("luckyID", "X4");
+        toChangeText("prizeID2", toCompactNotation(prize.profitC * profitX2.value * 2));
+    }
+    else{
         DOM.Id("prizeID").classList.remove("strike");
         DOM.Hide("luckyID", true);
+        toChangeText("luckyID", "X2");
         toChangeText("prizeID2", "");
     }
     for(let i = 0; i < skills.length; i++){

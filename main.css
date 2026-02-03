@@ -18,6 +18,7 @@
     .sideMenuLeft{ 
         min-width: 120px;
         max-width: 20%; 
+        height: 45% !important;
     }
     .sideMenuElementBtn {
         min-width: 83%;

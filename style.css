@@ -55,7 +55,7 @@
     transform: translateX(50%) !important; /* Центрируем точно */
     
     /* Меняем форму на горизонтальную */
-    width: clamp(100px, 80%, 670px) !important; /* Ширина по содержимому */
+    width: clamp(100px, 80%, 350px) !important; /* Ширина по содержимому */
     height: 80px !important; /* Фиксированная высота */
     
     /* Меняем направление flex */
@@ -98,7 +98,7 @@
     transform: translateX(0%) !important; /* Центрируем точно */
     
     /* Меняем форму на горизонтальную */
-    width: clamp(100px, 70%, 670px) !important; /* Ширина по содержимому */
+    width: clamp(275px, 80%, 350px) !important; /* Ширина по содержимому */
     height: 80px !important; /* Фиксированная высота */
     
     /* Меняем направление flex */
@@ -127,7 +127,7 @@
     transform: translateX(0%) !important; /* Центрируем точно */
     
     /* Меняем форму на горизонтальную */
-    width: clamp(100px, 35%, 670px) !important; /* Ширина по содержимому */
+    width: clamp(275px, 35%, 670px) !important; /* Ширина по содержимому */
     height: 80px !important; /* Фиксированная высота */
     
     /* Меняем направление flex */
@@ -235,12 +235,12 @@
  #hpBarBorderID {
     background-color: rgb(253, 117, 117);
     width: 30%;
-    min-width: 140px;
+    min-width: 165px;
     height: 20px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: clamp(70px, 13%, 75px);
+    top: clamp(75px, 13%, 80px);
     border: solid 2px;
  }
  .level {
@@ -267,7 +267,7 @@
  #hitZoneID:active {
     cursor: url('img/pickaxe_transparent_128x128-45.png') 64 64, pointer;
  }
-#layerImgID{
+#layerImgID, #layerGoldID{
    /* box-shadow: 1px 0px 35px 35px rgba(0, 0, 0, 0.3); */
    top: 0px;
    background: url("img/layer.png");
@@ -404,11 +404,14 @@ body {
    right: 0px;
    color: green;
    font-weight: bold;
-   font-size: clamp(28px, 5vw, 32px);
+   font-size: clamp(28px, 100%, 32px);
    text-shadow: 
    1px 0 0 black,
    0 1px 0 black,
    1px 1px 0 black;
+max-width: 100%;
+   white-space: nowrap;
+   overflow: hidden;
 }
 #bookID{
    object-fit: fill;
@@ -424,8 +427,6 @@ body {
 }
 #menuID, #geodeConteinerID{
    height: 65px; 
-}#geodeConteinerID{
-   height: 65px;
    width: 65px;
    position: relative;
 }
@@ -453,6 +454,15 @@ body {
 #geodeIMGID, #geodeRift{
    height: 100%;
    object-fit: cover;
+}
+#geodeRerolBtnID{
+   position: absolute;
+   bottom: -5px;
+   right: -6px;
+   height: 40px; 
+   width: 53px;
+   background-color: rgba(0, 0, 0, 0);
+   border: none;
 }
 .geode-glow {
   animation: rainbow-glow 2s infinite alternate;
@@ -568,7 +578,7 @@ body {
    margin-left: 20px;
    border-radius: 10px;
  }
- #bossLevelBonusRerolBtnImgID{
+ #bossLevelBonusRerolBtnImgID, #geodeRerolBtnImgID{
    width: 100%;
    height: 100%;
    object-fit: contain;
@@ -645,6 +655,12 @@ body {
    font-weight: bold;
    background: rgba(201, 201, 201, 0.4);
    border-radius: 0px 0px 10px 0px;
+}
+#offlineBonusContainerID{
+   margin-left: none;
+   margin-right: none;
+   padding-left: 20px;
+   padding-right: 20px;
 }
 #inerectiveBonusContID2{
    height: 50px;
