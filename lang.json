@@ -196,8 +196,8 @@
       "en": "Increases auto-mining speed"
     },
   "bonus_available": {
-    "ru": "Доступен бонус!",
-    "en": "Bonus Available!"
+    "ru": "Выберите бонус!",
+    "en": "Choose a bonus!"
   },
   "bonus_offline": {
     "ru": "Офлайн бонус!",
@@ -248,7 +248,7 @@
     "en": "Day 7"
   },
   "claim_dailyGift": {
-    "ru": "Claim",
-    "en": "Забрать"
+    "ru": "Забрать",
+    "en": "Claim"
   }
 }

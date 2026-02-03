@@ -14,8 +14,23 @@
    #leftTopMenu{   
       top: 5px
    };
+   .rightText{
+      position: absolute !important;
+      top: 100px !important;
+      transform: translateY(-100%);
+   }
+   #skillpanel {
+      top: clamp(300px, 50%, 1000px) !important;
+   }
  }
  @media (orientation: portrait){
+   #menuForCoins{
+      top: clamp(270px, 50%, 1000px);
+      transform: translateY(-50%)
+   }
+   #stat{
+      top: 110px !important;
+   }
    .bonusContainer{
       display: inline-block;
    }
@@ -35,10 +50,6 @@
     .bossLevelBonusIMG{
       height: 70px;
     }
-   #dailyGiftMenuID{
-      max-width: none !important;
-      width: clamp(110px, 60%, 500px);
-   }
    #upgrades{
       font-size: clamp(20px, 5vw, 21px); 
    }
@@ -151,16 +162,19 @@
  *{
     font-family: 'Courier New', Courier, monospace;    
 }
-.rightText{
+#stat{
+   display: flex;
+   gap: 0px; 
    position: absolute;
-   right: 0px;
-   top: 110px;
-   margin-right: 10px;
-    text-align: right;
-    line-height: 1.2;
-    vertical-align: middle;
-    font-size: clamp(16px, 2vw, 20px);
- }
+   top: 60px;
+   right: 10px;
+   font-weight: 700;
+   font-size: clamp(18px, 2vw, 22px);
+}
+#dailyGiftMenuID{
+   max-width: none !important;
+   width: clamp(260px, 80%, 500px);
+}
  #prifitLayerID{
    display: flex;
    gap: 6px;  
@@ -267,11 +281,10 @@
  #hitZoneID:active {
     cursor: url('img/pickaxe_transparent_128x128-45.png') 64 64, pointer;
  }
-#layerImgID, #layerGoldID{
+#layerImgID, #layerGoldID, #layerAllID{
    /* box-shadow: 1px 0px 35px 35px rgba(0, 0, 0, 0.3); */
    top: 0px;
-   background: url("img/layer.png");
-   /* background: rgba(0, 0, 0, 0.3);  */
+   /* background: url("img/layer.png"); */
    position: absolute;
    margin-left: auto;
    margin-right: auto;
@@ -526,7 +539,7 @@ max-width: 100%;
    color:  white;
    font-weight: 700;
    font-size: 22px;
-   top: 45px;
+   top: 43px;
    left: 0px;
 }
 .anim_Trembling{

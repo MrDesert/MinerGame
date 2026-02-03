@@ -15,7 +15,7 @@
         <script src="forGame.js" onerror="this.onerror=null; const newScript = document.createElement('script'); newScript.src = 'https://mrdesert.github.io/Tools/forGame.js'; document.body.appendChild(newScript);"></script><!-- Локальный файл для релиза, сетевой для разработки -->
         <!--Установить false перед релизом-->
         <script src="console.js" 
-            onload="createConsole(true, 'F2')" 
+            onload="createConsole(false, 'F2')" 
             onerror="
                 this.onerror=null; 
                 const newScript = document.createElement('script'); 
@@ -28,22 +28,25 @@
 
         <div id="preloaderID"><div id="preloaderCentr"><span id="loading"></span><span id="preloaderTextID">...</span></div></div>
         <div id="layerID">
-            <img id="layerImgID" src="img/layer.png" alt="">
-            <img id="layerGoldID" src="img/layer_gold.png" alt="" hidden>
+            <div id="layerAllID">
+                <img id="layerImgID" src="img/layer.png" alt="">
+                <img id="layerGoldID" src="img/layer_gold.png" alt="" hidden>
+            </div>
             <img id="cracksID" src="img/cracks.png" alt="">
         </div>
         <div id="hitZoneID" style="position: fixed; height: 100%; width: 100%;" onclick="hit(shovel)"></div>
         <h1>MinerGame</h1>
+
         <button id="langBtnID" class="btnCloseCircule" value="ru" onclick="changeLang(this.value)"></button>
         <h2><span id="currentDepth">Текущая глубина:</span> <span id="depthLevelID">0</span></h2>
 
         <div id="leftTopMenu"><div id="menuID" onclick="menuTreePump(false)"><img id="bookID" class="sideMenuElementIconLeftIMG" src="img/book.png" alt=""><div id="warningID" hidden></div></div></div>
-        <div  class="rightText">
-        <div><span id="wallet">Кошелёк: </span><img id="coinID" class="coinCl" src="img/coin.png" alt=""><span id="moneyID">0</span></div>
-        <div hidden><span id="clicks">Кликов: </span><span id="counterID">0</span></div>
-        <div hidden><span id="resets">Перезапусков: </span><span id="counterRebootID">0</span></div>
-        <div><span id="hand_damage">Сила удара: </span><span id="hitID">1</span></div>
-        <div><span id="auto_mine">Автоудар: </span><span id="autoHitInfoID">0</span></div>
+        <div id="stat" class="rightText">
+            <div hidden><span id="clicks">Кликов: </span><span id="counterID">0</span></div>
+            <div hidden><span id="resets">Перезапусков: </span><span id="counterRebootID">0</span></div>
+            <span id="wallet" hidden>Кошелёк: </span><img id="coinID" class="coinCl" src="img/coin.png" alt=""><span id="moneyID">0</span>
+            <span id="hand_damage" hidden>Сила удара: </span><img id="coinID" class="coinCl" src="img/pickaxe_transparent_390x390.png" style="margin-left: 6px;" alt=""><span id="hitID">1</span>
+            <span id="auto_mine" hidden>Автоудар: </span><img id="coinID" class="coinCl" src="img/helmet-pickaxe_transparent_450x450.png" style="margin-left: 6px;" alt=""><span id="autoHitInfoID">0</span>
         </div>
         <div id="hpTitleID" hidden>Ударов до победы: <div id="hpID" class="inline-block">4</div></div>
         <div id="hpBarBorderID">
@@ -58,11 +61,9 @@
             </div>
         </div>
         <div id="blurID" hidden><span id="continue">Продолжить</span></div>
-
-        <footer style="z-index: 4;">© by MrDesert - beta v0.3.9.5</footer>
-
+        <footer style="z-index: 4;">© by MrDesert - beta v0.4.0.0</footer>
 <script>
-    const useYSDK = false; //Установить true перед релизом
+    const useYSDK = true; //Установить true перед релизом
     let resurses = false;
     let sdkLoad = false;
 
@@ -70,7 +71,7 @@
     script.src = "https://yandex.ru/games/sdk/v2";
     script.async = true;
 
-    document.getElementsByTagName('footer')[0].innerHTML = "© MrDesert - v0.3.9.5"; //Заменяю версию для яндекса
+    document.getElementsByTagName('footer')[0].innerHTML = "© MrDesert - v0.4.0.0"; //Заменяю версию для яндекса
     document.head.appendChild(script);
     
     script.onload = function(){

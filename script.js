@@ -280,7 +280,7 @@ function loadLocalStorage(){
     allBonusFree = localStorage.getItem("allBonusFree") === 'false' ? false : true;
     daysdDailyGift = Number(localStorage.getItem("daysdDailyGift"));
     myLog(daysdDailyGift+" daysdDailyGift")
-    weeksDailyGift = Number(localStorage.getItem("weeksDailyGift"));
+    weeksDailyGift = Number(localStorage.getItem("weeksDailyGift")) || 1;
     geodeCount = Number(localStorage.getItem("geodeCount"));
     if(!allBonusFree){
         document.getElementById("claim_all").disabled = "disabled";
@@ -749,7 +749,7 @@ function finishLevel(){
     if (layer.hp.current <= 0){
         layerAnimat = true;
         switchsHit();
-        let layerID = DOM.Id('layerImgID');
+        let layerID = DOM.Id('layerAllID');
             layerID.style.top = "100%";
             layerID.style.transition = "none";
         let death = document.querySelectorAll(".death");
