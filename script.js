@@ -126,15 +126,6 @@ const bossLevelRatio = 10;
 let moneyBonus, trw, timer;
 let layerUpIntervalID;
 
-// let obj = {message: "JS"};
-//  myLog?.("obj - " + obj.message);
-// fetch('data.json')
-//     .then(r => r.json())
-//     .then(data => {
-//         obj.message = data.message;
-//         myLog?.("obj - " + obj.message);
-// })
-
 loadHTMLs().then(()=>{
     generateHTML().then(()=>{
         startingCreationGUI().then(()=>{
