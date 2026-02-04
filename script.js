@@ -715,10 +715,12 @@ function animationAutoHit(autoDamage){
         element.addEventListener('transitionend', function opacity(e){
             if (e.propertyName === 'top'){
                 tailMeteor.style.opacity = "0%";
+                tailMeteor.classList.add("death");
                 element.style.opacity = "0%";
                 element.classList.add("death");
                 damage(autoDamage);
             } else if (e.propertyName === 'opacity'){
+                myLog("d[jlb")
                 tailMeteor.remove();
                 element.remove();
                 element.removeEventListener('transitionend', opacity); 
@@ -1024,7 +1026,6 @@ function offlineProfit2(){
 }
 
 function dailyGift_F(lastLogon, currentLogon){
-    lastLogon = new Date(new Date()-86400000)
     if(!lastLogon){lastLogon = new Date(new Date()-172800000)}
     const lastDay = lastLogon.getDate();
     const today = currentLogon.getDate();
@@ -1233,4 +1234,5 @@ function updateInfo(){
     toChangeText("hpID", Math.floor(layer.hp.current));
     toChangeText("rebootExpCostID", expCalc());
     }
+    myLog("update")
 }
