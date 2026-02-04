@@ -297,6 +297,13 @@ window.addEventListener('beforeunload', () => {
     safeInLocalStorage();
 })
 
+window.addEventListener('pagehide', () => {
+    if(bossBonus){
+        document.getElementById("bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)).click()
+    }
+    safeInLocalStorage();
+})
+
 function safeInLocalStorage(){
     localStorage.setItem("money", money + offBonus);
     offBonus = 0;
@@ -1136,30 +1143,27 @@ nugget.style.opacity = "30%";
 }
 
 function updateInfo(){
+    console.time('update');
     if(HTMLLoaded){
     toChangeText("geodeValueID", geodeCount);
+    const geodeIMGID = DOM.Id("geodeIMGID");
     if(geodeCount <= 0){
-        DOM.Id("geodeIMGID").style.filter = "grayscale(60%)"
-        DOM.Id("geodeIMGID").classList.remove("geode-glow");
+        geodeIMGID.style.filter = "grayscale(60%)"
+        geodeIMGID.classList.remove("geode-glow");
         DOM.Hide("geodeRerolBtnID", false);
     } else {
         DOM.Hide("geodeRerolBtnID", true);
-        DOM.Id("geodeIMGID").style.filter = "grayscale(0%)"
-        DOM.Id("geodeIMGID").classList.add("geode-glow");
+        geodeIMGID.style.filter = "grayscale(0%)"
+        geodeIMGID.classList.add("geode-glow");
     }
     toChangeText("prizeID", toCompactNotation(prize.profitC));
-    if (profitX2.value > 1 && gold_layer != 0 || profitX2.value <= 1 && gold_layer == 0){
+    if (profitX2.value > 1 || gold_layer == 0){
         DOM.Id("prizeID").classList.add("strike");
         DOM.Hide("luckyID", false);
-        toChangeText("luckyID", "X2");
-        toChangeText("prizeID2", toCompactNotation(prize.profitC * profitX2.value * (gold_layer == 0 ? 2 : 1)));
-    } else if (profitX2.value > 1 && gold_layer == 0){
-        DOM.Id("prizeID").classList.add("strike");
-        DOM.Hide("luckyID", false);
-        toChangeText("luckyID", "X4");
-        toChangeText("prizeID2", toCompactNotation(prize.profitC * profitX2.value * 2));
-    }
-    else{
+        const factor = profitX2.value * (gold_layer == 0 ? 2 : 1);
+        toChangeText("luckyID", "X"+factor);
+        toChangeText("prizeID2", toCompactNotation(prize.profitC * factor));
+    }else{
         DOM.Id("prizeID").classList.remove("strike");
         DOM.Hide("luckyID", true);
         toChangeText("luckyID", "X2");
@@ -1172,17 +1176,9 @@ function updateInfo(){
             DOM.Id(skills[i].name+"skillID").classList.remove("disabled");
         }
         if(skills[i].autoHit){
-            if(skills[i].count > 0 && autoHit > 0){
-                skills[i].disable = false;
-            } else{
-                skills[i].disable = true;
-            }
+            skills[i].disable = skills[i].count > 0 && autoHit > 0 ? false : true;
         } else {
-            if(skills[i].count > 0){
-                skills[i].disable = false;
-            } else {
-                skills[i].disable = true;
-            }
+            skills[i].disable = skills[i].count > 0 ? false : true;
         }
         if(skills[i].value == 2){
             DOM.Id(skills[i].name+"skillID").classList.add("backlight");
@@ -1212,9 +1208,9 @@ function updateInfo(){
         toChangeText(name+"CostID", Math.floor(upgradesExp[i].cost));
         toChangeText(name+"LevelID", upgradesExp[i].level);
         if (upgradesExp[i].level >= 10){
-            toChangeText(upgradesExp[i].name+"CostID", "Максимум");
+            toChangeText(name+"CostID", "Максимум");
         }
-    }
+    } // как будто это вообще можно вынести v upgexp
 
     for(let i = 0; i < skills.length; i++){
         toChangeText(skills[i].name + "skillCountID", skills[i].count);
@@ -1225,5 +1221,6 @@ function updateInfo(){
     toChangeText("hpID", Math.floor(layer.hp.current));
     toChangeText("rebootExpCostID", expCalc());
     }
-    myLog("update")
+    myLog("update") 
+console.timeEnd('update'); // ~5-15ms
 }
