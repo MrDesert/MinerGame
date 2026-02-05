@@ -130,6 +130,7 @@ loadHTMLs().then(()=>{
     generateHTML().then(()=>{
         startingCreationGUI().then(()=>{
             HTMLLoaded = true; 
+            DOMInitialization();
             loadedGame()
         })
     })
@@ -297,11 +298,16 @@ window.addEventListener('beforeunload', () => {
     safeInLocalStorage();
 })
 
+window.addEventListener('load', () => {
+    loadLocalStorage();
+});
+
 window.addEventListener('pagehide', () => {
     if(bossBonus){
         document.getElementById("bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)).click()
     }
     safeInLocalStorage();
+    myLog("pagehide")
 })
 
 function safeInLocalStorage(){
@@ -460,32 +466,38 @@ async function startingCreationGUI(){
         const s = skills[i].time - m * 60;
         toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
     }
-    DOM.Id("geodeIMGID").src = "img/geoda.png";
-    DOM.Id("geodeRift").src = "img/geodeRift.png";
-    DOM.Id("geodeCraksIMGID").src = "img/geoda_craks.png";
     DOM.Id("geodeConteinerID").onclick = function(){geodeHit()};
     DOM.Create({Parent: "geodeConteinerID", Tag: "button", Id: "geodeRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll("geoda");}});
     DOM.Create({Parent: "geodeRerolBtnID", Tag: "img", Id: "geodeRerolBtnImgID", Src: "img/ad.png"});
     interectiveBonusCreate()
     updateInfo();
 }
+const ID = {geodeCraks:"", geodeIMG:"", geodeRift:"", offlineBonus:""};
+function DOMInitialization() {
+    ID.geodeIMG = DOM.Id("geodeIMGID");
+    ID.geodeIMG.src = "img/geoda.png";
+    ID.geodeCraks =  DOM.Id("geodeCraksIMGID");
+    ID.geodeCraks.src = "img/geoda_craks.png";
+    ID.geodeRift = DOM.Id("geodeRift")
+    ID.geodeRift.src = "img/geodeRift.png";
+    ID.offlineBonus = DOM.Id("offlineBonusID");
+}
 geodeHit.bool =true;
 function geodeHit(){
     if(geodeCount <= 0){
-        DOM.Id("geodeIMGID").style.filter = "grayscale(50%)"
+        ID.geodeIMG.style.filter = "grayscale(50%)"
     }else{
     if(geodeHit.bool){
     geodeHit.count = geodeHit.count || 3;
     geodeHit.count = geodeHit.count <= 0 ? 3 : geodeHit.count-1;
-    DOM.Id("geodeCraksIMGID").style.height = 100-(geodeHit.count*33)+"%";
+    ID.geodeCraks.style.height = 100-(geodeHit.count*33)+"%";
     animationOnce("geodeConteinerID", 'anim_Trembling');
     if(geodeHit.count == 0){
         geodeHit.bool = false;
         const geodeBonus = ["exp", ...[...skills].reverse(), "money"];
         let choice = Math.ceil(Math.random()*mathTriangularNumber(geodeBonus.length));
         let result = geodeBonus[Math.ceil(mathTriangularNumberInverse(choice))-1];
-        let srcImg;
-        let target;
+        let srcImg, target;
         if(result == "money"){
             srcImg = "img/coin.png";
             target = "coinID";
@@ -497,21 +509,21 @@ function geodeHit(){
             target = result.name+"skillIMGID";
         }
         DOM.Create({Parent: "ret", Id: "geodeBonusIMGID", Tag: "img", Hidden: "true", Src: srcImg})
-        const object = DOM.Id("geodeIMGID").getBoundingClientRect();
+        const object = ID.geodeIMG.getBoundingClientRect();
         const bonus = DOM.Id("geodeBonusIMGID");
                 bonus.style.left = object.left+object.width/5 +"px";
                 bonus.style.top = object.top+"px";
-        DOM.Id("geodeCraksIMGID").style.height = "0%";
-        DOM.Hide("geodeBonusIMGID", false);
-        flightToTarget("geodeBonusIMGID", target)
+                bonus.hidden = false;
+        ID.geodeCraks.style.height = "0%";
+        flightToTarget(bonus, DOM.Id(target));
         bonus.style.opacity = "40%";
-        DOM.Hide("geodeIMGID", true);
-        DOM.Hide("geodeRift", false);
+        ID.geodeIMG.hidden = true;
+        ID.geodeRift.hidden = false;
         DOM.Id("geodeConteinerID").classList.add("claet");
         bonus.addEventListener('transitionend', function opacity(e){
-        animationOnce("geodeConteinerID", 'anim_Trembling');
-            DOM.Hide("geodeIMGID", false);
-            DOM.Hide("geodeRift", true);
+            animationOnce("geodeConteinerID", 'anim_Trembling');
+            ID.geodeIMG.hidden = false;
+            ID.geodeRift.hidden = true;
             DOM.Id("geodeConteinerID").classList.remove("claet");
             geodeHit.count == 3
             bonus.remove();
@@ -531,15 +543,15 @@ function geodeHit(){
 }
 
 function flightToTarget(idObject, idTarget){
-    const object =  DOM.Id(idObject).getBoundingClientRect();
+    const object =  idObject.getBoundingClientRect();
     const objectX = object.left + object.width;
     const objectY = object.top + object.height;
-    const target = DOM.Id(idTarget).getBoundingClientRect();
+    const target = idTarget.getBoundingClientRect();
     const targetX = target.left + target.width;
     const targetY = target.top + target.height;
     const moveX = targetX - objectX + 45/2;
     const moveY = targetY - objectY + 45/2;
-    DOM.Id(idObject).style.transform = `translate(${moveX}px, ${moveY}px) scale(0.3)`;
+    idObject.style.transform = `translate(${moveX}px, ${moveY}px) scale(0.3)`;
 }
 
 function animationOnce(id, Class){
@@ -767,6 +779,7 @@ function finishLevel(){
         if (bossLevel == layer.level){  
             bossLevel += bossLevelRatio;
             bossLevelBonus();
+            safeInLocalStorage();
         }
         updateInfo();
     }
@@ -1007,7 +1020,7 @@ function offlineProfit(offlineSeconds){
     offBonus = Math.ceil(offBonus);
     if(offBonus > 0 && offlineSeconds > 3){
         DOM.Hide("bossLevelBonusID", true);
-        DOM.Hide("offlineBonusID", false);
+        ID.offlineBonus.hidden = false;
         toChangeText("offlineBonusValueID", "+" + toCompactNotation(offBonus));
         offlineBonus = true;
         switchsHit();
@@ -1017,7 +1030,7 @@ function offlineProfit(offlineSeconds){
 function offlineProfit2(){
     finance(offBonus);
     offBonus = 0;
-    DOM.Hide("offlineBonusID", true);
+    ID.offlineBonus.hidden = true;
     if(bossBonus){DOM.Hide("bossLevelBonusID", false);}
     offlineBonus = false;
     switchsHit();
@@ -1027,8 +1040,6 @@ function dailyGift_F(lastLogon, currentLogon){
     if(!lastLogon){lastLogon = new Date(new Date()-172800000)}
     const lastDay = lastLogon.getDate();
     const today = currentLogon.getDate();
-        myLog(today + " today")
-        myLog(lastDay + " lastDay")
     if(today != lastDay){
         geodeCount++;
         let raznica = today - lastDay;
@@ -1042,7 +1053,7 @@ function dailyGift_F(lastLogon, currentLogon){
         }
         if(raznica > 0){
             dailyGiftBonus = true;
-            DOM.Hide("offlineBonusID", true);
+            ID.offlineBonus.hidden = true;
             for(let i = 0; i < DailyGiftCreate; i++){
                 toChangeText("dailyGiftDaySkillCountID"+i, (Number(DOM.Id("dailyGiftDaySkillCountID"+i).textContent)*weeksDailyGift))
             }
@@ -1060,8 +1071,7 @@ function dailyGift_F(lastLogon, currentLogon){
 
 function claimDailyGift(){
     if(dailyGiftBonus){
-    DOM.Hide("offlineBonusID", false);
-    myLog(daysdDailyGift+" daysdDailyGift")
+    ID.offlineBonus.hidden = false;
     const keys = Object.keys(dailyGift["day"+daysdDailyGift]);
     for (let i = 0; i < keys.length; i++){
         for (let j = 0; j < skills.length; j++){
@@ -1126,7 +1136,7 @@ function interectiveBonus(){
  } else{
     target = rSkill.name+"skillIMGID";
  }
-flightToTarget("inerectiveBonusContID2", target);
+flightToTarget(nugget, DOM.Id(target));
 nugget.style.opacity = "30%";
  nugget.addEventListener('transitionend', function opacity(e){
     if(notSkill){
@@ -1146,15 +1156,14 @@ function updateInfo(){
     console.time('update');
     if(HTMLLoaded){
     toChangeText("geodeValueID", geodeCount);
-    const geodeIMGID = DOM.Id("geodeIMGID");
     if(geodeCount <= 0){
-        geodeIMGID.style.filter = "grayscale(60%)"
-        geodeIMGID.classList.remove("geode-glow");
+        ID.geodeIMG.style.filter = "grayscale(60%)"
+        ID.geodeIMG.classList.remove("geode-glow");
         DOM.Hide("geodeRerolBtnID", false);
     } else {
         DOM.Hide("geodeRerolBtnID", true);
-        geodeIMGID.style.filter = "grayscale(0%)"
-        geodeIMGID.classList.add("geode-glow");
+        ID.geodeIMG.style.filter = "grayscale(0%)"
+        ID.geodeIMG.classList.add("geode-glow");
     }
     toChangeText("prizeID", toCompactNotation(prize.profitC));
     if (profitX2.value > 1 || gold_layer == 0){
