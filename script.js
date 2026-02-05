@@ -237,6 +237,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }, {once: true});
 
 function loadLocalStorage(){
+    console.time("load")
     if(DOMContentLoaded && HTMLLoaded){
     for(let i = 0; i < upgrades2.length; i++){
         if(localStorage.getItem(upgrades2[i].name)){
@@ -289,6 +290,7 @@ function loadLocalStorage(){
     localStorage.setItem("lastLogon", new Date());
     updateInfo();
     }
+    console.timeEnd("load")
 }
 
 window.addEventListener('beforeunload', () => {
@@ -358,7 +360,7 @@ tick(performance.now());
 
 function textTimer(){
     if(HTMLLoaded){
-    if (auto_bonus_duration.enabled == true && rerollTimer && !document.getElementById("bossLevelBonusID").hidden){
+    if (auto_bonus_duration.enabled == true && rerollTimer && !ID.bossLevelBonus.hidden){
         currentSeconds = new Date().getSeconds();
         let raznica = auto_bonus_duration.value - (currentSeconds - currentSecondsStart);
         if(raznica > 60){raznica -= 60}
@@ -472,7 +474,7 @@ async function startingCreationGUI(){
     interectiveBonusCreate()
     updateInfo();
 }
-const ID = {geodeCraks:"", geodeIMG:"", geodeRift:"", offlineBonus:""};
+const ID = {geodeCraks:"", geodeIMG:"", geodeRift:"", offlineBonus:"", counter:"", hpBar:"", cracks:"", layerGold:"", claimAll:"", bossLevelBonusRerolBtn:"", time:"", bossLevelBonus:""};
 function DOMInitialization() {
     ID.geodeIMG = DOM.Id("geodeIMGID");
     ID.geodeIMG.src = "img/geoda.png";
@@ -481,6 +483,14 @@ function DOMInitialization() {
     ID.geodeRift = DOM.Id("geodeRift")
     ID.geodeRift.src = "img/geodeRift.png";
     ID.offlineBonus = DOM.Id("offlineBonusID");
+    ID.counter = DOM.Id("counterID");
+    ID.hpBar = DOM.Id("hpBarID");
+    ID.cracks = DOM.Id("cracksID");
+    ID.layerGold = DOM.Id("layerGoldID");
+    ID.claimAll = DOM.Id("claim_all");
+    ID.bossLevelBonusRerolBtn = DOM.Id("bossLevelBonusRerolBtnID");
+    ID.time = DOM.Id("timeID");
+    ID.bossLevelBonus = DOM.Id("bossLevelBonusID");
 }
 geodeHit.bool =true;
 function geodeHit(){
@@ -491,7 +501,9 @@ function geodeHit(){
     geodeHit.count = geodeHit.count || 3;
     geodeHit.count = geodeHit.count <= 0 ? 3 : geodeHit.count-1;
     ID.geodeCraks.style.height = 100-(geodeHit.count*33)+"%";
+    console.time("anim")
     animationOnce("geodeConteinerID", 'anim_Trembling');
+    console.timeEnd("anim")
     if(geodeHit.count == 0){
         geodeHit.bool = false;
         const geodeBonus = ["exp", ...[...skills].reverse(), "money"];
@@ -555,9 +567,10 @@ function flightToTarget(idObject, idTarget){
 }
 
 function animationOnce(id, Class){
-    DOM.Id(id).classList.add(Class);
-    DOM.Id(id).addEventListener('animationend', () => {
-        DOM.Id(id).classList.remove(Class);
+    const ID = DOM.Id(id);
+    ID.classList.add(Class);
+    ID.addEventListener('animationend', () => {
+        ID.classList.remove(Class);
     }, {once: true});
 }
 
@@ -596,10 +609,10 @@ function reroll(t){
                 if(t == "geoda"){
                     geodeCount++;
                 }else{
-                allBonusFree = true;
-                DOM.Disable("claim_all", false);
-                DOM.Id("claim_all").classList.remove("disabled");
-                DOM.Hide("bossLevelBonusRerolBtnID");
+                    allBonusFree = true;
+                    ID.claimAll.disabled = false;
+                    ID.claimAll.classList.remove("disabled");
+                    ID.bossLevelBonusRerolBtn.hidden = true;
                 }
                 pausescreen = false;
             }
@@ -631,8 +644,8 @@ function startingValues(){
     autoHit = 0;
     layer.level = 0;
     allBonusFree = true;
-    DOM.Disable("claim_all", false);
-    DOM.Id("claim_all").classList.remove("disabled");
+    ID.claimAll.disabled = false;
+    ID.claimAll.classList.remove("disabled");
 
     for (let i = 0; i < upgrades2.length; i++){
         upgrades2[i].level = 0;
@@ -660,8 +673,8 @@ function expBonus(){
     money = Math.round(m * money_keep.value);
     finance(0);
     toStyle("#ret", "backgroundPositionY", "0%");
-    toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current+ "%");
-    toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
+    ID.hpBar.style.width = 100/layer.hp.round * layer.hp.current+ "%";
+    ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%"
     toChangeText("counterRebootID", expBonus.count=(expBonus.count || 0) + 1);
     updateInfo();
     ysdk?.adv?.showFullscreenAdv?.();
@@ -671,7 +684,7 @@ function hit(object) {
     if (switchHit){
         if(object.typeValue == "hit"){
             damage(object);
-            toChangeText("counterID", hit.count=(hit.count || 0) + 1);
+            ID.counter.textContent = hit.count=(hit.count || 0) + 1;
         }
         else {
             if((object.level + object.levelTemp) > 0){
@@ -682,18 +695,20 @@ function hit(object) {
 }
 
 function damage(object){
-    trembling();
+    console.time("damage")
+    animationOnce("layerID", "anim_TremblingLayer_"+(Math.floor(Math.random()*4)+1))
     if (switchHit && layer.hp.current > 0){
         if (object.typeValue == "hit"){
             layer.hp.current -= handHit * damageX2.value;
         } else {
             layer.hp.current -= object.value * (object.level + object.levelTemp) * damageX2.value;
         }
-        toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
-        toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
+        ID.hpBar.style.width = 100/layer.hp.round * layer.hp.current + "%";
+        ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%";
     }
     finishLevel();
     updateInfo();
+    console.timeEnd("damage")
 }
 
 function animationAutoHit(autoDamage){
@@ -738,20 +753,6 @@ function animationAutoHit(autoDamage){
         });
 }
 
-function trembling(){
-    let id = DOM.Id("layerID");
-    // let instrumets = document.querySelectorAll('.death');
-    let random = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%"
-    let randomY = Math.floor(Math.random()*2) > 0 ? "0.5%" : "-0.5%"
-    id.style.transform = "scale(1.01) translateX(" + random + ") translateY(" + randomY + ")";
-    // instrumets.forEach( i => {i.style.left = random});
-
-    id.addEventListener('transitionend', () =>{
-        id.style.transform = "scale(1) translateX(0%) translateY(0%)"
-        // instrumets.forEach( i => {i.style.left = "0%"});
-    }, {once: true});
-}
-
 function switchsHit(){
     if (bossBonus || offlineBonus || dailyGiftBonus || pausescreen || layerAnimat){switchHit = false;}
     if (!bossBonus && !offlineBonus && !dailyGiftBonus && !pausescreen && !layerAnimat){switchHit = true;}
@@ -761,12 +762,12 @@ function finishLevel(){
     if (layer.hp.current <= 0){
         layerAnimat = true;
         switchsHit();
-        let layerID = DOM.Id('layerAllID');
+        const layerID = DOM.Id('layerAllID');
             layerID.style.top = "100%";
             layerID.style.transition = "none";
-        let death = document.querySelectorAll(".death");
+        const death = document.querySelectorAll(".death");
             death.forEach( det => {det.remove()});
-        toStyle("#cracksID", "height", "0%");
+        ID.cracks.style.height = "0%";
         finance(Math.floor(prize.profitC * profitX2.value * (gold_layer == 0 ? 2 : 1)));
         layer.hp.calc = softProgress(layer.hp.calc, -1);
         layer.hp.round = layer.hp.current = Math.floor(layer.hp.calc * layer_hardness.value);
@@ -774,7 +775,7 @@ function finishLevel(){
         prize.profitC = Math.floor(prize.profitC * mining_profit.value);
         layer.level++;
         layerUp(layerID);
-        toStyle("#hpBarID", "width", "100%");
+        ID.hpBar.style.width = "100%";
         openingLayerUp();
         if (bossLevel == layer.level){  
             bossLevel += bossLevelRatio;
@@ -788,15 +789,11 @@ function finishLevel(){
 function layerUp(layerID){
     let mirror = Math.round(Math.random()*1) == 1 ? 1 : -1;
     gold_layer = Math.floor(Math.random()*15);
-    if(gold_layer == 0){
-        DOM.Hide("layerGoldID", false)
-        toStyle("#layerGoldID", "transform", "scaleX("+ mirror +")");
-    } else {
-        DOM.Hide("layerGoldID", true)
-    }
+    ID.layerGold.hidden = gold_layer == 0 ? false : true;
+    ID.layerGold.style.transform = "scaleX("+ mirror +")";
     layerID.offsetHeight;
     layerID.style.transform = "scaleX("+ mirror +")";
-    toStyle("#cracksID", "transform", "scaleX("+ mirror +")");
+    ID.cracks.style.transform = "scaleX("+ mirror +")";
     layerID.style.transition = "top 0.4s linear"
     layerID.style.top = "0px";
     toStyle("#ret", "backgroundPositionY", layer.level*-200 + "px");
@@ -890,7 +887,7 @@ function upgradesExpFunc(upgrade){
 
 
 function bossLevelBonus(){
-    DOM.Hide("bossLevelBonusID", false);
+    ID.bossLevelBonus.hidden = false;
     moneyBonus = 0;
     trw = [];
     let switchsOn = 0;
@@ -940,12 +937,12 @@ function bossLevelBonus(){
         DOM.Disable(upgrades2[i].name + "BtnID", true);
     }
     if (auto_bonus_duration.enabled){
-        DOM.Hide("timeID", false);
+        ID.time.hidden = false;
         currentSecondsStart = new Date().getSeconds();
         rerollTimer = true;
         timer = setTimeout(function(){document.getElementById("bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)).click()}, auto_bonus_duration.value*1000);
     }
-    DOM.Hide("bossLevelBonusRerolBtnID", allBonusFree);
+    ID.bossLevelBonusRerolBtn.hidden = allBonusFree;
 }
 
 function bossLevelBonusRandom(switchsOn){
@@ -966,8 +963,8 @@ function bossLevelBonusBtn(bonus, count){
     if(bonus === "All"){
         if(allBonusFree){
             allBonusFree = false;
-            DOM.Disable("claim_all", true);
-            DOM.Id("claim_all").classList.add("disabled");
+            ID.claimAll.disabled = true;
+            ID.claimAll.classList.add("disabled");
             for (let i = 0; i < trw.length; i++){
                 simulateClick("#bossLevelBonusIMGID" + i);
             }
@@ -986,7 +983,7 @@ function bossLevelBonusBtn(bonus, count){
     }
     bossBonus = false;
     switchsHit();
-    DOM.Hide("bossLevelBonusID");
+    ID.bossLevelBonus.hidden = true;
 }
 
 function menuTreePump(open){
@@ -1019,7 +1016,7 @@ function offlineProfit(offlineSeconds){
     }
     offBonus = Math.ceil(offBonus);
     if(offBonus > 0 && offlineSeconds > 3){
-        DOM.Hide("bossLevelBonusID", true);
+        ID.bossLevelBonus.hidden = true;
         ID.offlineBonus.hidden = false;
         toChangeText("offlineBonusValueID", "+" + toCompactNotation(offBonus));
         offlineBonus = true;
@@ -1031,7 +1028,7 @@ function offlineProfit2(){
     finance(offBonus);
     offBonus = 0;
     ID.offlineBonus.hidden = true;
-    if(bossBonus){DOM.Hide("bossLevelBonusID", false);}
+    if(bossBonus){ID.bossLevelBonus.hidden = false}
     offlineBonus = false;
     switchsHit();
 }
