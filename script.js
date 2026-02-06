@@ -227,7 +227,7 @@ function loadedGame() {
 }
 
 document.addEventListener('visibilitychange', ()=>{
-    if(document.hidden){claimDailyGift();safeInLocalStorage();}
+    if(document.hidden){safeInLocalStorage();claimDailyGift();}
     else{loadLocalStorage();}
 })
 
@@ -391,7 +391,8 @@ function skillTimer(){
                 toChangeText(skills[i].name+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
             }
         }
-    }   
+    }
+    skillSwitch();   
 }
 
 function preloaderTextChange(){
@@ -471,10 +472,13 @@ async function startingCreationGUI(){
     DOM.Id("geodeConteinerID").onclick = function(){geodeHit()};
     DOM.Create({Parent: "geodeConteinerID", Tag: "button", Id: "geodeRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll("geoda");}});
     DOM.Create({Parent: "geodeRerolBtnID", Tag: "img", Id: "geodeRerolBtnImgID", Src: "img/ad.png"});
-    interectiveBonusCreate()
+    interectiveBonusCreate();
+    skillSwitch()
+    upgradesExpFuncInfo();
     updateInfo();
 }
-const ID = {geodeCraks:"", geodeIMG:"", geodeRift:"", offlineBonus:"", counter:"", hpBar:"", cracks:"", layerGold:"", claimAll:"", bossLevelBonusRerolBtn:"", time:"", bossLevelBonus:""};
+const ID = {geodeCraks:"", geodeIMG:"", geodeRift:"", offlineBonus:"", counter:"", hpBar:"", cracks:"", layerGold:"", claimAll:"", bossLevelBonusRerolBtn:"", time:"", bossLevelBonus:"", layerAll:"", geodeValue:"", geodeRerolBtn:"", prize:"", lucky:"", prize2:"", hit:"", autoHitInfo:"", hp:"", rebootExpCost:"", depthLevel:""};
+const Cl = {};
 function DOMInitialization() {
     ID.geodeIMG = DOM.Id("geodeIMGID");
     ID.geodeIMG.src = "img/geoda.png";
@@ -491,6 +495,17 @@ function DOMInitialization() {
     ID.bossLevelBonusRerolBtn = DOM.Id("bossLevelBonusRerolBtnID");
     ID.time = DOM.Id("timeID");
     ID.bossLevelBonus = DOM.Id("bossLevelBonusID");
+    ID.layerAll = DOM.Id('layerAllID');
+    ID.geodeValue = DOM.Id("geodeValueID");
+    ID.geodeRerolBtn = DOM.Id("geodeRerolBtnID");
+    ID.prize = DOM.Id("prizeID");
+    ID.lucky = DOM.Id("luckyID");
+    ID.prize2 = DOM.Id("prizeID2");
+    ID.hit = DOM.Id("hitID");
+    ID.autoHitInfo = DOM.Id("autoHitInfoID");
+    ID.hp = DOM.Id("hpID");
+    ID.rebootExpCost = DOM.Id("rebootExpCostID");
+    ID.depthLevel = DOM.Id("depthLevelID");
 }
 geodeHit.bool =true;
 function geodeHit(){
@@ -546,6 +561,7 @@ function geodeHit(){
             result.count += 1;
             colorNumbers(result.name+"skillCountID", "green")}
             geodeCount--;
+            skillSwitch();
             updateInfo();
         }, {once: true})
     }
@@ -573,7 +589,16 @@ function animationOnce(id, Class){
         ID.classList.remove(Class);
     }, {once: true});
 }
-
+function skillSwitch(){
+    for(let i = 0; i < skills.length; i++){
+        if(skills[i].autoHit){
+            skills[i].disable = skills[i].count > 0 && autoHit > 0 ? false : true;
+        } else {
+            skills[i].disable = skills[i].count > 0 ? false : true;
+        }
+        DOM.Id(skills[i].name+"skillID").classList.toggle("disabled", skills[i].disable);
+    }
+}
 function skill(id){
     if(id.count > 0 && id.timeCur == 0){
         colorNumbers(id.name + "skillCountID" , "red");
@@ -592,7 +617,7 @@ function skill(id){
         }else{
             id.value = 2;
         }
-
+        x2orX4();
         updateInfo();
     }
 }
@@ -636,6 +661,7 @@ function expChanges(e){
 }
 
 function startingValues(){
+    upgradesFuncInfo();
     money = 0;
     bossLevel = 1;
     layer.hp.calc = layer.hp.current = layer.hp.round = layer.hp.base;
@@ -762,9 +788,8 @@ function finishLevel(){
     if (layer.hp.current <= 0){
         layerAnimat = true;
         switchsHit();
-        const layerID = DOM.Id('layerAllID');
-            layerID.style.top = "100%";
-            layerID.style.transition = "none";
+        ID.layerAll.style.top = "100%";
+        ID.layerAll.style.transition = "none";
         const death = document.querySelectorAll(".death");
             death.forEach( det => {det.remove()});
         ID.cracks.style.height = "0%";
@@ -774,7 +799,7 @@ function finishLevel(){
         prize.profit = prize.profitC = Math.round(softProgress(prize.profit, -2));
         prize.profitC = Math.floor(prize.profitC * mining_profit.value);
         layer.level++;
-        layerUp(layerID);
+        layerUp();
         ID.hpBar.style.width = "100%";
         openingLayerUp();
         if (bossLevel == layer.level){  
@@ -786,18 +811,19 @@ function finishLevel(){
     }
 } 
 
-function layerUp(layerID){
+function layerUp(){
     let mirror = Math.round(Math.random()*1) == 1 ? 1 : -1;
     gold_layer = Math.floor(Math.random()*15);
     ID.layerGold.hidden = gold_layer == 0 ? false : true;
+    x2orX4();
     ID.layerGold.style.transform = "scaleX("+ mirror +")";
-    layerID.offsetHeight;
-    layerID.style.transform = "scaleX("+ mirror +")";
+    ID.layerAll.offsetHeight;
+    ID.layerAll.style.transform = "scaleX("+ mirror +")";
     ID.cracks.style.transform = "scaleX("+ mirror +")";
-    layerID.style.transition = "top 0.4s linear"
-    layerID.style.top = "0px";
+    ID.layerAll.style.transition = "top 0.4s linear"
+    ID.layerAll.style.top = "0px";
     toStyle("#ret", "backgroundPositionY", layer.level*-200 + "px");
-    layerID.addEventListener('transitionend', (e) => {
+    ID.layerAll.addEventListener('transitionend', (e) => {
         layerAnimat = false;
         switchsHit(); 
     }, {once: true});
@@ -856,7 +882,20 @@ function upgradesFunc(item, bool) {
         item.level++;
         colorNumbers(name+"LevelID", "green");
     }
+    upgradesFuncInfo()
+    skillSwitch();
     updateInfo();
+}
+function upgradesFuncInfo(){
+        for(let i = 0; i < upgrades2.length; i++){
+        toChangeText(upgrades2[i].name+"CostID", toCompactNotation(upgrades2[i].cost.current));
+        toChangeText(upgrades2[i].name+"LevelID", upgrades2[i].level);
+        if( upgrades2[i].typeValue == "auto"){
+            let damage = Math.round(upgrades2[i].value*upgrades2[i].level/(auto_mine_speed.parameter.value*upgrades2[i].timeHit)*100)/100;
+            toChangeText(upgrades2[i].name+"ValueID", damage + " hp/s");
+            autoHit += damage;
+        }
+    } 
 }
 
 function upgradesExpFunc(upgrade){
@@ -874,7 +913,7 @@ function upgradesExpFunc(upgrade){
                     upgrades2[i].cost.current = Math.round(upgrades2[i].cost.calc * upgrade_cost.value);
                 }
             } else if (upgrade == "auto_bonus_duration"){
-                if (!auto_bonus_duration.enabled){auto_bonus_duration.enabled = true};
+                if (!auto_bonus_duration.enabled){auto_bonus_duration.enabled = true;};
             } 
         } 
         if (upgradesExp[i].level >= 10){
@@ -882,9 +921,23 @@ function upgradesExpFunc(upgrade){
             document.getElementById(name+"BtnID").disabled = "disabled";
         }
     }
-    updateInfo();
+    upgradesExpFuncInfo();
 }
-
+function upgradesExpFuncInfo() {
+    for(let i = 0; i < upgradesExp.length; i++){
+        let name = upgradesExp[i].name;
+        if(upgradesExp[i].enabled == false){
+            toChangeText(name+"InfoValueID", "-" + upgradesExp[i].parameter.type);  
+        } else {
+            toChangeText(name+"InfoValueID", Math.round(upgradesExp[i].parameter.value*100)/100 + upgradesExp[i].parameter.type);
+        }
+        toChangeText(name+"CostID", Math.floor(upgradesExp[i].cost));
+        toChangeText(name+"LevelID", upgradesExp[i].level);
+        if (upgradesExp[i].level >= 10){
+            toChangeText(name+"CostID", "Максимум");
+        }
+    }
+}
 
 function bossLevelBonus(){
     ID.bossLevelBonus.hidden = false;
@@ -1148,85 +1201,44 @@ nugget.style.opacity = "30%";
     interectiveBonusCreate.bool = false;
  }, {once: true})
 }
-
+function x2orX4 (){
+    if (profitX2.value > 1 || gold_layer == 0){
+        ID.prize.classList.add("strike");
+        const factor = profitX2.value * (gold_layer == 0 ? 2 : 1);
+        ID.lucky.textContent = "X"+factor;
+        ID.prize2.textContent = toCompactNotation(prize.profitC * factor);
+    }else{
+        ID.prize.classList.remove("strike");
+        ID.lucky.textContent = "";
+        ID.prize2.textContent = "";
+    }
+}
 function updateInfo(){
     console.time('update');
     if(HTMLLoaded){
-    toChangeText("geodeValueID", geodeCount);
-    if(geodeCount <= 0){
-        ID.geodeIMG.style.filter = "grayscale(60%)"
-        ID.geodeIMG.classList.remove("geode-glow");
-        DOM.Hide("geodeRerolBtnID", false);
-    } else {
-        DOM.Hide("geodeRerolBtnID", true);
-        ID.geodeIMG.style.filter = "grayscale(0%)"
-        ID.geodeIMG.classList.add("geode-glow");
-    }
-    toChangeText("prizeID", toCompactNotation(prize.profitC));
-    if (profitX2.value > 1 || gold_layer == 0){
-        DOM.Id("prizeID").classList.add("strike");
-        DOM.Hide("luckyID", false);
-        const factor = profitX2.value * (gold_layer == 0 ? 2 : 1);
-        toChangeText("luckyID", "X"+factor);
-        toChangeText("prizeID2", toCompactNotation(prize.profitC * factor));
-    }else{
-        DOM.Id("prizeID").classList.remove("strike");
-        DOM.Hide("luckyID", true);
-        toChangeText("luckyID", "X2");
-        toChangeText("prizeID2", "");
-    }
+
+    const geodeBool = geodeCount > 0;
+    ID.geodeValue.textContent = geodeCount;
+    ID.geodeRerolBtn.hidden = geodeBool;
+    ID.geodeIMG.classList.toggle('geode-glow', geodeBool); 
+    ID.geodeIMG.classList.toggle('grayScale', !geodeBool); 
+
+    ID.prize.textContent = toCompactNotation(prize.profitC);
+
     for(let i = 0; i < skills.length; i++){
-        if(skills[i].disable){
-            DOM.Id(skills[i].name+"skillID").classList.add("disabled");
-        } else{
-            DOM.Id(skills[i].name+"skillID").classList.remove("disabled");
-        }
-        if(skills[i].autoHit){
-            skills[i].disable = skills[i].count > 0 && autoHit > 0 ? false : true;
-        } else {
-            skills[i].disable = skills[i].count > 0 ? false : true;
-        }
         if(skills[i].value == 2){
             DOM.Id(skills[i].name+"skillID").classList.add("backlight");
             DOM.Id(skills[i].name+"skillTimeID").classList.add("timer");
         }
-    }
-    toChangeText("depthLevelID", layer.level);
-    autoHit = 0;
-    for(let i = 0; i < upgrades2.length; i++){
-        toChangeText(upgrades2[i].name+"CostID", toCompactNotation(upgrades2[i].cost.current));
-        toChangeText(upgrades2[i].name+"LevelID", upgrades2[i].level);
-        if( upgrades2[i].typeValue == "auto"){
-            // if(upgrades[i].value > 1){text = " Автоудар - "}
-            let damage = Math.round(upgrades2[i].value*upgrades2[i].level/(auto_mine_speed.parameter.value*upgrades2[i].timeHit)*100)/100;
-            toChangeText(upgrades2[i].name+"ValueID", damage + " hp/s");
-            autoHit += damage;
-        }
-    } 
-
-    for(let i = 0; i < upgradesExp.length; i++){
-        let name = upgradesExp[i].name;
-        if(upgradesExp[i].enabled == false){
-            toChangeText(name+"InfoValueID", "-" + upgradesExp[i].parameter.type);  
-        } else {
-            toChangeText(name+"InfoValueID", Math.round(upgradesExp[i].parameter.value*100)/100 + upgradesExp[i].parameter.type);
-        }
-        toChangeText(name+"CostID", Math.floor(upgradesExp[i].cost));
-        toChangeText(name+"LevelID", upgradesExp[i].level);
-        if (upgradesExp[i].level >= 10){
-            toChangeText(name+"CostID", "Максимум");
-        }
-    } // как будто это вообще можно вынести v upgexp
-
-    for(let i = 0; i < skills.length; i++){
         toChangeText(skills[i].name + "skillCountID", skills[i].count);
     }
 
-    toChangeText("hitID", handHit);
-    toChangeText("autoHitInfoID", Math.round(autoHit*100)/100 + " hp/s");
-    toChangeText("hpID", Math.floor(layer.hp.current));
-    toChangeText("rebootExpCostID", expCalc());
+    ID.depthLevel.textContent = layer.level;
+    autoHit = 0;
+    ID.hit.textContent = handHit;
+    ID.autoHitInfo.textContent = Math.round(autoHit*100)/100 + " hp/s";
+    ID.hp.textContent = Math.floor(layer.hp.current);
+    ID.rebootExpCost.textContent = expCalc();
     }
-    myLog("update") 
-console.timeEnd('update'); // ~5-15ms
+console.timeEnd('update'); // ~1-3ms
 }
