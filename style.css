@@ -94,7 +94,7 @@
       top: 10%;
       max-width: 25%;
    }
-   #dailyGiftMenuID{
+   #dailyGiftMenu{
       max-width: none !important;
       width: clamp(110px, 60%, 500px);
    } 
@@ -171,14 +171,14 @@
    font-weight: 700;
    font-size: clamp(18px, 2vw, 22px);
 }
-#dailyGiftMenuID{
+#dailyGiftMenu{
    max-width: none !important;
    width: clamp(260px, 80%, 500px);
 }
  #prifitLayerID{
    display: flex;
    gap: 6px;  
-
+   position: absolute;
    font-size: clamp(14px, 2vw, 18px);
    text-align: center;
    justify-content: center; /*Выравнивание по горизантали*/
@@ -261,13 +261,13 @@
     font-size: 16pt;
     font-weight:bold;
  }
- #expID{
+ #exp{
     color: white;
  }
  .levelForExp{
     background-color: rgba(0, 0, 0, 0) !important;
  }
- #layerID {
+ #layer{
    position: absolute;
    top: 60%;
    width: 100%; 
@@ -437,7 +437,7 @@ max-width: 100%;
    display: flex;
    column-gap: 5px;
 }
-#menu, #geodeConteinerID{
+#menu, #geodeConteiner{
    height: 65px; 
    width: 65px;
    position: relative;
@@ -632,7 +632,7 @@ max-width: 100%;
    hyphens: auto;
  }
 
- #warningID{
+ #warning{
    position: absolute;
    top: 2px;
    left: 0px;

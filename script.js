@@ -130,15 +130,16 @@ console.time("game")
 loadHTMLs().then(()=>{
     generateHTML().then(()=>{
         startingCreationGUI().then(()=>{
-            DOMInitialization();
-            loadLangTexts().then(()=>{
-                HTMLLoaded = true; 
-                textsLoaded = true; 
-                changeTextsLang(); 
-                loadedGame();
-                tick(performance.now());
-                skillSwitch()
-                upgradesExpFuncInfo();
+            DOMInitialization().then(()=>{
+                loadLangTexts().then(()=>{
+                    HTMLLoaded = true; 
+                    textsLoaded = true; 
+                    changeTextsLang(); 
+                    loadedGame();
+                    tick(performance.now());
+                    skillSwitch()
+                    upgradesExpFuncInfo();
+                });
             })
         })
     })
@@ -164,6 +165,7 @@ async function generateHTML(){
                         id = array[i].name + HTMLs[key]?.Id.substring(1); //Не нравиться что используеться .name не универсально скорее всего надо переходить  на глобальный объект и тогда можно получать их имена через key
                     }
                     DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});   
+                    IDs.push(id);
                 }
             } 
             else{
@@ -176,48 +178,30 @@ async function generateHTML(){
                     if(HTMLs[key]?.Id.slice(-1) == "_"){
                         id = HTMLs[key]?.Id.slice(0, -1) + i;
                     }
-                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});   
+                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});
+                    IDs.push(id);   
                 } 
             }
         }else{
             DOM?.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});
+            IDs.push(key);
         }
     }
 }
 async function startingCreationGUI(){
-    //Боковое меню
-    for(let i = 0; i < upgrades2.length; i++){
-        let id = upgrades2[i].name;
-        DOM.Create({Parent: id+"IconID", Tag: "img", Id: id+"ImgID", Class: "sideMenuElementIconLeftIMG unavailable", Src: "img/" + upgrades2[i].img});
-        DOM.Create({Parent: id+"ID", Tag: "button", Id: id+"BtnID", Class: "sideMenuElementBtn", OnClick: function(){upgrades2[i].func();}});
-            DOM.Create({Parent: id+"BtnID", Tag: "img", Id: id+"BtnImgID", Class: "coinCl", Src: "img/coin.png", Disabled: "true"});
-            DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
-    }
-    // Центральное меню
-    DOM.Create({Parent: "menuForExp", Tag: "button", Id: "menuForExpBtnClose", Class: "btnCloseCircule", Text: "X", OnClick: function(){menuTreePump(true)}});
-        DOM.Create({Parent: "expTitleID", Tag: "img", Id: "expImgID", Class: "expCl", Src: "img/exp.png"});
-            DOM.Create({Parent: "rebootExpID", Tag: "img", Id: "rebootExpImgID", Class: "expCl", Src: "img/exp.png"});
-        DOM.Create({Parent: "infoExpID", Tag: "button", Id: "rebootExpBtnID", Class: "centralMenuElementBtn", Text: "⟳", OnClick: function(){expBonus()}});   
-    for(let i = 0; i < upgradesExp.length; i++){
-        let id = upgradesExp[i].name;
-        DOM.Create({Parent: id+"ID", Tag: "button", Id: id+"BtnID", Class: "centralMenuElementBtn", OnClick: function(){upgradesExp[i].func();}}); 
-            DOM.Create({Parent: id+"BtnID", Tag: "img", Id: id+"ImgBtnID", Class: "expCl", Src: "img/exp.png"});
-            DOM.Create({Parent: id+"BtnID", Id: id+"CostID", Class: "inline-block cost"});
-    }
-    //Офлайн меню
-    DOM.Create({Parent: "offlineBonusConteinerRerollID", Tag: "button", Id: "claim_offBonus", Class: "bossLevelBonusCls", OnClick: function(){offlineProfit2();}});
-    DOM.Id("offlineBonusIMGID").src = "img/coin.png";
     //Ежедневный подарок меню
-    DOM.Create({Parent: "dailyGiftMenuConteinerRerollID", Tag: "button", Id: "claim_dailyGift", Class: "bossLevelBonusCls", OnClick: function(){claimDailyGift();}});
+    DOM.Id("claim_dailyGift").onclick = function(){claimDailyGift();};
     for(let i = 0; i < 7; i++){
         const keys = Object.keys(dailyGift["day"+(i+1)]);
         for (let j = 0; j < keys.length; j++){
             DOM.Create({Parent: "dailyGiftDayContID"+i, Id: "dailyGiftDaySkillContID"+i+j, Class: "dailySkill"});
+                IDs.push("dailyGiftDaySkillContID"+i+j); 
             for (let k = 0; k < skills.length; k++){
-
                 if(skills[k].name == keys[j]){
                     DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillIMGID"+DailyGiftCreate, Tag: "img", Class: "skillIMG", Src: "img/"+skills[k].img});
+                        IDs.push("dailyGiftDaySkillIMGID"+DailyGiftCreate);
                     DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillCountID"+DailyGiftCreate, Tag: "span", Class: "skillValue", Text: (dailyGift["day"+(i+1)][keys[j]]*weeksDailyGift)})
+                        IDs.push("dailyGiftDaySkillCountID"+DailyGiftCreate);
                     DailyGiftCreate++;
                     break;
                 }
@@ -225,9 +209,9 @@ async function startingCreationGUI(){
         }
     }    
     //Бонусное меню
-    DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claimAll", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All")}});
-    DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
-        DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
+    DOM.Id("claimAll").onclick = function(){bossLevelBonusBtn("All")};
+    DOM.Id("bossLevelBonusRerolBtn").onclick = function(){reroll();};
+    DOM.Id("bossLevelBonusRerolBtnImgID").src = "img/ad.png";
     //Меню скилов
     for(let i = 0; i < skills.length; i++){
         let id = skills[i].name;
@@ -237,34 +221,50 @@ async function startingCreationGUI(){
         const s = skills[i].time - m * 60;
         toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
     }
-    DOM.Id("geodeConteinerID").onclick = function(){geodeHit()};
-    DOM.Create({Parent: "geodeConteinerID", Tag: "button", Id: "geodeRerolBtn", Class: "bossLevelBonusCls", OnClick: function(){reroll("geoda");}});
-    DOM.Create({Parent: "geodeRerolBtn", Tag: "img", Id: "geodeRerolBtnImgID", Src: "img/ad.png"});
+    DOM.Id("geodeConteiner").onclick = function(){geodeHit()};
+    DOM.Id("geodeRerolBtn").onclick = function(){reroll("geoda");};
+    DOM.Id("geodeRerolBtnImgID").src = "img/ad.png";
     await new Promise(r => setTimeout(r, 0));
     return Promise.resolve();
 }
 const ID = {};
-const IDs = ["geodeIMG", "geodeRift", "menuForExpBack", "autoSelectValue", "geodeCraks", "offlineBonus", 
-            "counter", "hpBar", "cracks", "layerGold", "claimAll", "time", "bossLevelBonusRerolBtn", "layerAll", 
-            "bossLevelBonus", "geodeValue", "geodeRerolBtn", "prize", "lucky", "prize2", "hit", "autoHitInfo", "hp",
-            "rebootExpCost", "depthLevel", "langBtn", "menu"];
-function DOMInitialization() {
+const IDFor = {};
+const IDs = ["ret", "counter", "hpBar", "cracks", "layerGold", "claimAll", "time", "bossLevelBonusRerolBtn", "layerAll", 
+"bossLevelBonus", "geodeRerolBtn", "prize", "lucky", "prize2", "hit", "autoHitInfo", "hp", "rebootExpCost", 
+"depthLevel", "langBtn", "coin", "layer", "counterReboot", "exp", "money"];
+async function DOMInitialization() {
     IDs.forEach(id => {
         ID[id] = DOM.Id(id);
     })
+    //Жеода
     ID.geodeIMG.src = "img/geoda.png";
     ID.geodeCraks.src = "img/geoda_craks.png";
     ID.geodeRift.src = "img/geodeRift.png";
-    ID.coin = DOM.Id("coinID");
-    ID.geodeConteiner = DOM.Id("geodeConteinerID");
-    ID.layer = DOM.Id("layerID");
-    ID.dailyGiftMenu = DOM.Id("dailyGiftMenuID");
-    ID.offlineBonusValue = DOM.Id("offlineBonusValueID");
-    ID.timeOffline = DOM.Id("time_offline");
-    ID.counterReboot = DOM.Id("counterRebootID");
-    ID.warning = DOM.Id("warningID");
-    ID.exp = DOM.Id("expID");
-    ID.money = DOM.Id("moneyID");
+    ID.menu.onclick = function(){menuTreePump(false)};
+    ID.bookID.src = "img/book.png";
+    ID.coinID2.src = "img/coin.png";
+    //Боковое меню
+    for(let i = 0; i < upgrades2.length; i++){
+        let id = upgrades2[i].name;
+        ID[id+"ImgID"].src = "img/"+upgrades2[i].img;
+        ID[id+"BtnID"].onclick = function(){upgrades2[i].func();}; 
+        ID[id+"BtnImgID"].src = "img/coin.png";
+    }
+    // Центральное меню
+    ID.menuForExpBtnClose.onclick = function(){menuTreePump(true)};
+    ID.expImgID.src = "img/exp.png";
+    ID.rebootExpImgID.src = "img/exp.png";
+    ID.rebootExpBtnID.onclick = function(){expBonus()}; 
+    for(let i = 0; i < upgradesExp.length; i++){
+        let id = upgradesExp[i].name;
+        ID[id+"BtnID"].onclick = function(){upgradesExp[i].func()};
+        ID[id+"ImgBtnID"].src = "img/exp.png";
+    }
+    //Офлайн меню
+    ID.claim_offBonus.onclick = function(){offlineProfit2();};
+    ID.offlineBonusIMGID.src = "img/coin.png";
+    await new Promise(r => setTimeout(r, 0));
+    return Promise.resolve();
 }
 async function loadLangTexts(){
     const texts = await fetch('lang.json').then(r => r.json());
@@ -288,7 +288,6 @@ function loadedGame() {
     }
 }
 function startingValues(){
-    upgradesFuncInfo();
     money = 0;
     bossLevel = 1;
     layer.hp.calc = layer.hp.current = layer.hp.round = layer.hp.base;
@@ -305,6 +304,7 @@ function startingValues(){
         upgrades2[i].cost.current = upgrades2[i].cost.calc = upgrades2[i].cost.base;
         switchingElementMenu(false, upgrades2[i]);
     }
+    upgradesFuncInfo();
     openingLayerUp();
     skillsUpdate();
     updateInfo();
@@ -373,7 +373,7 @@ function loadLocalStorage(){
     hit.count = Number(localStorage.getItem("hit.count")) || 0;
     ID.counter.textContent = hit.count;
     expBonus.count = Number(localStorage.getItem("expBonus.count")) || 0;
-    toChangeText("counterRebootID", expBonus.count);
+    ID.counterReboot.textContent = expBonus.count;
     autoHit = Number(localStorage.getItem("autoHit")) || 0;
     bossLevel = Number(localStorage.getItem("bossLevel")) || 1;
     allBonusFree = localStorage.getItem("allBonusFree") === 'false' ? false : true;
@@ -389,9 +389,9 @@ function loadLocalStorage(){
     onOffBtn();
     openingLayerUp();
     ID.hpBar.style.width = 100/layer.hp.round * layer.hp.current + "%";
-    ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%"
-    offlineProfit(Math.ceil((new Date() - new Date(localStorage.getItem("exitTime") || new Date()))/1000))
-    toStyle("#ret", "backgroundPositionY", layer.level*-200 + "px");
+    ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%";
+    offlineProfit(Math.ceil((new Date() - new Date(localStorage.getItem("exitTime") || new Date()))/1000));
+    ID.ret.style.backgroundPositionY = layer.level*-200+"px";
     dailyGift_F(new Date(localStorage.getItem("lastLogon")), new Date());
     localStorage.setItem("lastLogon", new Date());
     updateInfo();
@@ -446,7 +446,7 @@ function safeInLocalStorage(){
 }
 
 function tick(time){
-    console.time("tick");
+    // console.time("tick");
     tick.count = (tick.count || 0)
     if(time - (tick.lastTime || 0) >= 100){
         if(tick.count % 10 === 0){skillTimer(); textTimer(); interectiveBonusCreate.time--}
@@ -461,7 +461,7 @@ function tick(time){
         tick.lastTime = time;
     }
     requestAnimationFrame(tick);
-    console.timeEnd("tick");
+    // console.timeEnd("tick");
 }
 
 function textTimer(){
@@ -486,15 +486,15 @@ function skillTimer(){
                     skills[i].value = 1;
                     m = Math.floor(skills[i].time / 60);
                     s = skills[i].time - m * 60;
-                    DOM.Id(skills[i].name+"skillID").classList.remove("backlight");
-                    DOM.Id(skills[i].name+"skillTimeID").classList.remove("timer");
+                    ID[skills[i].name+"skillID"].classList.remove("backlight");
+                    ID[skills[i].name+"skillTimeID"].classList.remove("timer");
                     if(skills[i].name == "multiSkill"){
                         for(let i = 0; i < upgradesAuto.length; i++){
                             upgradesAuto[i].levelTemp = 0;
                         }
                     }
                 }
-                toChangeText(skills[i].name+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
+                ID[skills[i].name+"skillTimeID"].textContent = m + ":" + (s < 10 ? "0" + s : s);
             }
         }
         skillSwitch();
@@ -575,14 +575,13 @@ function geodeHit(){
         }else if(result == "exp"){expChanges(1);
         }else{
             result.count += 1;
-            colorNumbers(result.name+"skillCountID", "green")}
+            colorNumbers(ID[result.name+"skillCountID"], "green")};
             geodeCount--;
             skillSwitch();
             updateInfo();
         }, {once: true})
     }
 }
-
 }
 }
 
@@ -616,7 +615,7 @@ function skillSwitch(){
 }
 function skill(id){
     if(id.count > 0 && id.timeCur == 0){
-        colorNumbers(id.name + "skillCountID" , "red");
+        colorNumbers(ID[id.name+"skillCountID"], "red");
         id.count -= 1;
         id.timeCur = id.time;
         if(id.name == "multiSkill"){
@@ -662,7 +661,7 @@ function reroll(t){
 }
 
 function finance(m){
-    colorNumbers("moneyID", m < 0 ? "red" : "green");
+    colorNumbers(ID.money, m < 0 ? "red" : "green");
     money += m;
     ID.money.textContent = toCompactNotation(money);
     if(m != 0){
@@ -692,7 +691,7 @@ function expBonus(){
     startingValues();    
     money = Math.round(m * money_keep.value);
     finance(0);
-    toStyle("#ret", "backgroundPositionY", "0%");
+    ID.ret.style.backgroundPositionY = "0%";
     ID.hpBar.style.width = 100/layer.hp.round * layer.hp.current+ "%";
     ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%";
     ID.counterReboot.textContent = expBonus.count=(expBonus.count || 0) + 1;
@@ -719,6 +718,7 @@ function damage(object){
     animationOnce(ID.layer, "anim_TremblingLayer_"+(Math.floor(Math.random()*4)+1))
     if (switchHit && layer.hp.current > 0){
         if (object.typeValue == "hit"){
+            myLog(handHit + " handHit")
             layer.hp.current -= handHit * damageX2.value;
         } else {
             layer.hp.current -= object.value * (object.level + object.levelTemp) * damageX2.value;
@@ -815,7 +815,7 @@ function layerUp(){
     ID.cracks.style.transform = "scaleX("+ mirror +")";
     ID.layerAll.style.transition = "top 0.4s linear"
     ID.layerAll.style.top = "0px";
-    toStyle("#ret", "backgroundPositionY", layer.level*-200 + "px");
+    ID.ret.style.backgroundPositionY = layer.level*-200+"px";
     ID.layerAll.addEventListener('transitionend', (e) => {
         layerAnimat = false;
         switchsHit(); 
@@ -832,12 +832,11 @@ function openingLayerUp(){
 
 function onOffBtn(){
     for (let i = 0; i < upgrades2.length; i++){
-        const id = upgrades2[i].name + "BtnID";
         const bool = !(money >= upgrades2[i].cost.current && upgrades2[i].switch == "on");
-        DOM.Disable(id, bool)
+        ID[upgrades2[i].name+"BtnID"].disabled = bool;
     }
     for (let i = 0; i < upgradesExp.length; i++){
-        let disBtn = document.getElementById(upgradesExp[i].name + "BtnID");
+        let disBtn = ID[upgradesExp[i].name+"BtnID"];
         exp >= upgradesExp[i].cost ? disBtn.removeAttribute("disabled") : disBtn.disabled="disabled";
     }
 }
@@ -845,12 +844,12 @@ function onOffBtn(){
 function switchingElementMenu(switchType, btn){
     if(switchType){
         btn.switch = "on";
-        DOM.Id(btn.name+"ID").classList.remove("disabled");
-        toStyle("#"+btn.name+"ImgID", "filter", "grayscale(0%)");
+        ID[btn.name+"ID"].classList.remove("disabled");
+        ID[btn.name+"ImgID"].style.filter = "grayscale(0%)";
     } else {
         btn.switch = "off";
-        DOM.Id(btn.name+"ID").classList.add("disabled");
-        toStyle("#"+btn.name+"ImgID", "filter", "grayscale(50%)");
+        ID[btn.name+"ID"].classList.add("disabled");
+        ID[btn.name+"ImgID"].style.filter = "grayscale(50%)";
     }
     onOffBtn();
 }
@@ -864,7 +863,7 @@ function upgradesFunc(item, bool) {
         finance(-Math.floor(cost.current));
         cost.calc = Math.round(softProgress(cost.calc, upgrades2.indexOf(item)-1));
         cost.current = Math.round(cost.calc * upgrade_cost.value);
-        colorNumbers(name+"CostID", "red");
+        colorNumbers(ID[name+"CostID"], "red");
         onOffBtn();
     }
     function up(){
@@ -873,19 +872,19 @@ function upgradesFunc(item, bool) {
             case "profit": prize.profit++; prize.profitC++; break;
         }
         item.level++;
-        colorNumbers(name+"LevelID", "green");
+        colorNumbers(ID[name+"LevelID"], "green");
     }
     upgradesFuncInfo()
     skillSwitch();
     updateInfo();
 }
 function upgradesFuncInfo(){
-        for(let i = 0; i < upgrades2.length; i++){
-        toChangeText(upgrades2[i].name+"CostID", toCompactNotation(upgrades2[i].cost.current));
-        toChangeText(upgrades2[i].name+"LevelID", upgrades2[i].level);
+    for(let i = 0; i < upgrades2.length; i++){
+        ID[upgrades2[i].name+"CostID"].textContent = toCompactNotation(upgrades2[i].cost.current);
+        ID[upgrades2[i].name+"LevelID"].textContent = upgrades2[i].level;
         if( upgrades2[i].typeValue == "auto"){
             let damage = Math.round(upgrades2[i].value*upgrades2[i].level/(auto_mine_speed.parameter.value*upgrades2[i].timeHit)*100)/100;
-            toChangeText(upgrades2[i].name+"ValueID", damage + " hp/s");
+            ID[upgrades2[i].name+"ValueID"].textContent = damage+" hp/s";
             autoHit += damage;
         }
     } 
@@ -910,8 +909,8 @@ function upgradesExpFunc(upgrade){
             } 
         } 
         if (upgradesExp[i].level >= 10){
-            document.getElementById(name+"ID").classList.add('disabled');
-            document.getElementById(name+"BtnID").disabled = "disabled";
+            ID[name+"ID"].classList.add('disabled');
+            ID[name+"BtnID"].disabled = true;
         }
     }
     upgradesExpFuncInfo();
@@ -920,14 +919,14 @@ function upgradesExpFuncInfo() {
     for(let i = 0; i < upgradesExp.length; i++){
         let name = upgradesExp[i].name;
         if(upgradesExp[i].enabled == false){
-            toChangeText(name+"InfoValueID", "-" + upgradesExp[i].parameter.type);  
+            ID[name+"InfoValueID"].textContent = "-" + upgradesExp[i].parameter.type;
         } else {
-            toChangeText(name+"InfoValueID", Math.round(upgradesExp[i].parameter.value*100)/100 + upgradesExp[i].parameter.type);
+            ID[name+"InfoValueID"].textContent = Math.round(upgradesExp[i].parameter.value*100)/100 + upgradesExp[i].parameter.type;
         }
-        toChangeText(name+"CostID", Math.floor(upgradesExp[i].cost));
-        toChangeText(name+"LevelID", upgradesExp[i].level);
+        ID[name+"CostID"].textContent = Math.floor(upgradesExp[i].cost);
+        ID[name+"LevelID"].textContent = upgradesExp[i].level;
         if (upgradesExp[i].level >= 10){
-            toChangeText(name+"CostID", "Максимум");
+            ID[name+"CostID"].textContent = "Максимум";
         }
     }
 }
@@ -973,20 +972,20 @@ function bossLevelBonus(){
             title = "+" + valueLevel;
             img = trw[i].img;
         }
-        DOM.Id("bossLevelBonusIMGID"+i).src = "img/" + img;
-        DOM.Id("bossLevelBonusContainerID"+i).onclick = ()=> bossLevelBonusBtn(valueBtn, valueLevel);
-        toChangeText("bossLevelBonusValueID"+i, title);
+        ID["bossLevelBonusIMGID"+i].src = "img/" + img;
+        ID["bossLevelBonusContainerID"+i].onclick = ()=> bossLevelBonusBtn(valueBtn, valueLevel);
+        ID["bossLevelBonusValueID"+i].textContent = title;
     }
     switchsHit();
     bossBonus = true;
     for (let i = 0; i < upgrades2.length; i++){
-        DOM.Disable(upgrades2[i].name + "BtnID", true);
+        ID[upgrades2[i].name+"BtnID"].disabled = true;
     }
     if (auto_bonus_duration.enabled){
         ID.time.hidden = false;
         currentSecondsStart = new Date().getSeconds();
         rerollTimer = true;
-        timer = setTimeout(function(){document.getElementById("bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)).click()}, auto_bonus_duration.value*1000);
+        timer = setTimeout(function(){ID["bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)].click()}, auto_bonus_duration.value*1000);
     }
     ID.bossLevelBonusRerolBtn.hidden = allBonusFree;
 }
@@ -1096,14 +1095,14 @@ function dailyGift_F(lastLogon, currentLogon){
             dailyGiftBonus = true;
             ID.offlineBonus.hidden = true;
             for(let i = 0; i < DailyGiftCreate; i++){
-                toChangeText("dailyGiftDaySkillCountID"+i, (Number(DOM.Id("dailyGiftDaySkillCountID"+i).textContent)*weeksDailyGift))
+                ID["dailyGiftDaySkillCountID"+i].textContent = Number(DOM.Id("dailyGiftDaySkillCountID"+i).textContent)*weeksDailyGift;
             }
             ID.dailyGiftMenu.hidden = false;
             for(let i = 0; i < 7; i++){
                 if(i+1 == daysdDailyGift){
-                    DOM.Id("dailyGiftDayContID"+i).classList.add("backlight");
+                    ID["dailyGiftDayContID"+i].classList.add("backlight");
                 } else if (i < daysdDailyGift){
-                    DOM.Id("dailyGiftDayContID"+i).classList.add("disabled");
+                    ID["dailyGiftDayContID"+i].classList.add("disabled");
                 }
             }
         }
@@ -1175,7 +1174,7 @@ function interectiveBonus(){
         notSkill = "coin";
     }
  } else{
-    target = DOM.Id(rSkill.name+"skillIMGID");
+    target = ID[rSkill.name+"skillIMGID"];
  }
 flightToTarget(nugget, target);
 nugget.style.opacity = "30%";
@@ -1207,10 +1206,10 @@ function x2orX4 (){
 function skillsUpdate(){
             for(let i = 0; i < skills.length; i++){
             if(skills[i].value == 2){
-                DOM.Id(skills[i].name+"skillID").classList.add("backlight");
-                DOM.Id(skills[i].name+"skillTimeID").classList.add("timer");
+                ID[skills[i].name+"skillID"].classList.add("backlight");
+                ID[skills[i].name+"skillTimeID"].classList.add("timer");
             }
-            toChangeText(skills[i].name + "skillCountID", skills[i].count);
+            ID[skills[i].name+"skillCountID"].textContent = skills[i].count;
         }
 }
 function updateInfo(){

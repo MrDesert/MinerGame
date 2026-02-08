@@ -1,8 +1,8 @@
 {
-    "menuForCoins": {
-        "Parent": "ret",
-        "Class": "sideMenuLeft"
-    },
+"menuForCoins": {
+    "Parent": "ret",
+    "Class": "sideMenuLeft"
+},
     "upgrades": {
         "Parent": "menuForCoins",  
         "Class": "sideMenuTitle"
@@ -13,134 +13,204 @@
         "Id": "_ID",
         "Class": "sideMenuElement disabled"
     },
-    "$_IconID":{
-        "arrayName$": "upgrades2",
-        "Parent": "_ID",
-        "Id": "_IconID",
-        "Class": "sideMenuElementIconLeft"        
-    },
-    "$_LevelID":{
-        "arrayName$": "upgrades2",
-        "Parent": "_IconID",
-        "Id": "_LevelID",
-        "Class": "sideMenuElementIconParametrTopLeft level"  
-    },
-    "$_InfoID":{
-        "arrayName$": "upgrades2",
-        "Parent": "_ID",
-        "Id": "_InfoID",
-        "Class": "sideMenuElementInfo" 
-    },
-    "$_":{
-        "arrayName$": "upgrades2",
-        "Parent": "_InfoID",
-        "Id": "_",
-        "Class": "sideMenuElementTitle" 
-    },
-    "$__desc":{
-        "arrayName$": "upgrades2",
-        "Parent": "_InfoID",
-        "Id": "__desc",
-        "Tag": "span",
-        "Class": "sideMenuElementDescription" 
-    },
-    "$_ValueID":{
-        "arrayName$": "upgrades2",
-        "Parent": "_InfoID",
-        "Id": "_ValueID",
-        "Tag": "span",
-        "Class": "sideMenuElementDescription" 
-    },
-    "menuForExpBack": {
-        "Parent": "ret",
-        "Class": "centralMenuBackground",
-        "Hidden": "true"
-    },
+        "$_IconID":{
+            "arrayName$": "upgrades2",
+            "Parent": "_ID",
+            "Id": "_IconID",
+            "Class": "sideMenuElementIconLeft"        
+        },
+            "$_LevelID":{
+                "arrayName$": "upgrades2",
+                "Parent": "_IconID",
+                "Id": "_LevelID",
+                "Class": "sideMenuElementIconParametrTopLeft level"  
+            },
+            "$_ImgID":{
+                "arrayName$": "upgrades2",
+                "Parent": "_IconID",
+                "Tag": "img",
+                "Id": "_ImgID",
+                "Class": "sideMenuElementIconLeftIMG unavailable"
+            },
+        "$_BtnID":{
+            "arrayName$": "upgrades2",
+            "Parent": "_ID",
+            "Tag": "button",
+            "Id": "_BtnID",
+            "Class": "sideMenuElementBtn"
+        },
+            "$_BtnImgID":{
+                "arrayName$": "upgrades2",
+                "Parent": "_BtnID",
+                "Tag": "img",
+                "Id": "_BtnImgID",
+                "Class": "coinCl",
+                "Disabled": "true"
+            },
+            "$_CostID":{
+                "arrayName$": "upgrades2",
+                "Parent": "_BtnID",
+                "Id": "_CostID",
+                "Class": "inline-block cost"
+            },
+        "$_InfoID":{
+            "arrayName$": "upgrades2",
+            "Parent": "_ID",
+            "Id": "_InfoID",
+            "Class": "sideMenuElementInfo" 
+        },
+            "$_":{
+                "arrayName$": "upgrades2",
+                "Parent": "_InfoID",
+                "Id": "_",
+                "Class": "sideMenuElementTitle" 
+            },
+            "$__desc":{
+                "arrayName$": "upgrades2",
+                "Parent": "_InfoID",
+                "Id": "__desc",
+                "Tag": "span",
+                "Class": "sideMenuElementDescription" 
+            },
+            "$_ValueID":{
+                "arrayName$": "upgrades2",
+                "Parent": "_InfoID",
+                "Id": "_ValueID",
+                "Tag": "span",
+                "Class": "sideMenuElementDescription" 
+            },
+"menuForExpBack": {
+    "Parent": "ret",
+    "Class": "centralMenuBackground",
+    "Hidden": "true"
+},
     "menuForExp": {
         "Parent": "menuForExpBack",
         "Class": "centralMenu"
     },
-    "expTitleID": {
-        "Parent": "menuForExp",
-        "Class": "moneyTopRight"
-    },
-    "expID": {
-        "Parent": "expTitleID",
-        "Class": "moneyTopRightNum"
-    },
-    "infoExpID": {
-        "Parent": "menuForExp",
-        "Class": "centralMenuInfo"
-    },
-    "prestige_info": {
-        "Parent": "infoExpID",
-        "Tag": "span",
-        "Class": "centralMenuInfoElement"
-    },
-    "rebootExpID": {
-        "Parent": "infoExpID",
-        "Class": "centralMenuInfoElement"
-    },
-    "rebootExpCost": {
-        "Parent": "rebootExpID",
-        "Class": "inline-block cost",
-        "Text": "0"
-    },
-    "infoID": {
-        "Parent": "menuForExp",
-        "Class": "centralMenuInfo"
-    },
-    "$_InfoID2":{
-        "arrayName$": "upgradesExp",
-        "Parent": "infoID",
-        "Id": "_InfoID",
-        "Class": "centralMenuInfoElement"
-    },
-    "$_2":{
-        "arrayName$": "upgradesExp",
-        "Parent": "_InfoID",
-        "Id": "_",
-        "Tag": "span",
-        "Class": "centralMenuInfoElementValue"
-    },
-    "$_InfoValueID":{
-        "arrayName$": "upgradesExp",
-        "Parent": "_InfoID",
-        "Id": "_InfoValueID",
-        "Tag": "span",
-        "Class": "centralMenuInfoElementValue"
-    },
-    "$_ID2":{
-        "arrayName$": "upgradesExp",
-        "Parent": "menuForExp",
-        "Id": "_ID",
-        "Class": "centralMenuElement inline-block"
-    },
-    "$__title":{
-        "arrayName$": "upgradesExp",
-        "Parent": "_ID",
-        "Id": "__title",
-        "Class": "centralMenuElementTitle"
-    },
-    "$_LevelID2":{
-        "arrayName$": "upgradesExp",
-        "Parent": "_ID",
-        "Id": "_LevelID",
-        "Class": "btnCloseCircule levelForExp",
-        "Text": "0"
-    },
-    "$__desc2":{
-        "arrayName$": "upgradesExp",
-        "Parent": "_ID",
-        "Id": "__desc",
-        "Tag": "p",
-        "Class": "centralMenuElementDescription"
-    },
-    "bossLevelBonus": {
-        "Parent": "ret",
-        "Hidden": "true",
-        "Class": "bonusMenu"
-    },
+        "expTitleID": {
+            "Parent": "menuForExp",
+            "Class": "moneyTopRight"
+        },
+            "exp": {
+                "Parent": "expTitleID",
+                "Class": "moneyTopRightNum"
+            },
+            "expImgID": {
+                "Parent": "expTitleID",
+                "Class": "expCl",
+                "Tag": "img"
+            },
+        "menuForExpBtnClose": {
+            "Parent": "menuForExp",
+            "Tag": "button",
+            "Class": "btnCloseCircule",
+            "Text": "X"
+        },
+        "infoExpID": {
+            "Parent": "menuForExp",
+            "Class": "centralMenuInfo"
+        },
+            "prestige_info": {
+                "Parent": "infoExpID",
+                "Tag": "span",
+                "Class": "centralMenuInfoElement"
+            },
+            "rebootExpBtnID": {
+                "Parent": "infoExpID",
+                "Tag": "button",
+                "Class": "centralMenuElementBtn",
+                "Text": "⟳"
+            },
+            "rebootExpID": {
+                "Parent": "infoExpID",
+                "Class": "centralMenuInfoElement"
+            },
+                "rebootExpCost": {
+                    "Parent": "rebootExpID",
+                    "Class": "inline-block cost",
+                    "Text": "0"
+                },
+                "rebootExpImgID": {
+                    "Parent": "rebootExpID",
+                    "Tag": "img",
+                    "Class": "expCl"
+                },
+        "infoID": {
+            "Parent": "menuForExp",
+            "Class": "centralMenuInfo"
+        },
+            "$_InfoID2":{
+                "arrayName$": "upgradesExp",
+                "Parent": "infoID",
+                "Id": "_InfoID",
+                "Class": "centralMenuInfoElement"
+            },
+                "$_2":{
+                    "arrayName$": "upgradesExp",
+                    "Parent": "_InfoID",
+                    "Id": "_",
+                    "Tag": "span",
+                    "Class": "centralMenuInfoElementValue"
+                },
+                "$_InfoValueID":{
+                    "arrayName$": "upgradesExp",
+                    "Parent": "_InfoID",
+                    "Id": "_InfoValueID",
+                    "Tag": "span",
+                    "Class": "centralMenuInfoElementValue"
+                },
+        "$_ID2":{
+            "arrayName$": "upgradesExp",
+            "Parent": "menuForExp",
+            "Id": "_ID",
+            "Class": "centralMenuElement inline-block"
+        },
+            "$__title":{
+                "arrayName$": "upgradesExp",
+                "Parent": "_ID",
+                "Id": "__title",
+                "Class": "centralMenuElementTitle"
+            },
+            "$_LevelID2":{
+                "arrayName$": "upgradesExp",
+                "Parent": "_ID",
+                "Id": "_LevelID",
+                "Class": "btnCloseCircule levelForExp",
+                "Text": "0"
+            },
+            "$__desc2":{
+                "arrayName$": "upgradesExp",
+                "Parent": "_ID",
+                "Id": "__desc",
+                "Tag": "p",
+                "Class": "centralMenuElementDescription"
+            },
+            "$_BtnID2":{
+                "arrayName$": "upgradesExp",
+                "Parent": "_ID",
+                "Id": "_BtnID",
+                "Tag": "button",
+                "Class": "centralMenuElementBtn"
+            },
+                "$_ImgBtnID":{
+                    "arrayName$": "upgradesExp",
+                    "Parent": "_BtnID",
+                    "Id": "_ImgBtnID",
+                    "Tag": "img",
+                    "Class": "expCl"
+                },
+                "$_CostID2":{
+                    "arrayName$": "upgradesExp",
+                    "Parent": "_BtnID",
+                    "Id": "_CostID",
+                    "Class": "inline-block cost"
+                },
+"bossLevelBonus": {
+    "Parent": "ret",
+    "Hidden": "true",
+    "Class": "bonusMenu"
+},
     "bonus_available": {
         "Parent": "bossLevelBonus",
         "Text": "Доступен бонус!"
@@ -149,51 +219,66 @@
         "Parent": "bossLevelBonus",
         "Hidden": "true"
     },
-    "auto_select": {
-        "Parent": "time",
-        "Tag": "span"
-    },
-    "autoSelectValue": {
-        "Parent": "time",
-        "Tag": "span"
-    },
-    "auto_select_second": {
-        "Parent": "time",
-        "Tag": "span"
-    },
+        "auto_select": {
+            "Parent": "time",
+            "Tag": "span"
+        },
+        "autoSelectValue": {
+            "Parent": "time",
+            "Tag": "span"
+        },
+        "auto_select_second": {
+            "Parent": "time",
+            "Tag": "span"
+        },
     "$bossLevelBonusContainerID_":{
         "arrayName$": 3,
         "Parent": "bossLevelBonus",
         "Id": "bossLevelBonusContainerID_",
         "Class": "bonusContainer"
     },
-    "$bossLevelBonusIMGID_":{
-        "arrayName$": 3,
-        "Parent": "bossLevelBonusContainerID_",
-        "Id": "bossLevelBonusIMGID_",
-        "Tag": "img",
-        "Class": "bossLevelBonusIMG"
-    },
-    "$bossLevelBonusValueID_":{
-        "arrayName$": 3,
-        "Parent": "bossLevelBonusContainerID_",
-        "Id": "bossLevelBonusValueID_",
-        "Tag": "span",
-        "Class": "bossLevelBonusValue"
-    },
+        "$bossLevelBonusIMGID_":{
+            "arrayName$": 3,
+            "Parent": "bossLevelBonusContainerID_",
+            "Id": "bossLevelBonusIMGID_",
+            "Tag": "img",
+            "Class": "bossLevelBonusIMG"
+        },
+        "$bossLevelBonusValueID_":{
+            "arrayName$": 3,
+            "Parent": "bossLevelBonusContainerID_",
+            "Id": "bossLevelBonusValueID_",
+            "Tag": "span",
+            "Class": "bossLevelBonusValue"
+        },
     "bossLevelBonusConteinerRerollID": {
         "Parent": "bossLevelBonus"
     },
-    "offlineBonus": {
-        "Parent": "ret",
-        "Hidden": "true",
-        "Class": "bonusMenu"
-    },
+        "claimAll": {
+            "Parent": "bossLevelBonusConteinerRerollID",
+            "Tag": "button",
+            "Class": "bossLevelBonusCls", 
+            "Text": "Получить всё"
+        },
+        "bossLevelBonusRerolBtn": {
+            "Parent": "bossLevelBonusConteinerRerollID",
+            "Tag": "button",
+            "Class": "bossLevelBonusCls"
+        },
+            "bossLevelBonusRerolBtnImgID": {
+                "Parent": "bossLevelBonusRerolBtn",
+                "Tag": "img"
+            },
+"offlineBonus": {
+    "Parent": "ret",
+    "Hidden": "true",
+    "Class": "bonusMenu"
+},
     "bonus_offline": {
         "Parent": "offlineBonus",
         "Text": "Офлайн бонус!"
     },
-    "time_offline": {
+    "timeOffline": {
         "Parent": "offlineBonus"
     },
     "offlineBonusContainerID":{
@@ -201,95 +286,168 @@
         "Id": "offlineBonusContainerID",
         "Class": "bonusContainer"
     },
-    "offlineBonusIMGID":{
-        "Parent": "offlineBonusContainerID",
-        "Id": "offlineBonusIMGID",
-        "Tag": "img",
-        "Class": "bossLevelBonusIMG"
-    },
-    "offlineBonusValueID":{
-        "Parent": "offlineBonusContainerID",
-        "Id": "offlineBonusValueID",
-        "Tag": "span",
-        "Class": "bossLevelBonusValue"
-    },
+        "offlineBonusIMGID":{
+            "Parent": "offlineBonusContainerID",
+            "Id": "offlineBonusIMGID",
+            "Tag": "img",
+            "Class": "bossLevelBonusIMG"
+        },
+        "offlineBonusValue":{
+            "Parent": "offlineBonusContainerID",
+            "Id": "offlineBonusValue",
+            "Tag": "span",
+            "Class": "bossLevelBonusValue"
+        },
     "offlineBonusConteinerRerollID": {
         "Parent": "offlineBonus"
     },
-    "skillpanel": {
-        "Parent": "ret"
-    },
+        "claim_offBonus": {
+            "Parent": "offlineBonusConteinerRerollID",
+            "Tag": "button",
+            "Class": "bossLevelBonusCls"
+        },
+"skillpanel": {
+    "Parent": "ret"
+},
     "$_skillID":{
         "arrayName$": "skills",
         "Parent": "skillpanel",
         "Id": "_skillID",
         "Class": "skillContainer"
     },
-    "$_skillTimeID":{
-        "arrayName$": "skills",
-        "Parent": "_skillID",
-        "Id": "_skillTimeID",
-        "Tag": "span",
-        "Class": "skillTime"
-    },
-    "$_skillIMGID":{
-        "arrayName$": "skills",
-        "Parent": "_skillID",
-        "Id": "_skillIMGID",
-        "Tag": "img",
-        "Class": "skillIMG"
-    },
-    "$_skillCountID":{
-        "arrayName$": "skills",
-        "Parent": "_skillID",
-        "Id": "_skillCountID",
-        "Tag": "span",
-        "Class": "skillValue"
-    },
-    "dailyGiftMenuID": {
-        "Parent": "ret",
-        "Hidden": "true",
-        "Class": "bonusMenu"
-    },
+        "$_skillTimeID":{
+            "arrayName$": "skills",
+            "Parent": "_skillID",
+            "Id": "_skillTimeID",
+            "Tag": "span",
+            "Class": "skillTime"
+        },
+        "$_skillIMGID":{
+            "arrayName$": "skills",
+            "Parent": "_skillID",
+            "Id": "_skillIMGID",
+            "Tag": "img",
+            "Class": "skillIMG"
+        },
+        "$_skillCountID":{
+            "arrayName$": "skills",
+            "Parent": "_skillID",
+            "Id": "_skillCountID",
+            "Tag": "span",
+            "Class": "skillValue"
+        },
+"dailyGiftMenu": {
+    "Parent": "ret",
+    "Hidden": "true",
+    "Class": "bonusMenu"
+},
     "$dailyGiftContainerID_":{
         "arrayName$": 7,
-        "Parent": "dailyGiftMenuID",
+        "Parent": "dailyGiftMenu",
         "Id": "dailyGiftContainerID_",
         "Class": "bonusContainer dailyGiftContainer"
     },
-    "$dailyGiftDayID_":{
-        "arrayName$": 7,
-        "Parent": "dailyGiftContainerID_",
-        "Id": "dailyGiftDayID_",
-        "Tag": "span"
-    },
-    "$dailyGiftDayContID_":{
-        "arrayName$": 7,
-        "Parent": "dailyGiftContainerID_",
-        "Id": "dailyGiftDayContID_",
-        "Class": "dailyGiftDayCont"
-    },
+        "$dailyGiftDayID_":{
+            "arrayName$": 7,
+            "Parent": "dailyGiftContainerID_",
+            "Id": "dailyGiftDayID_",
+            "Tag": "span"
+        },
+        "$dailyGiftDayContID_":{
+            "arrayName$": 7,
+            "Parent": "dailyGiftContainerID_",
+            "Id": "dailyGiftDayContID_",
+            "Class": "dailyGiftDayCont"
+        },
     "dailyGiftMenuConteinerRerollID": {
-        "Parent": "dailyGiftMenuID"
+        "Parent": "dailyGiftMenu"
     },
-    "geodeConteinerID":{
+        "claim_dailyGift": {
+            "Parent": "dailyGiftMenuConteinerRerollID",
+            "Tag": "button",
+            "Class": "bossLevelBonusCls"
+        },
+"leftTopMenu":{
+    "Parent": "ret"
+},
+    "menu":{
         "Parent": "leftTopMenu"
     },
-    "geodeIMG":{
-        "Parent": "geodeConteinerID",
-        "Tag": "img"
+        "bookID":{
+            "Parent": "menu",
+            "Tag": "img",
+            "Class": "sideMenuElementIconLeftIMG"
+        },
+        "warning":{
+            "Parent": "menu",
+            "Hidden": "true"
+        },
+    "geodeConteiner":{
+        "Parent": "leftTopMenu"
     },
-    "geodeRift": {
-        "Parent": "geodeConteinerID",
-        "Tag": "img",
-        "Hidden": "true"
+        "geodeIMG":{
+            "Parent": "geodeConteiner",
+            "Tag": "img"
+        },
+        "geodeRift": {
+            "Parent": "geodeConteiner",
+            "Tag": "img",
+            "Hidden": "true"
+        },
+        "geodeCraks":{
+            "Parent": "geodeConteiner",
+            "Tag": "img"
+        },
+        "geodeValue":{
+            "Parent": "geodeConteiner",
+            "Tag": "span"
+        },
+        "geodeRerolBtn":{
+            "Parent": "geodeConteiner",
+            "Tag": "button",
+            "Class": "bossLevelBonusCls"
+        },
+            "geodeRerolBtnImgID":{
+                "Parent": "geodeRerolBtn",
+                "Tag": "img"
+            },
+"hpTitleID":{
+    "Parent": "ret",
+    "Text": "Ударов до победы:",
+    "Hidden": "true"
+},
+    "hp":{
+        "Parent": "hpTitleID",
+        "Class": "inline-block"
     },
-    "geodeCraks":{
-        "Parent": "geodeConteinerID",
-        "Tag": "img"
+"hpBarBorderID":{
+    "Parent": "ret"
+},
+    "prifitLayerID":{
+        "Parent": "hpBarBorderID"
     },
-    "geodeValue":{
-        "Parent": "geodeConteinerID",
-        "Tag": "span"
+        "lucky":{
+            "Parent": "prifitLayerID",
+            "Tag":"span"
+        },
+        "profit":{
+            "Parent": "prifitLayerID",
+            "Tag":"span"
+        },
+        "prize":{
+            "Parent": "prifitLayerID",
+            "Tag":"span"
+        },
+        "prize2":{
+            "Parent": "prifitLayerID",
+            "Tag":"span"
+        },
+        "coinID2":{
+            "Parent": "prifitLayerID",
+            "Tag":"img",
+            "Class":"coinCl"
+        },
+    "hpBar":{
+            "Parent": "hpBarBorderID"
     }
 }

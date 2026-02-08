@@ -27,7 +27,7 @@
         <!-- Локальный файл для релиза, сетевой для разработки -->
 
         <div id="preloaderID"><div id="preloaderCentr"><span id="loading"></span><span id="preloaderTextID">...</span></div></div>
-        <div id="layerID">
+        <div id="layer">
             <div id="layerAll">
                 <img id="layerImgID" src="img/layer.png" alt="">
                 <img id="layerGold" src="img/layer_gold.png" alt="" hidden>
@@ -39,29 +39,17 @@
 
         <button id="langBtn" class="btnCloseCircule" value="ru" onclick="changeLang(this.value)"></button>
         <h2><span id="currentDepth">Текущая глубина:</span> <span id="depthLevel">0</span></h2>
-
-        <div id="leftTopMenu"><div id="menu" onclick="menuTreePump(false)"><img id="bookID" class="sideMenuElementIconLeftIMG" src="img/book.png" alt=""><div id="warningID" hidden></div></div></div>
+        
         <div id="stat" class="rightText">
             <div hidden><span id="clicks">Кликов: </span><span id="counter">0</span></div>
-            <div hidden><span id="resets">Перезапусков: </span><span id="counterRebootID">0</span></div>
-            <span id="wallet" hidden>Кошелёк: </span><img id="coinID" class="coinCl" src="img/coin.png" alt=""><span id="moneyID">0</span>
-            <span id="hand_damage" hidden>Сила удара: </span><img id="coinID" class="coinCl" src="img/pickaxe_transparent_390x390.png" style="margin-left: 6px;" alt=""><span id="hit">1</span>
-            <span id="auto_mine" hidden>Автоудар: </span><img id="coinID" class="coinCl" src="img/helmet-pickaxe_transparent_450x450.png" style="margin-left: 6px;" alt=""><span id="autoHitInfo">0</span>
-        </div>
-        <div id="hpTitleID" hidden>Ударов до победы: <div id="hp" class="inline-block">4</div></div>
-        <div id="hpBarBorderID">
-                <div style="position: absolute;" id="prifitLayerID">
-                    <span id="lucky">X2</span>
-                    <span id="profit">Прибыль: </span>
-                    <span id="prize">1</span>
-                    <span id="prize2"></span>
-                    <img id="coinID2" class="coinCl" src="img/coin.png" alt="">
-                </div>
-            <div id="hpBar"></div>
+            <div hidden><span id="resets">Перезапусков: </span><span id="counterReboot">0</span></div>
+            <span id="wallet" hidden>Кошелёк: </span><img id="coin" class="coinCl" src="img/coin.png" alt=""><span id="money">0</span>
+            <span id="hand_damage" hidden>Сила удара: </span><img class="coinCl" src="img/pickaxe_transparent_390x390.png" style="margin-left: 6px;" alt=""><span id="hit">1</span>
+            <span id="auto_mine" hidden>Автоудар: </span><img class="coinCl" src="img/helmet-pickaxe_transparent_450x450.png" style="margin-left: 6px;" alt=""><span id="autoHitInfo">0</span>
         </div>
         <div id="test"></div>
         <div id="blurID" hidden><span id="continue">Продолжить</span></div>
-        <footer style="z-index: 4;">© by MrDesert - beta v0.4.0.1</footer>
+        <footer style="z-index: 4;">© by MrDesert - beta v0.4.0.2</footer>
 <script>
     const useYSDK = false; //Установить true перед релизом
     let resurses = false;
