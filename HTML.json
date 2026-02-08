@@ -81,7 +81,7 @@
         "Parent": "infoExpID",
         "Class": "centralMenuInfoElement"
     },
-    "rebootExpCostID": {
+    "rebootExpCost": {
         "Parent": "rebootExpID",
         "Class": "inline-block cost",
         "Text": "0"
@@ -136,34 +136,34 @@
         "Tag": "p",
         "Class": "centralMenuElementDescription"
     },
-    "bossLevelBonusID": {
+    "bossLevelBonus": {
         "Parent": "ret",
         "Hidden": "true",
         "Class": "bonusMenu"
     },
     "bonus_available": {
-        "Parent": "bossLevelBonusID",
+        "Parent": "bossLevelBonus",
         "Text": "Доступен бонус!"
     },
-    "timeID": {
-        "Parent": "bossLevelBonusID",
+    "time": {
+        "Parent": "bossLevelBonus",
         "Hidden": "true"
     },
     "auto_select": {
-        "Parent": "timeID",
+        "Parent": "time",
         "Tag": "span"
     },
     "autoSelectValue": {
-        "Parent": "timeID",
+        "Parent": "time",
         "Tag": "span"
     },
     "auto_select_second": {
-        "Parent": "timeID",
+        "Parent": "time",
         "Tag": "span"
     },
     "$bossLevelBonusContainerID_":{
         "arrayName$": 3,
-        "Parent": "bossLevelBonusID",
+        "Parent": "bossLevelBonus",
         "Id": "bossLevelBonusContainerID_",
         "Class": "bonusContainer"
     },
@@ -182,22 +182,22 @@
         "Class": "bossLevelBonusValue"
     },
     "bossLevelBonusConteinerRerollID": {
-        "Parent": "bossLevelBonusID"
+        "Parent": "bossLevelBonus"
     },
-    "offlineBonusID": {
+    "offlineBonus": {
         "Parent": "ret",
         "Hidden": "true",
         "Class": "bonusMenu"
     },
     "bonus_offline": {
-        "Parent": "offlineBonusID",
+        "Parent": "offlineBonus",
         "Text": "Офлайн бонус!"
     },
     "time_offline": {
-        "Parent": "offlineBonusID"
+        "Parent": "offlineBonus"
     },
     "offlineBonusContainerID":{
-        "Parent": "offlineBonusID",
+        "Parent": "offlineBonus",
         "Id": "offlineBonusContainerID",
         "Class": "bonusContainer"
     },
@@ -214,7 +214,7 @@
         "Class": "bossLevelBonusValue"
     },
     "offlineBonusConteinerRerollID": {
-        "Parent": "offlineBonusID"
+        "Parent": "offlineBonus"
     },
     "skillpanel": {
         "Parent": "ret"
@@ -275,7 +275,7 @@
     "geodeConteinerID":{
         "Parent": "leftTopMenu"
     },
-    "geodeIMGID":{
+    "geodeIMG":{
         "Parent": "geodeConteinerID",
         "Tag": "img"
     },
@@ -284,11 +284,11 @@
         "Tag": "img",
         "Hidden": "true"
     },
-    "geodeCraksIMGID":{
+    "geodeCraks":{
         "Parent": "geodeConteinerID",
         "Tag": "img"
     },
-    "geodeValueID":{
+    "geodeValue":{
         "Parent": "geodeConteinerID",
         "Tag": "span"
     }

@@ -241,7 +241,7 @@
     text-align: center;
     color: white;
  }
- #hpBarID{
+ #hpBar{
     background-color: brown;
     width: 100%;
     height: 20px;
@@ -280,7 +280,7 @@
  #hitZoneID:active {
     cursor: url('img/pickaxe_transparent_128x128-45.png') 64 64, pointer;
  }
-#layerImgID, #layerGoldID, #layerAllID{
+#layerImgID, #layerGold, #layerAll{
    /* box-shadow: 1px 0px 35px 35px rgba(0, 0, 0, 0.3); */
    top: 0px;
    /* background: url("img/layer.png"); */
@@ -294,7 +294,7 @@
    object-fit: cover;
    object-position: top;
 }
-#cracksID{
+#cracks{
    top: 0px;
    margin-left: auto;
    margin-right: auto;
@@ -334,7 +334,7 @@ body {
    margin: 10px;
    width: 100% - 20px;
 }
-#langBtnID {
+#langBtn {
    position: absolute;
    right: 15px;
    top: 15px;
@@ -437,12 +437,12 @@ max-width: 100%;
    display: flex;
    column-gap: 5px;
 }
-#menuID, #geodeConteinerID{
+#menu, #geodeConteinerID{
    height: 65px; 
    width: 65px;
    position: relative;
 }
-#geodeCraksIMGID{
+#geodeCraks{
    top: 0px;
    left: 0px;
    margin-left: auto;
@@ -463,11 +463,11 @@ max-width: 100%;
    z-index: 4;
    object-fit: contain;
 }
-#geodeIMGID, #geodeRift{
+#geodeIMG, #geodeRift{
    height: 100%;
    object-fit: cover;
 }
-#geodeRerolBtnID{
+#geodeRerolBtn{
    position: absolute;
    bottom: -5px;
    right: -6px;
@@ -533,7 +533,7 @@ max-width: 100%;
     50% {opacity: 1; transform: scale(20);}
 }
 
-#geodeValueID{
+#geodeValue{
    position: absolute;
    color:  white;
    font-weight: 700;
@@ -613,7 +613,7 @@ max-width: 100%;
    width: 120px;
    margin-left: 20px;
  }
- #bossLevelBonusRerolBtnID{
+ #bossLevelBonusRerolBtn{
    height: 40px;
    width: 53px;
    margin-left: 20px;

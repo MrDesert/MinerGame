@@ -126,6 +126,7 @@ const bossLevelRatio = 10;
 let moneyBonus, trw, timer;
 let layerUpIntervalID;
 
+console.time("game")
 loadHTMLs().then(()=>{
     generateHTML().then(()=>{
         startingCreationGUI().then(()=>{
@@ -142,6 +143,7 @@ loadHTMLs().then(()=>{
         })
     })
 });
+console.timeEnd("game");
 async function loadHTMLs(){ //загрузка HTML.json
     const load = await fetch('HTML.json').then(r => r.json());
     Object.assign(HTMLs, load);
@@ -223,7 +225,7 @@ async function startingCreationGUI(){
         }
     }    
     //Бонусное меню
-    DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claim_all", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All")}});
+    DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "claimAll", Class: "bossLevelBonusCls", Text: "Получить всё", OnClick: function(){bossLevelBonusBtn("All")}});
     DOM.Create({Parent: "bossLevelBonusConteinerRerollID", Tag: "button", Id: "bossLevelBonusRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll();}});
         DOM.Create({Parent: "bossLevelBonusRerolBtnID", Tag: "img", Id: "bossLevelBonusRerolBtnImgID", Src: "img/ad.png"});
     //Меню скилов
@@ -236,40 +238,45 @@ async function startingCreationGUI(){
         toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
     }
     DOM.Id("geodeConteinerID").onclick = function(){geodeHit()};
-    DOM.Create({Parent: "geodeConteinerID", Tag: "button", Id: "geodeRerolBtnID", Class: "bossLevelBonusCls", OnClick: function(){reroll("geoda");}});
-    DOM.Create({Parent: "geodeRerolBtnID", Tag: "img", Id: "geodeRerolBtnImgID", Src: "img/ad.png"});
+    DOM.Create({Parent: "geodeConteinerID", Tag: "button", Id: "geodeRerolBtn", Class: "bossLevelBonusCls", OnClick: function(){reroll("geoda");}});
+    DOM.Create({Parent: "geodeRerolBtn", Tag: "img", Id: "geodeRerolBtnImgID", Src: "img/ad.png"});
     await new Promise(r => setTimeout(r, 0));
     return Promise.resolve();
 }
-const ID = {geodeCraks:"", geodeIMG:"", geodeRift:"", offlineBonus:"", counter:"", hpBar:"", cracks:"", layerGold:"", claimAll:"", bossLevelBonusRerolBtn:"", time:"", bossLevelBonus:"", layerAll:"", geodeValue:"", geodeRerolBtn:"", prize:"", lucky:"", prize2:"", hit:"", autoHitInfo:"", hp:"", rebootExpCost:"", depthLevel:"", langBtn:""};
+const ID = {};
+const IDs = ["geodeIMG", "geodeRift", "menuForExpBack", "autoSelectValue", "geodeCraks", "offlineBonus", 
+            "counter", "hpBar", "cracks", "layerGold", "claimAll", "time", "bossLevelBonusRerolBtn", "layerAll", 
+            "bossLevelBonus", "geodeValue", "geodeRerolBtn", "prize", "lucky", "prize2", "hit", "autoHitInfo", "hp",
+            "rebootExpCost", "depthLevel", "langBtn", "menu"];
 function DOMInitialization() {
-    ID.geodeIMG = DOM.Id("geodeIMGID");
+    IDs.forEach(id => {
+        ID[id] = DOM.Id(id);
+    })
     ID.geodeIMG.src = "img/geoda.png";
-    ID.geodeCraks =  DOM.Id("geodeCraksIMGID");
     ID.geodeCraks.src = "img/geoda_craks.png";
-    ID.geodeRift = DOM.Id("geodeRift")
     ID.geodeRift.src = "img/geodeRift.png";
-    ID.offlineBonus = DOM.Id("offlineBonusID");
-    ID.counter = DOM.Id("counterID");
-    ID.hpBar = DOM.Id("hpBarID");
-    ID.cracks = DOM.Id("cracksID");
-    ID.layerGold = DOM.Id("layerGoldID");
-    ID.claimAll = DOM.Id("claim_all");
-    ID.bossLevelBonusRerolBtn = DOM.Id("bossLevelBonusRerolBtnID");
-    ID.time = DOM.Id("timeID");
-    ID.bossLevelBonus = DOM.Id("bossLevelBonusID");
-    ID.layerAll = DOM.Id('layerAllID');
-    ID.geodeValue = DOM.Id("geodeValueID");
-    ID.geodeRerolBtn = DOM.Id("geodeRerolBtnID");
-    ID.prize = DOM.Id("prizeID");
-    ID.lucky = DOM.Id("luckyID");
-    ID.prize2 = DOM.Id("prizeID2");
-    ID.hit = DOM.Id("hitID");
-    ID.autoHitInfo = DOM.Id("autoHitInfoID");
-    ID.hp = DOM.Id("hpID");
-    ID.rebootExpCost = DOM.Id("rebootExpCostID");
-    ID.depthLevel = DOM.Id("depthLevelID");
-    ID.langBtn = DOM.Id("langBtnID");
+    ID.coin = DOM.Id("coinID");
+    ID.geodeConteiner = DOM.Id("geodeConteinerID");
+    ID.layer = DOM.Id("layerID");
+    ID.dailyGiftMenu = DOM.Id("dailyGiftMenuID");
+    ID.offlineBonusValue = DOM.Id("offlineBonusValueID");
+    ID.timeOffline = DOM.Id("time_offline");
+    ID.counterReboot = DOM.Id("counterRebootID");
+    ID.warning = DOM.Id("warningID");
+    ID.exp = DOM.Id("expID");
+    ID.money = DOM.Id("moneyID");
+}
+async function loadLangTexts(){
+    const texts = await fetch('lang.json').then(r => r.json());
+    Object.assign(langTexts, texts);
+}
+function changeTextsLang(){
+    for(const key in langTexts){
+        toChangeText(key, getText(key));
+    }
+    function getText(key) {
+        return langTexts[key]?.[langGame];
+    }
 }
 function loadedGame() {
     if(sdkLoad && resurses && HTMLLoaded && textsLoaded){
@@ -299,11 +306,8 @@ function startingValues(){
         switchingElementMenu(false, upgrades2[i]);
     }
     openingLayerUp();
+    skillsUpdate();
     updateInfo();
-}
-async function loadLangTexts(){
-    const texts = await fetch('lang.json').then(r => r.json());
-    Object.assign(langTexts, texts);
 }
 function changeLang(lang){
     if(lang != undefined){
@@ -314,14 +318,6 @@ function changeLang(lang){
     }
     ID.langBtn.textContent = langGame;
     changeTextsLang() 
-}
-function changeTextsLang(){
-    for(const key in langTexts){
-        toChangeText(key, getText(key));
-    }
-    function getText(key) {
-        return langTexts[key]?.[langGame];
-    }
 }
 
 consoleCreateBtnsCP(["coins", "exp", "hit", "autohit"])//создание панели управления в консоле
@@ -372,10 +368,10 @@ function loadLocalStorage(){
     }
     money = Number(localStorage.getItem("money")) || 0;
     exp = Number(localStorage.getItem("exp")) || 0;
-    toChangeText("expID", toCompactNotation(exp));
+    ID.exp.textContent = toCompactNotation(exp);
     handHit = Number(localStorage.getItem("handHit")) || 1;
     hit.count = Number(localStorage.getItem("hit.count")) || 0;
-    toChangeText("counterID", hit.count);
+    ID.counter.textContent = hit.count;
     expBonus.count = Number(localStorage.getItem("expBonus.count")) || 0;
     toChangeText("counterRebootID", expBonus.count);
     autoHit = Number(localStorage.getItem("autoHit")) || 0;
@@ -386,14 +382,14 @@ function loadLocalStorage(){
     weeksDailyGift = Number(localStorage.getItem("weeksDailyGift")) || 1;
     geodeCount = Number(localStorage.getItem("geodeCount"));
     if(!allBonusFree){
-        document.getElementById("claim_all").disabled = "disabled";
-        document.getElementById("claim_all").classList.add("disabled");
+        ID.claimAll.disabled = "disabled";
+        ID.claimAll.classList.add("disabled");
     }
     finance(0);
     onOffBtn();
     openingLayerUp();
-    toStyle("#hpBarID", "width", 100/layer.hp.round * layer.hp.current + "%");
-    toStyle("#cracksID", "height", 100-(100/layer.hp.round * layer.hp.current) + "%");
+    ID.hpBar.style.width = 100/layer.hp.round * layer.hp.current + "%";
+    ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%"
     offlineProfit(Math.ceil((new Date() - new Date(localStorage.getItem("exitTime") || new Date()))/1000))
     toStyle("#ret", "backgroundPositionY", layer.level*-200 + "px");
     dailyGift_F(new Date(localStorage.getItem("lastLogon")), new Date());
@@ -450,9 +446,10 @@ function safeInLocalStorage(){
 }
 
 function tick(time){
+    console.time("tick");
     tick.count = (tick.count || 0)
     if(time - (tick.lastTime || 0) >= 100){
-        if(tick.count % 10 === 0){skillTimer(); interectiveBonusCreate.time--}
+        if(tick.count % 10 === 0){skillTimer(); textTimer(); interectiveBonusCreate.time--}
         if(tick.count % 50 === 0){interectiveBonusCreate();}
         if(!loadImgs && tick.count % 8 === 0){preloaderTextChange();}
         tick.count++;
@@ -461,10 +458,10 @@ function tick(time){
                 hit(upgradesAuto[i]);
             }
         }
-        textTimer();
         tick.lastTime = time;
     }
     requestAnimationFrame(tick);
+    console.timeEnd("tick");
 }
 
 function textTimer(){
@@ -472,9 +469,9 @@ function textTimer(){
     if (auto_bonus_duration.enabled == true && rerollTimer && !ID.bossLevelBonus.hidden){
         currentSeconds = new Date().getSeconds();
         let raznica = auto_bonus_duration.value - (currentSeconds - currentSecondsStart);
-        if(raznica > 60){raznica -= 60}
-        toChangeText("autoSelectValue", raznica);
-    } else {toChangeText("autoSelectValue", "");}
+        if(raznica > 60){raznica -= 60};
+        ID.autoSelectValue.textContent = raznica;
+    } else {ID.autoSelectValue.textContent = ""}
     }
 }
 
@@ -500,7 +497,8 @@ function skillTimer(){
                 toChangeText(skills[i].name+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
             }
         }
-        skillSwitch(); 
+        skillSwitch();
+        skillsUpdate() 
     }  
 }
 
@@ -535,7 +533,7 @@ function geodeHit(){
     geodeHit.count = geodeHit.count <= 0 ? 3 : geodeHit.count-1;
     ID.geodeCraks.style.height = 100-(geodeHit.count*33)+"%";
     console.time("anim")
-    animationOnce("geodeConteinerID", 'anim_Trembling');
+    animationOnce(ID.geodeConteiner, 'anim_Trembling');
     console.timeEnd("anim")
     if(geodeHit.count == 0){
         geodeHit.bool = false;
@@ -545,13 +543,13 @@ function geodeHit(){
         let srcImg, target;
         if(result == "money"){
             srcImg = "img/coin.png";
-            target = "coinID";
+            target = ID.coin;
         }else if(result == "exp"){
             srcImg = "img/exp.png";
-            target = "menuID";
+            target = ID.menu;
         }else{
             srcImg = "img/"+result.img;
-            target = result.name+"skillIMGID";
+            target = DOM.Id(result.name+"skillIMGID");
         }
         DOM.Create({Parent: "ret", Id: "geodeBonusIMGID", Tag: "img", Hidden: "true", Src: srcImg})
         const object = ID.geodeIMG.getBoundingClientRect();
@@ -560,16 +558,16 @@ function geodeHit(){
                 bonus.style.top = object.top+"px";
                 bonus.hidden = false;
         ID.geodeCraks.style.height = "0%";
-        flightToTarget(bonus, DOM.Id(target));
+        flightToTarget(bonus, target);
         bonus.style.opacity = "40%";
         ID.geodeIMG.hidden = true;
         ID.geodeRift.hidden = false;
-        DOM.Id("geodeConteinerID").classList.add("claet");
+        ID.geodeConteiner.classList.add("claet");
         bonus.addEventListener('transitionend', function opacity(e){
-            animationOnce("geodeConteinerID", 'anim_Trembling');
+            animationOnce(ID.geodeConteiner, 'anim_Trembling');
             ID.geodeIMG.hidden = false;
             ID.geodeRift.hidden = true;
-            DOM.Id("geodeConteinerID").classList.remove("claet");
+            ID.geodeConteiner.classList.remove("claet");
             geodeHit.count == 3
             bonus.remove();
             geodeHit.bool = true;
@@ -601,10 +599,9 @@ function flightToTarget(idObject, idTarget){
 }
 
 function animationOnce(id, Class){
-    const ID = DOM.Id(id);
-    ID.classList.add(Class);
-    ID.addEventListener('animationend', () => {
-        ID.classList.remove(Class);
+    id.classList.add(Class);
+    id.addEventListener('animationend', () => {
+        id.classList.remove(Class);
     }, {once: true});
 }
 function skillSwitch(){
@@ -667,7 +664,7 @@ function reroll(t){
 function finance(m){
     colorNumbers("moneyID", m < 0 ? "red" : "green");
     money += m;
-    toChangeText("moneyID", toCompactNotation(money));
+    ID.money.textContent = toCompactNotation(money);
     if(m != 0){
         onOffBtn();
         updateInfo();
@@ -675,7 +672,7 @@ function finance(m){
 }
 
 function expChanges(e){
-    toChangeText("expID", toCompactNotation(exp += e));
+    ID.exp.textContent = toCompactNotation(exp += e);
 }
 
 function expCalc(){
@@ -684,7 +681,7 @@ function expCalc(){
         expProfit += upgrades2[i].level*upgrades2[i].expBonus;
     }
     expProfit = Math.round(expProfit * xp_gain.value);
-    DOM.Hide("warningID", !(expProfit >=10 || exp >= 10))
+    ID.warning.hidden = !(expProfit >=10 || exp >= 10);
     return expProfit;
 }
 
@@ -697,8 +694,8 @@ function expBonus(){
     finance(0);
     toStyle("#ret", "backgroundPositionY", "0%");
     ID.hpBar.style.width = 100/layer.hp.round * layer.hp.current+ "%";
-    ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%"
-    toChangeText("counterRebootID", expBonus.count=(expBonus.count || 0) + 1);
+    ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%";
+    ID.counterReboot.textContent = expBonus.count=(expBonus.count || 0) + 1;
     updateInfo();
     ysdk?.adv?.showFullscreenAdv?.();
 }
@@ -719,7 +716,7 @@ function hit(object) {
 
 function damage(object){
     console.time("damage")
-    animationOnce("layerID", "anim_TremblingLayer_"+(Math.floor(Math.random()*4)+1))
+    animationOnce(ID.layer, "anim_TremblingLayer_"+(Math.floor(Math.random()*4)+1))
     if (switchHit && layer.hp.current > 0){
         if (object.typeValue == "hit"){
             layer.hp.current -= handHit * damageX2.value;
@@ -734,6 +731,7 @@ function damage(object){
 }
 
 function animationAutoHit(autoDamage){
+    console.time("animationAutoHit")
     let id = "fallTool" + countAutoHit++;
     let id2 = "fallToolTailMeteor" + countAutoHit
     DOM.Create({Parent: "ret", Tag: "img", Id: id2, Class: "imgTailMeteor"});
@@ -767,12 +765,12 @@ function animationAutoHit(autoDamage){
                 element.classList.add("death");
                 damage(autoDamage);
             } else if (e.propertyName === 'opacity'){
-                myLog("d[jlb")
                 tailMeteor.remove();
                 element.remove();
                 element.removeEventListener('transitionend', opacity); 
             }
         });
+        console.timeEnd("animationAutoHit")
 }
 
 function switchsHit(){
@@ -1035,7 +1033,7 @@ function bossLevelBonusBtn(bonus, count){
 }
 
 function menuTreePump(open){
-    DOM.Hide("menuForExpBack", open);
+    ID.menuForExpBack.hidden = open;
 }
 
 function offlineProfit(offlineSeconds){
@@ -1046,13 +1044,11 @@ function offlineProfit(offlineSeconds){
     const H = h > 0 ? h + "h " : "" ;
     const M = m > 0 ? m + "m " : "" ;
     const S = s > 0 ? s + "s" : "";
-    toChangeText("time_offline", H + M + S);
+    ID.timeOffline.textContent = H + M + S;
     const hours = Math.ceil(offlineSeconds/3600)
     const hourlyRate = [null, 1, 0.9, 0.81, 0.73, 0.66, 0.59, 0.53, 0.48, 0.43, 0.39, 0.35, 0.31];
     const damage = autoHit + handHit/10; //Офлайн урон
     const secForWin = layer.hp.calc / damage; //Кол-во секунд на 1 слой
-    // const wins = offlineSeconds / secForWin; //Кол-во побед за отсутствие
-    // const offlineMoney = wins * prize.profitC //Кол-во монет за отстутсвие
     for (let i = 0; i < hours; i++){
         let offlineSec = offlineSeconds
         if(offlineSec <= 3600){
@@ -1066,7 +1062,7 @@ function offlineProfit(offlineSeconds){
     if(offBonus > 0 && offlineSeconds > 3){
         ID.bossLevelBonus.hidden = true;
         ID.offlineBonus.hidden = false;
-        toChangeText("offlineBonusValueID", "+" + toCompactNotation(offBonus));
+        ID.offlineBonusValue.textContent = "+" + toCompactNotation(offBonus);
         offlineBonus = true;
         switchsHit();
     }
@@ -1102,7 +1098,7 @@ function dailyGift_F(lastLogon, currentLogon){
             for(let i = 0; i < DailyGiftCreate; i++){
                 toChangeText("dailyGiftDaySkillCountID"+i, (Number(DOM.Id("dailyGiftDaySkillCountID"+i).textContent)*weeksDailyGift))
             }
-            DOM.Hide("dailyGiftMenuID", false);
+            ID.dailyGiftMenu.hidden = false;
             for(let i = 0; i < 7; i++){
                 if(i+1 == daysdDailyGift){
                     DOM.Id("dailyGiftDayContID"+i).classList.add("backlight");
@@ -1125,8 +1121,8 @@ function claimDailyGift(){
             }
         }
     }
-    DOM.Hide("dailyGiftMenuID", true);
-    toChangeText("offlineBonusValueID", "+" + toCompactNotation(offBonus));
+    ID.dailyGiftMenu.hidden = true;
+    ID.offlineBonusValue.textContent = "+" + toCompactNotation(offBonus);
     if(daysdDailyGift >=7){
         daysdDailyGift -= 7;
         weeksDailyGift++;
@@ -1169,21 +1165,21 @@ function interectiveBonus(){
  if(rSkill.value == 2 || rSkill.autoHit == true && autoHit <= 0){
     const other = Math.floor(Math.random()*10);
     if(other == 0){
-        target = "menuID";
+        target = ID.menu;
         notSkill = "book";
     }else if(other == 1 || other == 2){
-        target = "geodeConteinerID";
+        target = ID.geodeConteiner;
         notSkill = "geode";
     }else{
-        target = "coinID";
+        target = ID.coin;
         notSkill = "coin";
     }
  } else{
-    target = rSkill.name+"skillIMGID";
+    target = DOM.Id(rSkill.name+"skillIMGID");
  }
-flightToTarget(nugget, DOM.Id(target));
+flightToTarget(nugget, target);
 nugget.style.opacity = "30%";
- nugget.addEventListener('transitionend', function opacity(e){
+nugget.addEventListener('transitionend', function opacity(e){
     if(notSkill){
         if(notSkill == "coin"){finance(Math.floor(money/10)+1);
         } else if (notSkill == "book"){expChanges(1);
@@ -1208,6 +1204,15 @@ function x2orX4 (){
         ID.prize2.textContent = "";
     }
 }
+function skillsUpdate(){
+            for(let i = 0; i < skills.length; i++){
+            if(skills[i].value == 2){
+                DOM.Id(skills[i].name+"skillID").classList.add("backlight");
+                DOM.Id(skills[i].name+"skillTimeID").classList.add("timer");
+            }
+            toChangeText(skills[i].name + "skillCountID", skills[i].count);
+        }
+}
 function updateInfo(){
     console.time('update');
     if(HTMLLoaded){
@@ -1216,17 +1221,7 @@ function updateInfo(){
         ID.geodeRerolBtn.hidden = geodeBool;
         ID.geodeIMG.classList.toggle('geode-glow', geodeBool); 
         ID.geodeIMG.classList.toggle('grayScale', !geodeBool); 
-
         ID.prize.textContent = toCompactNotation(prize.profitC);
-
-        for(let i = 0; i < skills.length; i++){
-            if(skills[i].value == 2){
-                DOM.Id(skills[i].name+"skillID").classList.add("backlight");
-                DOM.Id(skills[i].name+"skillTimeID").classList.add("timer");
-            }
-            toChangeText(skills[i].name + "skillCountID", skills[i].count);
-        }
-
         ID.depthLevel.textContent = layer.level;
         autoHit = 0;
         ID.hit.textContent = handHit;
