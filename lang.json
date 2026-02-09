@@ -51,11 +51,11 @@
       "ru": "+1 к удару",
       "en": "+1 damage"
     },
-  "miner_shovel": {
+  "minerShovel": {
     "ru": "Шахтёр с Лопатой",
     "en": "Miner with Shovel"
   },
-    "miner_shovel_desc":{
+    "minerShovel_desc":{
     "ru": "Автоудар: ",
     "en": "Auto-Mine: "
     },
@@ -67,11 +67,11 @@
       "ru": "+5 к удару",
       "en": "+5 damage"
     },
-  "miner_pickaxe": {
+  "minerPickaxe": {
     "ru": "Шахтёр с Киркой",
     "en": "Miner with Pickaxe"
   },
-    "miner_pickaxe_desc":{
+    "minerPickaxe_desc":{
       "ru": "Автоудар: ",
       "en": "Auto-Mine: "
     },
@@ -83,11 +83,11 @@
       "ru": "+20 к удару",
       "en": "+20 damage"
     },
-  "miner_drill": {
+  "minerDrill": {
     "ru": "Шахтёр с Буром",
     "en": "Miner with Drill"
   },
-    "miner_drill_desc":{
+    "minerDrill_desc":{
       "ru": "Автоудар: ",
       "en": "Auto-Mine: "
     },
@@ -99,11 +99,11 @@
       "ru": "+75 к удару",
       "en": "+75 damage"
     },
-  "miner_jackhammer": {
+  "minerJackhammer": {
     "ru": "Шахтёр с отбойником",
     "en": "Miner with Jackhammer"
   },
-    "miner_jackhammer_desc":{
+    "minerJackhammer_desc":{
       "ru": "Автоудар: ",
       "en": "Auto-Mine: "
     },

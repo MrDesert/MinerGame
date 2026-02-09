@@ -56,22 +56,20 @@ const shovel = {
     switch: "off", 
     expBonus: 0.05, 
     func: (b) => upgradesFunc(shovel, b), 
-    freeUp: false, 
-    img: "shovel_transparent_390x390.png"
+    freeUp: false
 };
+const minerShovel = {name: "minerShovel", cost: {base: 100, calc: 100, current: 100}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: (b) => upgradesFunc(minerShovel, b), freeUp: false, autoImg: "shovel", rotate: -80};
+const helmet = {name: "helmet", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(helmet, b), freeUp: false};
+const pickaxe = {name: "pickaxe", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(pickaxe, b), freeUp: false};
+const minerPickaxe = {name: "minerPickaxe", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: (b) => upgradesFunc(minerPickaxe, b), freeUp: false, autoImg: "pickaxe", rotate: 0};
+const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: (b) => upgradesFunc(drill, b), freeUp: false};
+const minerDrill = {name: "minerDrill", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: (b) => upgradesFunc(minerDrill, b), freeUp: false, autoImg: "drill", rotate: -60};
+const jackhammer = {name: "jackhammer", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: (b) => upgradesFunc(jackhammer, b), freeUp: false};
+const minerJackhammer = {name: "minerJackhammer", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: (b) => upgradesFunc(minerJackhammer, b), freeUp: false, autoImg: "jackhammer", rotate: -60}
 
-const miner_shovel = {name: "miner_shovel", cost: {base: 100, calc: 100, current: 100}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: (b) => upgradesFunc(miner_shovel, b), freeUp: false, img: "helmet-shovel_transparent_450x450.png", autoImg: "shovel_transparent_390x390.png", rotate: -80};
-const helmet = {name: "helmet", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(helmet, b), freeUp: false, img: "helmet5.png"};
-const pickaxe = {name: "pickaxe", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(pickaxe, b), freeUp: false, img: "pickaxe_transparent_390x390.png"};
-const miner_pickaxe = {name: "miner_pickaxe", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: (b) => upgradesFunc(miner_pickaxe, b), freeUp: false, img: "helmet-pickaxe_transparent_450x450.png", autoImg: "pickaxe_transparent_390x390.png", rotate: 0};
-const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: (b) => upgradesFunc(drill, b), freeUp: false, img: "drill_transparent_450x450.png"};
-const miner_drill = {name: "miner_drill", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: (b) => upgradesFunc(miner_drill, b), freeUp: false, img: "helmetDrill.png", autoImg: "drill_transparent_450x450.png", rotate: -60};
-const jackhammer = {name: "jackhammer", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: (b) => upgradesFunc(jackhammer, b), freeUp: false, img: "molot_trasparent_450x450.png"};
-const miner_jackhammer = {name: "miner_jackhammer", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: (b) => upgradesFunc(miner_jackhammer, b), freeUp: false, img: "helmet-molot_transparent_450x450.png", autoImg: "molot_trasparent_450x450.png", rotate: -60}
-
-const upgrades2 = [shovel, miner_shovel, helmet, pickaxe, miner_pickaxe, drill, miner_drill, jackhammer, miner_jackhammer]; //массив с объектами улучшений;
+const upgrades2 = [shovel, minerShovel, helmet, pickaxe, minerPickaxe, drill, minerDrill, jackhammer, minerJackhammer]; //массив с объектами улучшений;
 window.upgrades2 = upgrades2;
-const upgradesAuto = [miner_shovel, miner_pickaxe, miner_drill, miner_jackhammer];//массив с объектами улучшений, только автоудары
+const upgradesAuto = [minerShovel, minerPickaxe, minerDrill, minerJackhammer];//массив с объектами улучшений, только автоудары
 
 const layer_hardness = {
     name: "layer_hardness", 
@@ -97,11 +95,11 @@ const lycki = true;
 const upgradesExp = [layer_hardness, mining_profit, upgrade_cost, auto_bonus_duration, money_keep, auto_mine_speed, xp_gain];
 window.upgradesExp = upgradesExp;
 
-const profitX2 = {name: "profitX2", value: 1, count: 1, time: 120, timeCur: 0, text: "Х2 прибыль", func: () => skill(profitX2), img: "profitX2.png", disable: true, autoHit: false};
-const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 1, time: 60, timeCur: 0, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), img: "emergenceSpeedX2.png", disable: true, autoHit: true}
-const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 1, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), img: "fallSpeedX2.png", disable: true, autoHit: true}
-const damageX2 = {name: "damageX2", value: 1, count: 1, time: 60, timeCur: 0, text: "Х2 весь урон", func: () => skill(damageX2), img: "pickaxe_transparent_redShadow_390x390.png", disable: true, autoHit: true}
-const multiSkill = {name: "multiSkill", value: 1, count: 1, time: 30, timeCur: 0, text: "Мультибонус", func: () => skill(multiSkill), img: "multiSkill.png", disable: true, autoHit: false}
+const profitX2 = {name: "profitX2", value: 1, count: 1, time: 120, timeCur: 0, text: "Х2 прибыль", func: () => skill(profitX2), disable: true, autoHit: false};
+const emergenceSpeedX2 = {name: "emergenceSpeedX2", value: 1, count: 1, time: 60, timeCur: 0, text: "Х2 поялвения инструментов", func: () => skill(emergenceSpeedX2), disable: true, autoHit: true}
+const fallSpeedX2 = {name: "fallSpeedX2", value: 1, count: 1, time: 45, timeCur: 0, text: "Х2 скорость падения инструментов", func: () => skill(fallSpeedX2), disable: true, autoHit: true}
+const damageX2 = {name: "damageX2", value: 1, count: 1, time: 60, timeCur: 0, text: "Х2 весь урон", func: () => skill(damageX2), disable: true, autoHit: true}
+const multiSkill = {name: "multiSkill", value: 1, count: 1, time: 30, timeCur: 0, text: "Мультибонус", func: () => skill(multiSkill), disable: true, autoHit: false}
 
 const dailyGift = {
     day1: {profitX2: 3},
@@ -129,28 +127,33 @@ let layerUpIntervalID;
 
 console.time("game")
 loadHTMLs().then(()=>{
-    generateHTML().then(()=>{
-        startingCreationGUI().then(()=>{
-            DOMInitialization().then(()=>{
-                loadLangTexts().then(()=>{
-                    HTMLLoaded = true; 
-                    textsLoaded = true; 
-                    changeTextsLang(); 
-                    loadedGame();
-                    tick(performance.now());
-                    skillSwitch()
-                    upgradesExpFuncInfo();
-                });
+    loadIMG().then(()=>{
+        generateHTML().then(()=>{
+            startingCreationGUI().then(()=>{
+                DOMInitialization().then(()=>{
+                    loadLangTexts().then(()=>{
+                        HTMLLoaded = true; 
+                        textsLoaded = true; 
+                        changeTextsLang(); 
+                        loadedGame();
+                        tick(performance.now());
+                        skillSwitch()
+                        upgradesExpFuncInfo();
+                    });
+                })
             })
         })
     })
 });
 console.timeEnd("game");
+const imgCache = {};
 async function loadIMG(){
     const load = await fetch('IMG.json').then(r => r.json());
     Object.assign(IMGs, load);
-    for(const key in IMGs){
-        
+    for (const key in IMGs) {
+        const img = new Image();  // Создаем объект Image (быстро)
+        img.src = IMGs[key];      // Начинаем загрузку (не ждем!)
+        imgCache[key] = img;     // Сохраняем в кэш (быстро)
     }
 }
 async function loadHTMLs(){ //загрузка HTML.json
@@ -191,7 +194,7 @@ async function generateHTML(){
                 } 
             }
         }else{
-            DOM?.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});
+            DOM?.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src:imgCache[HTMLs[key]?.Src]?.src});
             IDs.push(key);
         }
     }
@@ -206,7 +209,7 @@ async function startingCreationGUI(){
                 IDs.push("dailyGiftDaySkillContID"+i+j); 
             for (let k = 0; k < skills.length; k++){
                 if(skills[k].name == keys[j]){
-                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillIMGID"+DailyGiftCreate, Tag: "img", Class: "skillIMG", Src: "img/"+skills[k].img});
+                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillIMGID"+DailyGiftCreate, Tag: "img", Class: "skillIMG", Src: imgCache[skills[k].name].src});
                         IDs.push("dailyGiftDaySkillIMGID"+DailyGiftCreate);
                     DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillCountID"+DailyGiftCreate, Tag: "span", Class: "skillValue", Text: (dailyGift["day"+(i+1)][keys[j]]*weeksDailyGift)})
                         IDs.push("dailyGiftDaySkillCountID"+DailyGiftCreate);
@@ -220,7 +223,7 @@ async function startingCreationGUI(){
     for(let i = 0; i < skills.length; i++){
         let id = skills[i].name;
         DOM.Id(id+"skillID").onclick = function(){skills[i].func();};
-        DOM.Id(id+"skillIMGID").src = "img/"+skills[i].img;
+        DOM.Id(id+"skillIMGID").src = imgCache[skills[i].name].src;
         const m = Math.floor(skills[i].time / 60);
         const s = skills[i].time - m * 60;
         toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
@@ -229,50 +232,36 @@ async function startingCreationGUI(){
     return Promise.resolve();
 }
 const ID = {};
-const IDFor = {};
 const IDs = ["ret", "counter", "hit", "autoHitInfo", "depthLevel", "langBtn", "coin", "counterReboot", "money"];
 async function DOMInitialization() {
     IDs.forEach(id => {
         ID[id] = DOM.Id(id);
     })
-    ID.layerImgID.src = "img/layer.png";
-    ID.layerGold.src = "img/layer_gold.png";
-    ID.cracks.src = "img/cracks.png";
     ID.hitZoneID.onclick = function(){hit(shovel)};
     //Жеода
-    ID.geodeIMG.src = "img/geoda.png";
-    ID.geodeCraks.src = "img/geoda_craks.png";
-    ID.geodeRift.src = "img/geodeRift.png";
     ID.geodeConteiner.onclick = function(){geodeHit()};
     ID.geodeRerolBtn.onclick = function(){reroll("geoda");};
-    ID.geodeRerolBtnImgID.src = "img/ad.png";
     ID.menu.onclick = function(){menuTreePump(false)};
-    ID.bookID.src = "img/book.png";
-    ID.coinID2.src = "img/coin.png";
     //Бонусное меню
     ID.claimAll.onclick = function(){bossLevelBonusBtn("All")};
     ID.bossLevelBonusRerolBtn.onclick = function(){reroll();};
-    ID.bossLevelBonusRerolBtnImgID.src = "img/ad.png";
     //Боковое меню
     for(let i = 0; i < upgrades2.length; i++){
         let id = upgrades2[i].name;
-        ID[id+"ImgID"].src = "img/"+upgrades2[i].img;
+        ID[id+"ImgID"].src = imgCache[upgrades2[i].name].src;
         ID[id+"BtnID"].onclick = function(){upgrades2[i].func();}; 
-        ID[id+"BtnImgID"].src = "img/coin.png";
+        ID[id+"BtnImgID"].src = imgCache.coin.src;
     }
     // Центральное меню
     ID.menuForExpBtnClose.onclick = function(){menuTreePump(true)};
-    ID.expImgID.src = "img/exp.png";
-    ID.rebootExpImgID.src = "img/exp.png";
     ID.rebootExpBtnID.onclick = function(){expBonus()}; 
     for(let i = 0; i < upgradesExp.length; i++){
         let id = upgradesExp[i].name;
         ID[id+"BtnID"].onclick = function(){upgradesExp[i].func()};
-        ID[id+"ImgBtnID"].src = "img/exp.png";
+        ID[id+"ImgBtnID"].src = imgCache.exp.src;
     }
     //Офлайн меню
     ID.claim_offBonus.onclick = function(){offlineProfit2();};
-    ID.offlineBonusIMGID.src = "img/coin.png";
     await new Promise(r => setTimeout(r, 0));
     return Promise.resolve();
 }
@@ -337,7 +326,7 @@ function consBtnReturn(value, parameter) {
         case "coins": finance(value); break;
         case "exp": expChanges(value); break;
         case "hit": handHit += value; break;
-        case "autohit": miner_shovel.value += value; break;
+        case "autohit": minerShovel.value += value; break;
     }
     updateInfo;
 }
@@ -552,14 +541,14 @@ function geodeHit(){
         let result = geodeBonus[Math.ceil(mathTriangularNumberInverse(choice))-1];
         let srcImg, target;
         if(result == "money"){
-            srcImg = "img/coin.png";
+            srcImg = imgCache.coin.src;
             target = ID.coin;
         }else if(result == "exp"){
-            srcImg = "img/exp.png";
+            srcImg = imgCache.exp.src;
             target = ID.menu;
         }else{
-            srcImg = "img/"+result.img;
-            target = DOM.Id(result.name+"skillIMGID");
+            srcImg = imgCache[result.name].src;
+            target = ID[result.name+"skillIMGID"];
         }
         DOM.Create({Parent: "ret", Id: "geodeBonusIMGID", Tag: "img", Hidden: "true", Src: srcImg})
         const object = ID.geodeIMG.getBoundingClientRect();
@@ -620,7 +609,7 @@ function skillSwitch(){
         } else {
             skills[i].disable = skills[i].count > 0 ? false : true;
         }
-        DOM.Id(skills[i].name+"skillID").classList.toggle("disabled", skills[i].disable);
+        ID[skills[i].name+"skillID"].classList.toggle("disabled", skills[i].disable);
     }
 }
 function skill(id){
@@ -753,9 +742,9 @@ function animationAutoHit(autoDamage){
             rotate = Math.floor(Math.random()*80)+700 + autoDamage.rotate;
             element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
             tailMeteor.classList.add("imgTailMeteor"+Math.round(Math.random()*1));
-            tailMeteor.src = "img/tailMeteor.png";
+            tailMeteor.src = imgCache.tailMeteor.src;
         }
-        element.src = "img/"+autoDamage.autoImg;
+        element.src = imgCache[autoDamage.autoImg].src;
         if(damageX2.value == 2){
             element.classList.add("redShadow");
         }
@@ -958,14 +947,14 @@ function bossLevelBonus(){
             valueBtn = "moneyBonus";
             valueLevel = ""
             title = "+"+toCompactNotation(trw[i]);
-            img = "coin.png";
+            img = imgCache.coin.src;
         } else{
             valueBtn = trw[i].name;
             valueLevel = Math.floor(Math.random()*(trw[i].level/20)) + 1;
             title = "+" + valueLevel;
-            img = trw[i].img;
+            img = imgCache[trw[i].name].src;
         }
-        ID["bossLevelBonusIMGID"+i].src = "img/" + img;
+        ID["bossLevelBonusIMGID"+i].src = img;
         ID["bossLevelBonusContainerID"+i].onclick = ()=> bossLevelBonusBtn(valueBtn, valueLevel);
         ID["bossLevelBonusValueID"+i].textContent = title;
     }
@@ -1135,7 +1124,7 @@ function interectiveBonusCreate(){
         id.offsetHeight;
         id.style.opacity = "100%";
         id.style.scale = 1;
-        DOM.Create({Parent: "inerectiveBonusContID2", Id: "inerectiveBonusID", Tag: "img", Src: "img/nugget.png"})
+        DOM.Create({Parent: "inerectiveBonusContID2", Id: "inerectiveBonusID", Tag: "img", Src: imgCache.nugget.src})
         }
     } else {
         if(interectiveBonusCreate.time <= 0){

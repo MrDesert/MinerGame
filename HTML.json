@@ -99,7 +99,8 @@
             "expImgID": {
                 "Parent": "expTitleID",
                 "Class": "expCl",
-                "Tag": "img"
+                "Tag": "img",
+                "Src": "exp"
             },
         "menuForExpBtnClose": {
             "Parent": "menuForExp",
@@ -134,7 +135,8 @@
                 "rebootExpImgID": {
                     "Parent": "rebootExpID",
                     "Tag": "img",
-                    "Class": "expCl"
+                    "Class": "expCl",
+                    "Src": "exp"
                 },
         "infoID": {
             "Parent": "menuForExp",
@@ -267,7 +269,8 @@
         },
             "bossLevelBonusRerolBtnImgID": {
                 "Parent": "bossLevelBonusRerolBtn",
-                "Tag": "img"
+                "Tag": "img",
+                "Src": "ad"
             },
 "offlineBonus": {
     "Parent": "ret",
@@ -290,7 +293,8 @@
             "Parent": "offlineBonusContainerID",
             "Id": "offlineBonusIMGID",
             "Tag": "img",
-            "Class": "bossLevelBonusIMG"
+            "Class": "bossLevelBonusIMG",
+            "Src": "coin"
         },
         "offlineBonusValue":{
             "Parent": "offlineBonusContainerID",
@@ -376,7 +380,8 @@
         "bookID":{
             "Parent": "menu",
             "Tag": "img",
-            "Class": "sideMenuElementIconLeftIMG"
+            "Class": "sideMenuElementIconLeftIMG",
+            "Src": "book"
         },
         "warning":{
             "Parent": "menu",
@@ -387,16 +392,19 @@
     },
         "geodeIMG":{
             "Parent": "geodeConteiner",
-            "Tag": "img"
+            "Tag": "img",
+            "Src": "geoda"
         },
         "geodeRift": {
             "Parent": "geodeConteiner",
             "Tag": "img",
+            "Src": "geodeRift",
             "Hidden": "true"
         },
         "geodeCraks":{
             "Parent": "geodeConteiner",
-            "Tag": "img"
+            "Tag": "img",
+            "Src": "geodaCraks"
         },
         "geodeValue":{
             "Parent": "geodeConteiner",
@@ -409,7 +417,8 @@
         },
             "geodeRerolBtnImgID":{
                 "Parent": "geodeRerolBtn",
-                "Tag": "img"
+                "Tag": "img",
+                "Src": "ad"
             },
 "hpTitleID":{
     "Parent": "ret",
@@ -445,7 +454,8 @@
         "coinID2":{
             "Parent": "prifitLayerID",
             "Tag":"img",
-            "Class":"coinCl"
+            "Class":"coinCl",
+            "Src": "coin"
         },
     "hpBar":{
             "Parent": "hpBarBorderID"
@@ -458,16 +468,19 @@
     },
         "layerImgID":{
             "Parent": "layerAll",
-            "Tag": "img"
+            "Tag": "img",
+            "Src": "layer"
         },
         "layerGold":{
             "Parent": "layerAll",
             "Tag": "img",
+            "Src": "layerGold",
             "Hidden": "true"            
         },
     "cracks":{
         "Parent": "layer",
-        "Tag": "img"
+        "Tag": "img",
+        "Src": "cracks"
     },
 "hitZoneID":{
     "Parent": "ret"
