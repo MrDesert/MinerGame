@@ -449,5 +449,27 @@
         },
     "hpBar":{
             "Parent": "hpBarBorderID"
-    }
+    },
+"layer":{
+    "Parent": "ret"
+},
+    "layerAll":{
+        "Parent": "layer"
+    },
+        "layerImgID":{
+            "Parent": "layerAll",
+            "Tag": "img"
+        },
+        "layerGold":{
+            "Parent": "layerAll",
+            "Tag": "img",
+            "Hidden": "true"            
+        },
+    "cracks":{
+        "Parent": "layer",
+        "Tag": "img"
+    },
+"hitZoneID":{
+    "Parent": "ret"
+}
 }

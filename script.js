@@ -2,6 +2,7 @@ let langGame = "en";
 const langTexts = {};
 let textsLoaded = false;
 const HTMLs = {};
+const IMGs = {};
 let HTMLLoaded = false;
 let loadImgs = false;
 let DOMContentLoaded = false;
@@ -145,6 +146,13 @@ loadHTMLs().then(()=>{
     })
 });
 console.timeEnd("game");
+async function loadIMG(){
+    const load = await fetch('IMG.json').then(r => r.json());
+    Object.assign(IMGs, load);
+    for(const key in IMGs){
+        
+    }
+}
 async function loadHTMLs(){ //загрузка HTML.json
     const load = await fetch('HTML.json').then(r => r.json());
     Object.assign(HTMLs, load);
@@ -208,10 +216,6 @@ async function startingCreationGUI(){
             }
         }
     }    
-    //Бонусное меню
-    DOM.Id("claimAll").onclick = function(){bossLevelBonusBtn("All")};
-    DOM.Id("bossLevelBonusRerolBtn").onclick = function(){reroll();};
-    DOM.Id("bossLevelBonusRerolBtnImgID").src = "img/ad.png";
     //Меню скилов
     for(let i = 0; i < skills.length; i++){
         let id = skills[i].name;
@@ -221,28 +225,34 @@ async function startingCreationGUI(){
         const s = skills[i].time - m * 60;
         toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
     }
-    DOM.Id("geodeConteiner").onclick = function(){geodeHit()};
-    DOM.Id("geodeRerolBtn").onclick = function(){reroll("geoda");};
-    DOM.Id("geodeRerolBtnImgID").src = "img/ad.png";
     await new Promise(r => setTimeout(r, 0));
     return Promise.resolve();
 }
 const ID = {};
 const IDFor = {};
-const IDs = ["ret", "counter", "hpBar", "cracks", "layerGold", "claimAll", "time", "bossLevelBonusRerolBtn", "layerAll", 
-"bossLevelBonus", "geodeRerolBtn", "prize", "lucky", "prize2", "hit", "autoHitInfo", "hp", "rebootExpCost", 
-"depthLevel", "langBtn", "coin", "layer", "counterReboot", "exp", "money"];
+const IDs = ["ret", "counter", "hit", "autoHitInfo", "depthLevel", "langBtn", "coin", "counterReboot", "money"];
 async function DOMInitialization() {
     IDs.forEach(id => {
         ID[id] = DOM.Id(id);
     })
+    ID.layerImgID.src = "img/layer.png";
+    ID.layerGold.src = "img/layer_gold.png";
+    ID.cracks.src = "img/cracks.png";
+    ID.hitZoneID.onclick = function(){hit(shovel)};
     //Жеода
     ID.geodeIMG.src = "img/geoda.png";
     ID.geodeCraks.src = "img/geoda_craks.png";
     ID.geodeRift.src = "img/geodeRift.png";
+    ID.geodeConteiner.onclick = function(){geodeHit()};
+    ID.geodeRerolBtn.onclick = function(){reroll("geoda");};
+    ID.geodeRerolBtnImgID.src = "img/ad.png";
     ID.menu.onclick = function(){menuTreePump(false)};
     ID.bookID.src = "img/book.png";
     ID.coinID2.src = "img/coin.png";
+    //Бонусное меню
+    ID.claimAll.onclick = function(){bossLevelBonusBtn("All")};
+    ID.bossLevelBonusRerolBtn.onclick = function(){reroll();};
+    ID.bossLevelBonusRerolBtnImgID.src = "img/ad.png";
     //Боковое меню
     for(let i = 0; i < upgrades2.length; i++){
         let id = upgrades2[i].name;
@@ -832,25 +842,17 @@ function openingLayerUp(){
 
 function onOffBtn(){
     for (let i = 0; i < upgrades2.length; i++){
-        const bool = !(money >= upgrades2[i].cost.current && upgrades2[i].switch == "on");
-        ID[upgrades2[i].name+"BtnID"].disabled = bool;
+        ID[upgrades2[i].name+"BtnID"].disabled = !(money >= upgrades2[i].cost.current && upgrades2[i].switch == "on");
     }
     for (let i = 0; i < upgradesExp.length; i++){
-        let disBtn = ID[upgradesExp[i].name+"BtnID"];
-        exp >= upgradesExp[i].cost ? disBtn.removeAttribute("disabled") : disBtn.disabled="disabled";
+        ID[upgradesExp[i].name+"BtnID"].disabled = exp >= upgradesExp[i].cost ? false : true;
     }
 }
 
 function switchingElementMenu(switchType, btn){
-    if(switchType){
-        btn.switch = "on";
-        ID[btn.name+"ID"].classList.remove("disabled");
-        ID[btn.name+"ImgID"].style.filter = "grayscale(0%)";
-    } else {
-        btn.switch = "off";
-        ID[btn.name+"ID"].classList.add("disabled");
-        ID[btn.name+"ImgID"].style.filter = "grayscale(50%)";
-    }
+    btn.switch = switchType? "on" : "off";
+    ID[btn.name+"ID"].classList.toggle("disabled", !switchType);
+    ID[btn.name+"ImgID"].classList.toggle("unavailable", !switchType)
     onOffBtn();
 }
 
@@ -882,7 +884,7 @@ function upgradesFuncInfo(){
     for(let i = 0; i < upgrades2.length; i++){
         ID[upgrades2[i].name+"CostID"].textContent = toCompactNotation(upgrades2[i].cost.current);
         ID[upgrades2[i].name+"LevelID"].textContent = upgrades2[i].level;
-        if( upgrades2[i].typeValue == "auto"){
+        if(upgrades2[i].typeValue == "auto"){
             let damage = Math.round(upgrades2[i].value*upgrades2[i].level/(auto_mine_speed.parameter.value*upgrades2[i].timeHit)*100)/100;
             ID[upgrades2[i].name+"ValueID"].textContent = damage+" hp/s";
             autoHit += damage;
@@ -918,16 +920,9 @@ function upgradesExpFunc(upgrade){
 function upgradesExpFuncInfo() {
     for(let i = 0; i < upgradesExp.length; i++){
         let name = upgradesExp[i].name;
-        if(upgradesExp[i].enabled == false){
-            ID[name+"InfoValueID"].textContent = "-" + upgradesExp[i].parameter.type;
-        } else {
-            ID[name+"InfoValueID"].textContent = Math.round(upgradesExp[i].parameter.value*100)/100 + upgradesExp[i].parameter.type;
-        }
-        ID[name+"CostID"].textContent = Math.floor(upgradesExp[i].cost);
+        ID[name+"InfoValueID"].textContent = upgradesExp[i].enabled == false? "-" + upgradesExp[i].parameter.type : Math.round(upgradesExp[i].parameter.value*100)/100 + upgradesExp[i].parameter.type;
+        ID[name+"CostID"].textContent = upgradesExp[i].level < 10 ? Math.floor(upgradesExp[i].cost) : "Максимум";
         ID[name+"LevelID"].textContent = upgradesExp[i].level;
-        if (upgradesExp[i].level >= 10){
-            ID[name+"CostID"].textContent = "Максимум";
-        }
     }
 }
 
@@ -953,11 +948,9 @@ function bossLevelBonus(){
     let bonus2 = bossLevelBonusRandom(switchsOn);
     let bonus3 = bossLevelBonusRandom(switchsOn);
 
-    trw.push(bonus1);
     if(bonus2 === bonus1){bonus2 = moneyBonus}
-    trw.push(bonus2);
     if(bonus3 === bonus2 || bonus3 === bonus1){bonus3 = moneyBonus;}
-    trw.push(bonus3);
+    trw.push(bonus1, bonus2, bonus3);
 
     for (let i = 0; i < trw.length; i++){
         let valueBtn, valueLevel, title, img
@@ -980,7 +973,7 @@ function bossLevelBonus(){
     bossBonus = true;
     for (let i = 0; i < upgrades2.length; i++){
         ID[upgrades2[i].name+"BtnID"].disabled = true;
-    }
+    }//как будто бы вообще это не нужно
     if (auto_bonus_duration.enabled){
         ID.time.hidden = false;
         currentSecondsStart = new Date().getSeconds();
@@ -1050,15 +1043,12 @@ function offlineProfit(offlineSeconds){
     const secForWin = layer.hp.calc / damage; //Кол-во секунд на 1 слой
     for (let i = 0; i < hours; i++){
         let offlineSec = offlineSeconds
-        if(offlineSec <= 3600){
-            offBonus = offBonus + offlineSec / secForWin * prize.profitC * hourlyRate[i+1] * 0.01; // итогове количество монет с учётом часовой ставки и процента
-        } else {
-            offBonus = offBonus + 3600 / secForWin * prize.profitC * hourlyRate[i+1] * 0.01;
-            offlineSec -= 3600;
-        }
+        const sec = offlineSec <= 3600 ? offlineSec : 3600;
+        offBonus = offBonus + sec / secForWin * prize.profitC * hourlyRate[i+1] * 0.01; // итогове количество монет с учётом часовой ставки и процента
+        if(offlineSec > 3600){offlineSec -= 3600}
     }
     offBonus = Math.ceil(offBonus);
-    if(offBonus > 0 && offlineSeconds > 3){
+    if(offBonus > 0 && offlineSeconds > 4){
         ID.bossLevelBonus.hidden = true;
         ID.offlineBonus.hidden = false;
         ID.offlineBonusValue.textContent = "+" + toCompactNotation(offBonus);
