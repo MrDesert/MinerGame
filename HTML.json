@@ -39,7 +39,7 @@
             "Tag": "button",
             "Id": "_BtnID",
             "Class": "sideMenuElementBtn",
-            "OnClick": "upgradesFunc(upgrades2[i], true)"
+            "OnClick": "$func"
         },
             "$_BtnImgID":{
                 "arrayName$": "upgrades2",
@@ -198,7 +198,8 @@
                 "Parent": "_ID",
                 "Id": "_BtnID",
                 "Tag": "button",
-                "Class": "centralMenuElementBtn"
+                "Class": "centralMenuElementBtn",
+                "OnClick": "$func"
             },
                 "$_ImgBtnID":{
                     "arrayName$": "upgradesExp",
@@ -326,7 +327,8 @@
         "arrayName$": "skills",
         "Parent": "skillpanel",
         "Id": "_skillID",
-        "Class": "skillContainer"
+        "Class": "skillContainer",
+        "OnClick": "$func"
     },
         "$_skillTimeID":{
             "arrayName$": "skills",

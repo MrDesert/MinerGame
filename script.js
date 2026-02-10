@@ -169,6 +169,7 @@ async function generateHTML(){
                 let id = key.substring(1);
                 let parent = HTMLs[key]?.Parent;
                 let src = imgCache[HTMLs[key]?.Src]?.src;
+                let onclick = new Function(HTMLs[key]?.OnClick);
                 for(let i = 0; i < array.length; i++){
                     if(HTMLs[key]?.Parent.substring(0, 1) == "_"){
                         parent = array[i].name + HTMLs[key]?.Parent.substring(1);
@@ -179,7 +180,10 @@ async function generateHTML(){
                     if(HTMLs[key]?.Src?.substring(0, 1) == "_"){
                         src = imgCache[array[i].name + HTMLs[key]?.Src.substring(1)]?.src;
                     }
-                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src: src, OnClick: new Function(HTMLs[key]?.OnClick)});   
+                    if(HTMLs[key]?.OnClick?.substring(0, 1) == "$"){
+                        onclick = array[i][HTMLs[key].OnClick.substring(1)];
+                    }
+                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src: src, OnClick: onclick});   
                     IDs.push(id);
                 }
             } 
@@ -209,6 +213,7 @@ async function startingCreationGUI(){
     DOM.Id("claim_dailyGift").onclick = function(){claimDailyGift();};
     for(let i = 0; i < 7; i++){
         const keys = Object.keys(dailyGift["day"+(i+1)]);
+        console.log(keys.length)
         for (let j = 0; j < keys.length; j++){
             DOM.Create({Parent: "dailyGiftDayContID"+i, Id: "dailyGiftDaySkillContID"+i+j, Class: "dailySkill"});
                 IDs.push("dailyGiftDaySkillContID"+i+j); 
@@ -224,14 +229,6 @@ async function startingCreationGUI(){
             }
         }
     }    
-    //Меню скилов
-    for(let i = 0; i < skills.length; i++){
-        let id = skills[i].name;
-        DOM.Id(id+"skillID").onclick = function(){skills[i].func();};
-        const m = Math.floor(skills[i].time / 60);
-        const s = skills[i].time - m * 60;
-        toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
-    }
     await new Promise(r => setTimeout(r, 0));
     return Promise.resolve();
 }
@@ -241,14 +238,6 @@ async function DOMInitialization() {
     IDs.forEach(id => {
         ID[id] = DOM.Id(id);
     })
-    //Боковое меню
-    for(let i = 0; i < upgrades2.length; i++){
-        ID[upgrades2[i].name+"BtnID"].onclick = function(){upgrades2[i].func();}; 
-    }
-    // Центральное меню
-    for(let i = 0; i < upgradesExp.length; i++){
-        ID[upgradesExp[i].name+"BtnID"].onclick = function(){upgradesExp[i].func()};
-    }
     await new Promise(r => setTimeout(r, 0));
     return Promise.resolve();
 }
@@ -290,11 +279,16 @@ function startingValues(){
         upgrades2[i].cost.current = upgrades2[i].cost.calc = upgrades2[i].cost.base;
         switchingElementMenu(false, upgrades2[i]);
     }
+        //Меню скилов
+    for(let i = 0; i < skills.length; i++){
+        toChangeText(skills[i].name + "skillTimeID", numberInTime(skills[i].time, "m:S"));
+    }
     upgradesFuncInfo();
     openingLayerUp();
     skillsUpdate();
     updateInfo();
 }
+
 function changeLang(lang){
     if(lang != undefined){
         langGame = lang;
@@ -465,12 +459,8 @@ function skillTimer(){
         for(let i = 0; i < skills.length; i++){
             if(skills[i].value == 2){
                 skills[i].timeCur -= 1;
-                let m = Math.floor(skills[i].timeCur / 60);
-                let s = skills[i].timeCur - m * 60;
                 if(skills[i].timeCur <= 0){
                     skills[i].value = 1;
-                    m = Math.floor(skills[i].time / 60);
-                    s = skills[i].time - m * 60;
                     ID[skills[i].name+"skillID"].classList.remove("backlight");
                     ID[skills[i].name+"skillTimeID"].classList.remove("timer");
                     if(skills[i].name == "multiSkill"){
@@ -479,7 +469,7 @@ function skillTimer(){
                         }
                     }
                 }
-                ID[skills[i].name+"skillTimeID"].textContent = m + ":" + (s < 10 ? "0" + s : s);
+                ID[skills[i].name+"skillTimeID"].textContent = numberInTime(skills[i].timeCur, "m:S")
             }
         }
         skillSwitch();
@@ -568,24 +558,6 @@ function geodeHit(){
 }
 }
 
-function flightToTarget(idObject, idTarget){
-    const object =  idObject.getBoundingClientRect();
-    const objectX = object.left + object.width;
-    const objectY = object.top + object.height;
-    const target = idTarget.getBoundingClientRect();
-    const targetX = target.left + target.width;
-    const targetY = target.top + target.height;
-    const moveX = targetX - objectX + 45/2;
-    const moveY = targetY - objectY + 45/2;
-    idObject.style.transform = `translate(${moveX}px, ${moveY}px) scale(0.3)`;
-}
-
-function animationOnce(id, Class){
-    id.classList.add(Class);
-    id.addEventListener('animationend', () => {
-        id.classList.remove(Class);
-    }, {once: true});
-}
 function skillSwitch(){
     for(let i = 0; i < skills.length; i++){
         if(skills[i].autoHit){
@@ -831,8 +803,9 @@ function switchingElementMenu(switchType, btn){
 function upgradesFunc(item, bool) {
     let name = item.name;
     let cost = item.cost;
-    if(bool){up();
-    } else if(money >= cost.current){
+    if(bool == true){up();
+    } else 
+        if(money >= cost.current){
         up();
         finance(-Math.floor(cost.current));
         cost.calc = Math.round(softProgress(cost.calc, upgrades2.indexOf(item)-1));
@@ -1166,7 +1139,7 @@ function x2orX4 (){
     }
 }
 function skillsUpdate(){
-            for(let i = 0; i < skills.length; i++){
+        for(let i = 0; i < skills.length; i++){
             if(skills[i].value == 2){
                 ID[skills[i].name+"skillID"].classList.add("backlight");
                 ID[skills[i].name+"skillTimeID"].classList.add("timer");
