@@ -168,6 +168,7 @@ async function generateHTML(){
                 const array = window[HTMLs[key].arrayName$];
                 let id = key.substring(1);
                 let parent = HTMLs[key]?.Parent;
+                let src = imgCache[HTMLs[key]?.Src]?.src;
                 for(let i = 0; i < array.length; i++){
                     if(HTMLs[key]?.Parent.substring(0, 1) == "_"){
                         parent = array[i].name + HTMLs[key]?.Parent.substring(1);
@@ -175,13 +176,17 @@ async function generateHTML(){
                     if(HTMLs[key]?.Id.substring(0, 1) == "_"){
                         id = array[i].name + HTMLs[key]?.Id.substring(1); //Не нравиться что используеться .name не универсально скорее всего надо переходить  на глобальный объект и тогда можно получать их имена через key
                     }
-                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});   
+                    if(HTMLs[key]?.Src?.substring(0, 1) == "_"){
+                        src = imgCache[array[i].name + HTMLs[key]?.Src.substring(1)]?.src;
+                    }
+                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src: src, OnClick: new Function(HTMLs[key]?.OnClick)});   
                     IDs.push(id);
                 }
             } 
             else{
                 let id = key.slice(0, -1);
                 let parent = HTMLs[key]?.Parent;
+                let src = imgCache[HTMLs[key]?.Src]?.src;
                 for(let i = 0; i < HTMLs[key].arrayName$; i++){
                     if(HTMLs[key]?.Parent.slice(-1) == "_"){
                         parent = HTMLs[key]?.Parent.slice(0, -1) + i;
@@ -189,12 +194,12 @@ async function generateHTML(){
                     if(HTMLs[key]?.Id.slice(-1) == "_"){
                         id = HTMLs[key]?.Id.slice(0, -1) + i;
                     }
-                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text});
+                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src: src, OnClick: new Function(HTMLs[key]?.OnClick)});
                     IDs.push(id);   
                 } 
             }
         }else{
-            DOM?.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src:imgCache[HTMLs[key]?.Src]?.src});
+            DOM?.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src:imgCache[HTMLs[key]?.Src]?.src, OnClick: new Function(HTMLs[key]?.OnClick)});
             IDs.push(key);
         }
     }
@@ -223,7 +228,6 @@ async function startingCreationGUI(){
     for(let i = 0; i < skills.length; i++){
         let id = skills[i].name;
         DOM.Id(id+"skillID").onclick = function(){skills[i].func();};
-        DOM.Id(id+"skillIMGID").src = imgCache[skills[i].name].src;
         const m = Math.floor(skills[i].time / 60);
         const s = skills[i].time - m * 60;
         toChangeText(id+"skillTimeID", m + ":" + (s < 10 ? "0" + s : s));
@@ -237,31 +241,14 @@ async function DOMInitialization() {
     IDs.forEach(id => {
         ID[id] = DOM.Id(id);
     })
-    ID.hitZoneID.onclick = function(){hit(shovel)};
-    //Жеода
-    ID.geodeConteiner.onclick = function(){geodeHit()};
-    ID.geodeRerolBtn.onclick = function(){reroll("geoda");};
-    ID.menu.onclick = function(){menuTreePump(false)};
-    //Бонусное меню
-    ID.claimAll.onclick = function(){bossLevelBonusBtn("All")};
-    ID.bossLevelBonusRerolBtn.onclick = function(){reroll();};
     //Боковое меню
     for(let i = 0; i < upgrades2.length; i++){
-        let id = upgrades2[i].name;
-        ID[id+"ImgID"].src = imgCache[upgrades2[i].name].src;
-        ID[id+"BtnID"].onclick = function(){upgrades2[i].func();}; 
-        ID[id+"BtnImgID"].src = imgCache.coin.src;
+        ID[upgrades2[i].name+"BtnID"].onclick = function(){upgrades2[i].func();}; 
     }
     // Центральное меню
-    ID.menuForExpBtnClose.onclick = function(){menuTreePump(true)};
-    ID.rebootExpBtnID.onclick = function(){expBonus()}; 
     for(let i = 0; i < upgradesExp.length; i++){
-        let id = upgradesExp[i].name;
-        ID[id+"BtnID"].onclick = function(){upgradesExp[i].func()};
-        ID[id+"ImgBtnID"].src = imgCache.exp.src;
+        ID[upgradesExp[i].name+"BtnID"].onclick = function(){upgradesExp[i].func()};
     }
-    //Офлайн меню
-    ID.claim_offBonus.onclick = function(){offlineProfit2();};
     await new Promise(r => setTimeout(r, 0));
     return Promise.resolve();
 }
@@ -414,7 +401,6 @@ window.addEventListener('pagehide', () => {
         document.getElementById("bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)).click()
     }
     safeInLocalStorage();
-    myLog("pagehide")
 })
 
 function safeInLocalStorage(){
@@ -531,9 +517,7 @@ function geodeHit(){
     geodeHit.count = geodeHit.count || 3;
     geodeHit.count = geodeHit.count <= 0 ? 3 : geodeHit.count-1;
     ID.geodeCraks.style.height = 100-(geodeHit.count*33)+"%";
-    console.time("anim")
     animationOnce(ID.geodeConteiner, 'anim_Trembling');
-    console.timeEnd("anim")
     if(geodeHit.count == 0){
         geodeHit.bool = false;
         const geodeBonus = ["exp", ...[...skills].reverse(), "money"];
@@ -717,7 +701,6 @@ function damage(object){
     animationOnce(ID.layer, "anim_TremblingLayer_"+(Math.floor(Math.random()*4)+1))
     if (switchHit && layer.hp.current > 0){
         if (object.typeValue == "hit"){
-            myLog(handHit + " handHit")
             layer.hp.current -= handHit * damageX2.value;
         } else {
             layer.hp.current -= object.value * (object.level + object.levelTemp) * damageX2.value;
@@ -768,7 +751,7 @@ function animationAutoHit(autoDamage){
                 element.remove();
                 element.removeEventListener('transitionend', opacity); 
             }
-        });
+        }, {once: true});
         console.timeEnd("animationAutoHit")
 }
 

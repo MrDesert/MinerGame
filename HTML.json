@@ -30,6 +30,7 @@
                 "Parent": "_IconID",
                 "Tag": "img",
                 "Id": "_ImgID",
+                "Src": "_",
                 "Class": "sideMenuElementIconLeftIMG unavailable"
             },
         "$_BtnID":{
@@ -37,7 +38,8 @@
             "Parent": "_ID",
             "Tag": "button",
             "Id": "_BtnID",
-            "Class": "sideMenuElementBtn"
+            "Class": "sideMenuElementBtn",
+            "OnClick": "upgradesFunc(upgrades2[i], true)"
         },
             "$_BtnImgID":{
                 "arrayName$": "upgrades2",
@@ -45,6 +47,7 @@
                 "Tag": "img",
                 "Id": "_BtnImgID",
                 "Class": "coinCl",
+                "Src": "coin",
                 "Disabled": "true"
             },
             "$_CostID":{
@@ -106,7 +109,8 @@
             "Parent": "menuForExp",
             "Tag": "button",
             "Class": "btnCloseCircule",
-            "Text": "X"
+            "Text": "X",
+            "OnClick": "menuTreePump(true)"
         },
         "infoExpID": {
             "Parent": "menuForExp",
@@ -121,7 +125,8 @@
                 "Parent": "infoExpID",
                 "Tag": "button",
                 "Class": "centralMenuElementBtn",
-                "Text": "⟳"
+                "Text": "⟳",
+                "OnClick": "expBonus()"
             },
             "rebootExpID": {
                 "Parent": "infoExpID",
@@ -200,7 +205,8 @@
                     "Parent": "_BtnID",
                     "Id": "_ImgBtnID",
                     "Tag": "img",
-                    "Class": "expCl"
+                    "Class": "expCl",
+                    "Src": "exp"
                 },
                 "$_CostID2":{
                     "arrayName$": "upgradesExp",
@@ -260,12 +266,14 @@
             "Parent": "bossLevelBonusConteinerRerollID",
             "Tag": "button",
             "Class": "bossLevelBonusCls", 
-            "Text": "Получить всё"
+            "Text": "Получить всё",
+            "OnClick": "bossLevelBonusBtn('All')"
         },
         "bossLevelBonusRerolBtn": {
             "Parent": "bossLevelBonusConteinerRerollID",
             "Tag": "button",
-            "Class": "bossLevelBonusCls"
+            "Class": "bossLevelBonusCls",
+            "OnClick":"reroll()"
         },
             "bossLevelBonusRerolBtnImgID": {
                 "Parent": "bossLevelBonusRerolBtn",
@@ -308,7 +316,8 @@
         "claim_offBonus": {
             "Parent": "offlineBonusConteinerRerollID",
             "Tag": "button",
-            "Class": "bossLevelBonusCls"
+            "Class": "bossLevelBonusCls",
+            "OnClick": "offlineProfit2()"
         },
 "skillpanel": {
     "Parent": "ret"
@@ -331,7 +340,8 @@
             "Parent": "_skillID",
             "Id": "_skillIMGID",
             "Tag": "img",
-            "Class": "skillIMG"
+            "Class": "skillIMG",
+            "Src": "_"
         },
         "$_skillCountID":{
             "arrayName$": "skills",
@@ -375,7 +385,8 @@
     "Parent": "ret"
 },
     "menu":{
-        "Parent": "leftTopMenu"
+        "Parent": "leftTopMenu",
+        "OnClick": "menuTreePump(false)"
     },
         "bookID":{
             "Parent": "menu",
@@ -388,7 +399,8 @@
             "Hidden": "true"
         },
     "geodeConteiner":{
-        "Parent": "leftTopMenu"
+        "Parent": "leftTopMenu",
+        "OnClick": "geodeHit()"
     },
         "geodeIMG":{
             "Parent": "geodeConteiner",
@@ -413,7 +425,8 @@
         "geodeRerolBtn":{
             "Parent": "geodeConteiner",
             "Tag": "button",
-            "Class": "bossLevelBonusCls"
+            "Class": "bossLevelBonusCls",
+            "OnClick": "reroll('geoda')"
         },
             "geodeRerolBtnImgID":{
                 "Parent": "geodeRerolBtn",
@@ -483,6 +496,7 @@
         "Src": "cracks"
     },
 "hitZoneID":{
-    "Parent": "ret"
+    "Parent": "ret",
+    "OnClick": "hit(shovel)"
 }
 }
