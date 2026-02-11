@@ -1025,15 +1025,14 @@ function dailyGift_F(lastLogon, currentLogon){
             dailyGiftBonus = true;
             ID.offlineBonus.hidden = true;
             for(let i = 0; i < DailyGiftCreate; i++){
-                ID["dailyGiftDaySkillCountID"+i].textContent = Number(DOM.Id("dailyGiftDaySkillCountID"+i).textContent)*weeksDailyGift;
+                const count = ID["dailyGiftDaySkillCountID"+i];
+                count.textContent = Number(count.textContent)*weeksDailyGift;
             }
             ID.dailyGiftMenu.hidden = false;
             for(let i = 0; i < 7; i++){
-                if(i+1 == daysdDailyGift){
-                    ID["dailyGiftDayContID"+i].classList.add("backlight");
-                } else if (i < daysdDailyGift){
-                    ID["dailyGiftDayContID"+i].classList.add("disabled");
-                }
+                const day = ID["dailyGiftDayContID"+i];
+                if(i+1 == daysdDailyGift){day.classList.add("backlight");break} 
+                else if (i <= daysdDailyGift){day.classList.add("disabled")}
             }
         }
     }
@@ -1042,11 +1041,15 @@ function dailyGift_F(lastLogon, currentLogon){
 function claimDailyGift(){
     if(dailyGiftBonus){
     ID.offlineBonus.hidden = false;
-    const keys = Object.keys(dailyGift["day"+daysdDailyGift]);
-    for (let i = 0; i < keys.length; i++){
-        for (let j = 0; j < skills.length; j++){
-            if(skills[j].name == keys[i]){
-                skills[j].count += dailyGift["day"+daysdDailyGift][keys[i]] * weeksDailyGift;
+    const day = dailyGift["day"+daysdDailyGift];
+    const keys = Object.keys(day);
+    for (let i = 0, len = keys.length; i < len; i++){
+        for (let j = 0, len = skills.length; j < len; j++){
+            const key = keys[i];
+            const skill = skills[j];
+            if(skill.name == key){
+                skill.count += day[key] * weeksDailyGift;
+                break;
             }
         }
     }
@@ -1061,9 +1064,7 @@ function claimDailyGift(){
     }
 }   
 function interectiveBonusCreate(){
-    if(!interectiveBonusCreate.bool){
-        const r = Math.floor(Math.random()*15)
-        if(r == 0){
+    if(!interectiveBonusCreate.bool && Math.floor(Math.random()*15) == 0){
             interectiveBonusCreate.bool = true;
             interectiveBonusCreate.time = 30;
         DOM.Create({Parent: "ret", Id: "inerectiveBonusContID2", OnClick: function(){interectiveBonus()}})
@@ -1076,13 +1077,13 @@ function interectiveBonusCreate(){
         id.style.opacity = "100%";
         id.style.scale = 1;
         DOM.Create({Parent: "inerectiveBonusContID2", Id: "inerectiveBonusID", Tag: "img", Src: imgCache.nugget.src})
-        }
     } else {
+        const nugget = DOM.Id("inerectiveBonusContID2");
         if(interectiveBonusCreate.time <= 0){
             interectiveBonusCreate.bool = false;
-            DOM.Id("inerectiveBonusContID2").remove();
+            nugget.remove();
         } else if (interectiveBonusCreate.time <= 5){
-            DOM.Id("inerectiveBonusContID2").style.opacity = "0%";
+            nugget.style.opacity = "0%";
         }
     }
  }
@@ -1091,7 +1092,7 @@ function interectiveBonus(){
  const nugget = DOM.Id("inerectiveBonusContID2");
     let target;
     let notSkill;
- if(rSkill.value == 2 || rSkill.autoHit == true && autoHit <= 0){
+ if(rSkill.value == 2 || rSkill.autoHit && autoHit <= 0){
     const other = Math.floor(Math.random()*10);
     if(other == 0){
         target = ID.menu;
@@ -1122,24 +1123,23 @@ nugget.addEventListener('transitionend', function opacity(e){
  }, {once: true})
 }
 function x2orX4 (){
-    if (profitX2.value > 1 || gold_layer == 0){
-        ID.prize.classList.add("strike");
-        const factor = profitX2.value * (gold_layer == 0 ? 2 : 1);
-        ID.lucky.textContent = "X"+factor;
-        ID.prize2.textContent = toCompactNotation(prize.profitC * factor);
-    }else{
-        ID.prize.classList.remove("strike");
-        ID.lucky.textContent = "";
-        ID.prize2.textContent = "";
-    }
+    const x2 = profitX2.value;
+    const gold = gold_layer == 0;
+    const bool = x2 > 1 || gold;
+    const factor = x2 * (gold ? 2 : 1);
+    ID.prize2.textContent = bool ? toCompactNotation(prize.profitC * factor) : "";
+    ID.lucky.textContent = bool ? "X"+factor : "";
+    ID.prize.classList.toggle("strike", bool);
 }
 function skillsUpdate(){
-        for(let i = 0; i < skills.length; i++){
-            if(skills[i].value == 2){
-                ID[skills[i].name+"skillID"].classList.add("backlight");
-                ID[skills[i].name+"skillTimeID"].classList.add("timer");
+        for(let i = 0, len = skills.length; i < len; i++){
+            const skill = skills[i];
+            const name = skill.name;
+            if(skill.value == 2){
+                ID[name+"skillID"].classList.add("backlight");
+                ID[name+"skillTimeID"].classList.add("timer");
             }
-            ID[skills[i].name+"skillCountID"].textContent = skills[i].count;
+            ID[name+"skillCountID"].textContent = skill.count;
         }
 }
 function updateInfo(){
@@ -1158,3 +1158,17 @@ function updateInfo(){
     }
     console.timeEnd('update'); // ~1-3ms
 }
+// tets();for(let i = 0, len = skills.length; i < len; i++){
+// function tets(){
+//     const array = [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0]
+//     console.time("notCashe")
+//     for(let i = 0; i<array.length; i++){
+
+//     }
+//     console.timeEnd("notCashe")
+//     console.time("Cashe")
+//     for(let i = 0, len = array.length ; i<array.length; i++){
+        
+//     }
+//     console.timeEnd("Cashe")
+// }
