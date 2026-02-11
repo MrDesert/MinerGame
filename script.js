@@ -118,8 +118,6 @@ const autohitSkill = [emergenceSpeedX2, fallSpeedX2, damageX2]
 const skills = [profitX2, emergenceSpeedX2, damageX2, fallSpeedX2, multiSkill];
 window.skills = skills;
 
-let currentSecondsStart, currentSeconds;
-
 let bossLevel = 1;
 const bossLevelRatio = 10;
 let moneyBonus, trw, timer;
@@ -283,6 +281,7 @@ function startingValues(){
     for(let i = 0; i < skills.length; i++){
         toChangeText(skills[i].name + "skillTimeID", numberInTime(skills[i].time, "m:S"));
     }
+    ID.depthLevel.textContent = layer.level;
     upgradesFuncInfo();
     openingLayerUp();
     skillsUpdate();
@@ -374,6 +373,7 @@ function loadLocalStorage(){
     ID.ret.style.backgroundPositionY = layer.level*-200+"px";
     dailyGift_F(new Date(localStorage.getItem("lastLogon")), new Date());
     localStorage.setItem("lastLogon", new Date());
+    ID.depthLevel.textContent = layer.level;
     updateInfo();
     }
     console.timeEnd("load")
@@ -444,13 +444,11 @@ function tick(time){
 }
 
 function textTimer(){
-    if(HTMLLoaded){
-    if (auto_bonus_duration.enabled == true && rerollTimer && !ID.bossLevelBonus.hidden){
-        currentSeconds = new Date().getSeconds();
-        let raznica = auto_bonus_duration.value - (currentSeconds - currentSecondsStart);
-        if(raznica > 60){raznica -= 60};
-        ID.autoSelectValue.textContent = raznica;
-    } else {ID.autoSelectValue.textContent = ""}
+    if (HTMLLoaded && auto_bonus_duration.enabled == true && rerollTimer && !ID.bossLevelBonus.hidden){
+        if(textTimer.sec <= 0){
+            ID["bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)].click();
+        }
+        ID.autoSelectValue.textContent = textTimer.sec--;
     }
 }
 
@@ -631,7 +629,7 @@ function expChanges(e){
 
 function expCalc(){
     let expProfit = money*moneyExp + layer.level*layer.expBonus || 0;
-    for(let i = 0; i < upgrades2.length; i++){
+    for(let i = 0, len = upgrades2.length; i < len; i++){
         expProfit += upgrades2[i].level*upgrades2[i].expBonus;
     }
     expProfit = Math.round(expProfit * xp_gain.value);
@@ -639,87 +637,83 @@ function expCalc(){
     return expProfit;
 }
 
+function hpMove(){
+    const shift = 100/layer.hp.round * layer.hp.current;
+    ID.hpBar.style.width = shift+"%";
+    ID.cracks.style.height = 100-shift+"%";
+}
+
 function expBonus(){
-    let exp = expCalc();
-    expChanges(exp);
-    let m = money;
+    expChanges(expCalc());
     startingValues();    
-    money = Math.round(m * money_keep.value);
+    money = Math.round(money * money_keep.value);
     finance(0);
     ID.ret.style.backgroundPositionY = "0%";
-    ID.hpBar.style.width = 100/layer.hp.round * layer.hp.current+ "%";
-    ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%";
+    hpMove();
     ID.counterReboot.textContent = expBonus.count=(expBonus.count || 0) + 1;
     updateInfo();
     ysdk?.adv?.showFullscreenAdv?.();
 }
 
-function hit(object) {
+function hit(obj) {
     if (switchHit){
-        if(object.typeValue == "hit"){
-            damage(object);
+        if(obj.typeValue == "hit"){
+            damage(obj);
             ID.counter.textContent = hit.count=(hit.count || 0) + 1;
         }
-        else {
-            if((object.level + object.levelTemp) > 0){
-                animationAutoHit(object);
-            }
-        } 
+        else if((obj.level + obj.levelTemp) > 0){animationAutoHit(obj)}
     }
 }
 
-function damage(object){
-    console.time("damage")
+function damage(obj){
     animationOnce(ID.layer, "anim_TremblingLayer_"+(Math.floor(Math.random()*4)+1))
     if (switchHit && layer.hp.current > 0){
-        if (object.typeValue == "hit"){
-            layer.hp.current -= handHit * damageX2.value;
-        } else {
-            layer.hp.current -= object.value * (object.level + object.levelTemp) * damageX2.value;
-        }
-        ID.hpBar.style.width = 100/layer.hp.round * layer.hp.current + "%";
-        ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%";
+        const minus = obj.typeValue == "hit" ? handHit : obj.value * (obj.level + obj.levelTemp);
+        layer.hp.current -= minus * damageX2.value;
+        hpMove();
     }
     finishLevel();
-    console.timeEnd("damage")
 }
 
 function animationAutoHit(autoDamage){
     console.time("animationAutoHit")
     let id = "fallTool" + countAutoHit++;
-    let id2 = "fallToolTailMeteor" + countAutoHit
-    DOM.Create({Parent: "ret", Tag: "img", Id: id2, Class: "imgTailMeteor"});
-    DOM.Create({Parent: "ret", Tag: "img", Id: id, Class: "imgAutoHit"});
     let rotate = Math.floor(Math.random()*80)+1060 + autoDamage.rotate;
-        let tailMeteor = DOM.Id(id2);
+        let leftRandom = (Math.floor(Math.random()*94)+1)+"%";
+        let id2, tailMeteor;
+        if(fallSpeedX2.value == 2){
+            id2 = "fallToolTailMeteor" + countAutoHit
+            DOM.Create({Parent: "ret", Tag: "img", Id: id2, Class: "imgTailMeteor", Src: imgCache.tailMeteor.src});
+            tailMeteor = DOM.Id(id2);
+            rotate = Math.floor(Math.random()*80)+700 + autoDamage.rotate;
+            tailMeteor.offsetHeight;
+            tailMeteor.classList.add("imgTailMeteor"+Math.round(Math.random()*1));
+            tailMeteor.style.left = "calc("+leftRandom+" - 40px)";
+            tailMeteor.style.top = "calc(65% - 110px)";
+        }
+        DOM.Create({Parent: "ret", Tag: "img", Id: id, Class: "imgAutoHit", Src: imgCache[autoDamage.autoImg].src});
         let element = DOM.Id(id);
         if(fallSpeedX2.value == 2){
-            rotate = Math.floor(Math.random()*80)+700 + autoDamage.rotate;
             element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
-            tailMeteor.classList.add("imgTailMeteor"+Math.round(Math.random()*1));
-            tailMeteor.src = imgCache.tailMeteor.src;
         }
-        element.src = imgCache[autoDamage.autoImg].src;
         if(damageX2.value == 2){
             element.classList.add("redShadow");
         }
-        let leftRandom = (Math.floor(Math.random()*94)+1)+"%";
-        let leftRandom2 = "calc("+leftRandom+" - 40px)"
-        tailMeteor.style.left = leftRandom2;
         element.style.left = leftRandom;
         element.offsetHeight;
         element.style.transform = "rotate("+rotate+"deg)";
-        tailMeteor.style.top = "calc(65% - 110px)";
         element.style.top = "65%";
         element.addEventListener('transitionend', function opacity(e){
             if (e.propertyName === 'top'){
-                tailMeteor.style.opacity = "0%";
-                tailMeteor.classList.add("death");
+                if (tailMeteor) {
+                    tailMeteor.style.opacity = "0%";
+                    tailMeteor.classList.add("death");
+                }
                 element.style.opacity = "0%";
                 element.classList.add("death");
                 damage(autoDamage);
             } else if (e.propertyName === 'opacity'){
-                tailMeteor.remove();
+                tailMeteor?.remove();
                 element.remove();
                 element.removeEventListener('transitionend', opacity); 
             }
@@ -755,6 +749,7 @@ function finishLevel(){
             bossLevelBonus();
             safeInLocalStorage();
         }
+        ID.depthLevel.textContent = layer.level;
     }
 } 
 
@@ -780,7 +775,7 @@ function openingLayerUp(){
     for (let i = 0; i < upgrades2.length; i++){
         if (layer.level >= upgrades2[i].openingLayer){
             switchingElementMenu(true, upgrades2[i]);
-        }
+        } else{break}
     }
 }
 
@@ -818,12 +813,12 @@ function upgradesFunc(item, bool) {
             case "hit": handHit += item.value; break;
             case "profit": prize.profit++; prize.profitC++; break;
         }
+        ID.hit.textContent = handHit;
         item.level++;
         colorNumbers(ID[name+"LevelID"], "green");
     }
     upgradesFuncInfo()
     skillSwitch();
-    updateInfo();
 }
 function upgradesFuncInfo(){
     for(let i = 0; i < upgrades2.length; i++){
@@ -920,10 +915,10 @@ function bossLevelBonus(){
         ID[upgrades2[i].name+"BtnID"].disabled = true;
     }//как будто бы вообще это не нужно
     if (auto_bonus_duration.enabled){
-        ID.time.hidden = false;
-        currentSecondsStart = new Date().getSeconds();
         rerollTimer = true;
-        timer = setTimeout(function(){ID["bossLevelBonusContainerID" + Math.floor(Math.random()*trw.length)].click()}, auto_bonus_duration.value*1000);
+        textTimer.sec = auto_bonus_duration.value;
+        textTimer();
+        ID.time.hidden = false;
     }
     ID.bossLevelBonusRerolBtn.hidden = allBonusFree;
 }
@@ -1156,9 +1151,7 @@ function updateInfo(){
         ID.geodeIMG.classList.toggle('geode-glow', geodeBool); 
         ID.geodeIMG.classList.toggle('grayScale', !geodeBool); 
         ID.prize.textContent = toCompactNotation(prize.profitC);
-        ID.depthLevel.textContent = layer.level;
         autoHit = 0;
-        ID.hit.textContent = handHit;
         ID.autoHitInfo.textContent = Math.round(autoHit*100)/100 + " hp/s";
         ID.hp.textContent = Math.floor(layer.hp.current);
         ID.rebootExpCost.textContent = expCalc();
