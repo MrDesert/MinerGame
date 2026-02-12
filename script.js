@@ -120,7 +120,7 @@ window.skills = skills;
 
 let bossLevel = 1;
 const bossLevelRatio = 10;
-let moneyBonus, trw, timer;
+let moneyBonus, trw;
 let layerUpIntervalID;
 
 console.time("game")
@@ -593,7 +593,6 @@ function reroll(t){
     pausescreen = true;
     if(t != "geoda"){
     rerollTimer = false;
-    clearTimeout(timer);
     }
     ysdk.adv.showRewardedVideo?.({
         callbacks: {
@@ -937,24 +936,23 @@ function bossLevelBonusRandom(switchsOn){
 }
 
 function bossLevelBonusBtn(bonus, count){
-    clearTimeout(timer);
-    if(bonus === "All"){
-        if(allBonusFree){
-            allBonusFree = false;
-            ID.claimAll.disabled = true;
-            ID.claimAll.classList.add("disabled");
-            for (let i = 0; i < trw.length; i++){
-                simulateClick("#bossLevelBonusIMGID" + i);
-            }
-        } 
+    if(bonus === "All" && allBonusFree){
+        allBonusFree = false;
+        const claimAll = ID.claimAll;
+        claimAll.disabled = true;
+        claimAll.classList.add("disabled");
+        for (let i = 0, len = trw.length; i < len; i++){
+            simulateClick("#bossLevelBonusIMGID" + i);
+        }
     } else if(bonus == "moneyBonus"){
         finance(Math.floor(moneyBonus));
     } else {
-        for (let i = 0; i < upgrades2.length; i++){
-            if (bonus == upgrades2[i].name){
+        for (let i = 0, len = upgrades2.length; i < len; i++){
+            const upgr = upgrades2[i];
+            if (bonus == upgr.name){
                 // upgrades[i].freeUp = true;
                 for (let j = 0; j < count; j++){
-                    upgrades2[i].func(true);
+                    upgr.func(true);
                 }
             } 
         }
@@ -970,22 +968,23 @@ function menuTreePump(open){
 
 function offlineProfit(offlineSeconds){
     offlineSeconds = offlineSeconds > 43200 ? 43200 : offlineSeconds;
-    const h = Math.floor(offlineSeconds/3600);
-    const m = Math.floor((offlineSeconds - h*3600) /60);
-    const s = offlineSeconds - h*3600 - m*60
-    const H = h > 0 ? h + "h " : "" ;
-    const M = m > 0 ? m + "m " : "" ;
-    const S = s > 0 ? s + "s" : "";
-    ID.timeOffline.textContent = H + M + S;
+    ID.timeOffline.textContent = numberInTime(offlineSeconds);
+    // const h = Math.floor(offlineSeconds/3600);
+    // const m = Math.floor((offlineSeconds - h*3600) /60);
+    // const s = offlineSeconds - h*3600 - m*60
+    // const H = h > 0 ? h + "h " : "" ;
+    // const M = m > 0 ? m + "m " : "" ;
+    // const S = s > 0 ? s + "s" : "";
+    // ID.timeOffline.textContent = H + M + S;
     const hours = Math.ceil(offlineSeconds/3600)
     const hourlyRate = [null, 1, 0.9, 0.81, 0.73, 0.66, 0.59, 0.53, 0.48, 0.43, 0.39, 0.35, 0.31];
     const damage = autoHit + handHit/10; //Офлайн урон
     const secForWin = layer.hp.calc / damage; //Кол-во секунд на 1 слой
-    for (let i = 0; i < hours; i++){
-        let offlineSec = offlineSeconds
-        const sec = offlineSec <= 3600 ? offlineSec : 3600;
-        offBonus = offBonus + sec / secForWin * prize.profitC * hourlyRate[i+1] * 0.01; // итогове количество монет с учётом часовой ставки и процента
-        if(offlineSec > 3600){offlineSec -= 3600}
+    let offSec = offlineSeconds;
+    const divider = prize.profitC * 0.01 / secForWin;
+    for (let i = 0; i < hours && offSec > 0; i++){
+        offBonus += Math.min(offSec, 3600) * divider * hourlyRate[i+1]; // итогове количество монет с учётом часовой ставки и процента
+        offSec -= 3600;
     }
     offBonus = Math.ceil(offBonus);
     if(offBonus > 0 && offlineSeconds > 4){
@@ -1001,7 +1000,7 @@ function offlineProfit2(){
     finance(offBonus);
     offBonus = 0;
     ID.offlineBonus.hidden = true;
-    if(bossBonus){ID.bossLevelBonus.hidden = false}
+    if(bossBonus){ID.bossLevelBonus.hidden = false};
     offlineBonus = false;
     switchsHit();
 }
@@ -1088,39 +1087,39 @@ function interectiveBonusCreate(){
     }
  }
 function interectiveBonus(){
- const rSkill = skills[Math.floor(Math.random()*skills.length)];
- const nugget = DOM.Id("inerectiveBonusContID2");
+    const rSkill = skills[Math.floor(Math.random()*skills.length)];
+    const nugget = DOM.Id("inerectiveBonusContID2");
     let target;
     let notSkill;
- if(rSkill.value == 2 || rSkill.autoHit && autoHit <= 0){
-    const other = Math.floor(Math.random()*10);
-    if(other == 0){
-        target = ID.menu;
-        notSkill = "book";
-    }else if(other == 1 || other == 2){
-        target = ID.geodeConteiner;
-        notSkill = "geode";
-    }else{
-        target = ID.coin;
-        notSkill = "coin";
-    }
- } else{
-    target = ID[rSkill.name+"skillIMGID"];
- }
-flightToTarget(nugget, target);
-nugget.style.opacity = "30%";
-nugget.addEventListener('transitionend', function opacity(e){
-    if(notSkill){
-        if(notSkill == "coin"){finance(Math.floor(money/10)+1);
-        } else if (notSkill == "book"){expChanges(1);
-        } else {geodeCount++}
+    if(rSkill.value == 2 || rSkill.autoHit && autoHit <= 0){
+        const other = Math.floor(Math.random()*10);
+        if(other == 0){
+            target = ID.menu;
+            notSkill = "book";
+        }else if(other == 1 || other == 2){
+            target = ID.geodeConteiner;
+            notSkill = "geode";
+        }else{
+            target = ID.coin;
+            notSkill = "coin";
+        }
     } else{
-        rSkill.count += 1;
-        skill(rSkill);
+        target = ID[rSkill.name+"skillIMGID"];
     }
-    nugget.remove();
-    interectiveBonusCreate.bool = false;
- }, {once: true})
+    flightToTarget(nugget, target);
+    nugget.style.opacity = "30%";
+    nugget.addEventListener('transitionend', function opacity(e){
+        if(notSkill){
+            if(notSkill == "coin"){finance(Math.floor(money/10)+1);
+            } else if (notSkill == "book"){expChanges(1);
+            } else {geodeCount++}
+        } else{
+            rSkill.count += 1;
+            skill(rSkill);
+        }
+        nugget.remove();
+        interectiveBonusCreate.bool = false;
+    }, {once: true})
 }
 function x2orX4 (){
     const x2 = profitX2.value;
@@ -1160,7 +1159,7 @@ function updateInfo(){
 }
 // tets();for(let i = 0, len = skills.length; i < len; i++){
 // function tets(){
-//     const array = [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0]
+//     const array = [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0]
 //     console.time("notCashe")
 //     for(let i = 0; i<array.length; i++){
 
