@@ -55,17 +55,16 @@ const shovel = {
     openingLayer: 1, 
     switch: "off", 
     expBonus: 0.05, 
-    func: (b) => upgradesFunc(shovel, b), 
-    freeUp: false
+    func: (b) => upgradesFunc(shovel, b)
 };
-const minerShovel = {name: "minerShovel", cost: {base: 100, calc: 100, current: 100}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: (b) => upgradesFunc(minerShovel, b), freeUp: false, autoImg: "shovel", rotate: -80};
-const helmet = {name: "helmet", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(helmet, b), freeUp: false};
-const pickaxe = {name: "pickaxe", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(pickaxe, b), freeUp: false};
-const minerPickaxe = {name: "minerPickaxe", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: (b) => upgradesFunc(minerPickaxe, b), freeUp: false, autoImg: "pickaxe", rotate: 0};
-const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: (b) => upgradesFunc(drill, b), freeUp: false};
-const minerDrill = {name: "minerDrill", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: (b) => upgradesFunc(minerDrill, b), freeUp: false, autoImg: "drill", rotate: -60};
-const jackhammer = {name: "jackhammer", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: (b) => upgradesFunc(jackhammer, b), freeUp: false};
-const minerJackhammer = {name: "minerJackhammer", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: (b) => upgradesFunc(minerJackhammer, b), freeUp: false, autoImg: "jackhammer", rotate: -60}
+const minerShovel = {name: "minerShovel", cost: {base: 100, calc: 100, current: 100}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 1.6, value: 1, openingLayer: 10, switch: "off", expBonus: 0.1, func: (b) => upgradesFunc(minerShovel, b), autoImg: "shovel", rotate: -80};
+const helmet = {name: "helmet", cost: {base: 600, calc: 600, current: 600}, level: 0, typeValue: "profit", value: 1, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(helmet, b)};
+const pickaxe = {name: "pickaxe", cost: {base: 500, calc: 500, current: 500}, level: 0, typeValue: "hit", value: 5, openingLayer: 50, switch: "off", expBonus: 0.15, func: (b) => upgradesFunc(pickaxe, b)};
+const minerPickaxe = {name: "minerPickaxe", cost: {base: 5000, calc: 5000, current: 5000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 2.8, value: 7, openingLayer: 100, switch: "off", expBonus: 0.2, func: (b) => upgradesFunc(minerPickaxe, b), autoImg: "pickaxe", rotate: 0};
+const drill = {name: "drill", cost: {base: 40000, calc: 40000, current: 40000}, level: 0, typeValue: "hit", value: 20, openingLayer: 200, switch: "off", expBonus: 0.3, func: (b) => upgradesFunc(drill, b)};
+const minerDrill = {name: "minerDrill", cost: {base: 120000, calc: 120000, current: 120000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 4.2, value: 45, openingLayer: 300, switch: "off", expBonus: 0.4, func: (b) => upgradesFunc(minerDrill, b), autoImg: "drill", rotate: -60};
+const jackhammer = {name: "jackhammer", cost: {base: 250000, calc: 250000, current: 250000}, level: 0, typeValue: "hit", value: 75, openingLayer: 450, switch: "off", expBonus: 0.5, func: (b) => upgradesFunc(jackhammer, b)};
+const minerJackhammer = {name: "minerJackhammer", cost: {base: 500000, calc: 500000, current: 500000}, level: 0, levelTemp: 0, typeValue: "auto", timeHit: 5.8, value: 250, openingLayer: 600, switch: "off", expBonus: 0.7, func: (b) => upgradesFunc(minerJackhammer, b), autoImg: "jackhammer", rotate: -60}
 
 const upgrades2 = [shovel, minerShovel, helmet, pickaxe, minerPickaxe, drill, minerDrill, jackhammer, minerJackhammer]; //массив с объектами улучшений;
 window.upgrades2 = upgrades2;
@@ -857,11 +856,15 @@ function upgradesExpFunc(upgrade){
     upgradesExpFuncInfo();
 }
 function upgradesExpFuncInfo() {
-    for(let i = 0; i < upgradesExp.length; i++){
-        let name = upgradesExp[i].name;
-        ID[name+"InfoValueID"].textContent = upgradesExp[i].enabled == false? "-" + upgradesExp[i].parameter.type : Math.round(upgradesExp[i].parameter.value*100)/100 + upgradesExp[i].parameter.type;
-        ID[name+"CostID"].textContent = upgradesExp[i].level < 10 ? Math.floor(upgradesExp[i].cost) : "Максимум";
-        ID[name+"LevelID"].textContent = upgradesExp[i].level;
+    for(let i = 0, len = upgradesExp.length; i < len; i++){
+        const upgarde = upgradesExp[i];
+        const par = upgarde.parameter;
+        const type = par.type;
+        const name = upgarde.name;
+        const level = upgarde.level;
+        ID[name+"InfoValueID"].textContent = upgarde.enabled ? Math.round(par.value*100)/100 + type : "-" + type;
+        ID[name+"CostID"].textContent = level < 10 ? Math.floor(upgarde.cost) : "Максимум";
+        ID[name+"LevelID"].textContent = level;
     }
 }
 
@@ -871,17 +874,17 @@ function bossLevelBonus(){
     trw = [];
     let switchsOn = 0;
     let lowCost;
-    for (let i = 0; i < upgrades2.length; i++){
-        if(upgrades2[i].switch == "on"){
-            moneyBonus += upgrades2[i].cost.current;
-            if (!lowCost || lowCost > upgrades2[i].cost.current){
-                lowCost = upgrades2[i].cost.current;
-            }
+    for (let i = 0, len = upgrades2.length; i < len; i++){
+        const upgrade = upgrades2[i];
+        const cost = upgrade.cost.current;
+        if(upgrade.switch == "on"){
+            moneyBonus += cost;
+            if (!lowCost || lowCost > cost){lowCost = cost}
             switchsOn++;
         }
     }
     moneyBonus = toRoundoff(Math.ceil(Math.random()*(moneyBonus / switchsOn)) * 2 + 1);
-    if(moneyBonus < lowCost){moneyBonus = lowCost + moneyBonus};
+    if(moneyBonus < lowCost){moneyBonus += lowCost};
 
     let bonus1 = bossLevelBonusRandom(switchsOn);
     let bonus2 = bossLevelBonusRandom(switchsOn);
@@ -891,28 +894,20 @@ function bossLevelBonus(){
     if(bonus3 === bonus2 || bonus3 === bonus1){bonus3 = moneyBonus;}
     trw.push(bonus1, bonus2, bonus3);
 
-    for (let i = 0; i < trw.length; i++){
-        let valueBtn, valueLevel, title, img
-        if (trw[i] == moneyBonus){
-            valueBtn = "moneyBonus";
-            valueLevel = ""
-            title = "+"+toCompactNotation(trw[i]);
-            img = imgCache.coin.src;
-        } else{
-            valueBtn = trw[i].name;
-            valueLevel = Math.floor(Math.random()*(trw[i].level/20)) + 1;
-            title = "+" + valueLevel;
-            img = imgCache[trw[i].name].src;
-        }
+    for (let i = 0, len = trw.length; i < len; i++){
+        const trwI = trw[i];
+        const name = trwI.name;
+        const bool = trwI == moneyBonus;
+        const btn = bool ? "moneyBonus" : name;
+        const level = bool ? "" : Math.floor(Math.random()*(trwI.level/20)) + 1;
+        const title = bool ? "+"+toCompactNotation(trwI) : "+" + level;
+        const img = bool ? imgCache.coin.src : imgCache[name].src;
         ID["bossLevelBonusIMGID"+i].src = img;
-        ID["bossLevelBonusContainerID"+i].onclick = ()=> bossLevelBonusBtn(valueBtn, valueLevel);
+        ID["bossLevelBonusContainerID"+i].onclick = ()=> bossLevelBonusBtn(btn, level);
         ID["bossLevelBonusValueID"+i].textContent = title;
     }
     switchsHit();
     bossBonus = true;
-    for (let i = 0; i < upgrades2.length; i++){
-        ID[upgrades2[i].name+"BtnID"].disabled = true;
-    }//как будто бы вообще это не нужно
     if (auto_bonus_duration.enabled){
         rerollTimer = true;
         textTimer.sec = auto_bonus_duration.value;
@@ -924,14 +919,9 @@ function bossLevelBonus(){
 
 function bossLevelBonusRandom(switchsOn){
     let random = Math.ceil(Math.random()*mathTriangularNumber(switchsOn));
-    let test = switchsOn;
-    for(let i = 0; i < test; i++){
-        if(random - switchsOn <= 0 ){
-            return upgrades2[i];
-        }  else {
-            random -= switchsOn;
-            switchsOn--;
-        }
+    for(let i = 0, m = switchsOn; i < m; i++){
+        random -= switchsOn--;
+        if(random <= 0 ) return upgrades2[i];
     }
 }
 
@@ -950,7 +940,6 @@ function bossLevelBonusBtn(bonus, count){
         for (let i = 0, len = upgrades2.length; i < len; i++){
             const upgr = upgrades2[i];
             if (bonus == upgr.name){
-                // upgrades[i].freeUp = true;
                 for (let j = 0; j < count; j++){
                     upgr.func(true);
                 }
