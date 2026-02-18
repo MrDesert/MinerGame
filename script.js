@@ -728,14 +728,16 @@ function finishLevel(){
     if (layer.hp.current <= 0){
         layerAnimat = true;
         switchsHit();
-        ID.layerAll.style.top = "100%";
-        ID.layerAll.style.transition = "none";
+        const all = ID.layerAll;
+        all.style.top = "100%";
+        all.style.transition = "none";
         const death = document.querySelectorAll(".death");
             death.forEach( det => {det.remove()});
         ID.cracks.style.height = "0%";
         finance(Math.floor(prize.profitC * profitX2.value * (gold_layer == 0 ? 2 : 1)));
-        layer.hp.calc = softProgress(layer.hp.calc, -1);
-        layer.hp.round = layer.hp.current = Math.floor(layer.hp.calc * layer_hardness.value);
+        const hp = layer.hp;
+        hp.calc = softProgress(hp.calc, -1);
+        hp.round = hp.current = Math.floor(hp.calc * layer_hardness.value);
         prize.profit = prize.profitC = Math.round(softProgress(prize.profit, -2));
         prize.profitC = Math.floor(prize.profitC * mining_profit.value);
         layer.level++;
@@ -752,57 +754,57 @@ function finishLevel(){
 } 
 
 function layerUp(){
-    let mirror = Math.round(Math.random()*1) == 1 ? 1 : -1;
-    gold_layer = Math.floor(Math.random()*15);
-    ID.layerGold.hidden = gold_layer == 0 ? false : true;
+    const mirror = "scaleX("+ (Math.random() > 0.5 ? 1 : -1) +")";
+    const gold = ID.layerGold;
+    const all = ID.layerAll;
+    gold.hidden = Math.floor(Math.random()*15) != 0;
+    gold.style.transform = mirror;
     x2orX4();
-    ID.layerGold.style.transform = "scaleX("+ mirror +")";
-    ID.layerAll.offsetHeight;
-    ID.layerAll.style.transform = "scaleX("+ mirror +")";
-    ID.cracks.style.transform = "scaleX("+ mirror +")";
-    ID.layerAll.style.transition = "top 0.4s linear"
-    ID.layerAll.style.top = "0px";
+    ID.cracks.style.transform = mirror;
+    all.offsetHeight;
+    all.style.transform = mirror;
+    all.style.transition = "top 0.4s linear"
+    all.style.top = "0px";
     ID.ret.style.backgroundPositionY = layer.level*-200+"px";
-    ID.layerAll.addEventListener('transitionend', (e) => {
+    all.addEventListener('transitionend', (e) => {
         layerAnimat = false;
         switchsHit(); 
     }, {once: true});
 }
 
 function openingLayerUp(){
-    for (let i = 0; i < upgrades2.length; i++){
-        if (layer.level >= upgrades2[i].openingLayer){
-            switchingElementMenu(true, upgrades2[i]);
+    for (let i = 0, len = upgrades2.length; i < len; i++){
+        const upg = upgrades2[i];
+        if (layer.level >= upg.openingLayer){
+            switchingElementMenu(true, upg);
         } else{break}
     }
 }
 
 function onOffBtn(){
-    for (let i = 0; i < upgrades2.length; i++){
-        ID[upgrades2[i].name+"BtnID"].disabled = !(money >= upgrades2[i].cost.current && upgrades2[i].switch == "on");
-    }
-    for (let i = 0; i < upgradesExp.length; i++){
-        ID[upgradesExp[i].name+"BtnID"].disabled = exp >= upgradesExp[i].cost ? false : true;
-    }
+    upgrades2.forEach(upg => {ID[upg.name+"BtnID"].disabled = !(money >= upg.cost.current && upg.switch == "on")});
+    upgradesExp.forEach(upg => {ID[upg.name+"BtnID"].disabled = exp < upg.cost});
 }
 
 function switchingElementMenu(switchType, btn){
+    const name = btn.name;
     btn.switch = switchType? "on" : "off";
-    ID[btn.name+"ID"].classList.toggle("disabled", !switchType);
-    ID[btn.name+"ImgID"].classList.toggle("unavailable", !switchType)
+    ID[name+"ID"].classList.toggle("disabled", !switchType);
+    ID[name+"ImgID"].classList.toggle("unavailable", !switchType)
     onOffBtn();
 }
 
 function upgradesFunc(item, bool) {
-    let name = item.name;
-    let cost = item.cost;
-    if(bool == true){up();
-    } else 
-        if(money >= cost.current){
+    const name = item.name;
+    const cost = item.cost;
+    const cur = cost.current;
+    const calc = cost.calc;
+    if(bool){up();
+    } else if(money >= cur){
         up();
-        finance(-Math.floor(cost.current));
-        cost.calc = Math.round(softProgress(cost.calc, upgrades2.indexOf(item)-1));
-        cost.current = Math.round(cost.calc * upgrade_cost.value);
+        finance(-Math.floor(cur));
+        cost.calc = Math.round(softProgress(calc, upgrades2.indexOf(item)-1));
+        cost.current = Math.round(calc * upgrade_cost.value);
         colorNumbers(ID[name+"CostID"], "red");
         onOffBtn();
     }
@@ -819,36 +821,41 @@ function upgradesFunc(item, bool) {
     skillSwitch();
 }
 function upgradesFuncInfo(){
-    for(let i = 0; i < upgrades2.length; i++){
-        ID[upgrades2[i].name+"CostID"].textContent = toCompactNotation(upgrades2[i].cost.current);
-        ID[upgrades2[i].name+"LevelID"].textContent = upgrades2[i].level;
-        if(upgrades2[i].typeValue == "auto"){
-            let damage = Math.round(upgrades2[i].value*upgrades2[i].level/(auto_mine_speed.parameter.value*upgrades2[i].timeHit)*100)/100;
-            ID[upgrades2[i].name+"ValueID"].textContent = damage+" hp/s";
+    const value = auto_mine_speed.parameter.value;
+    for(let i = 0, len = upgrades2.length; i < len; i++){
+        const upg = upgrades2[i];
+        const name = upg.name;
+        ID[name+"CostID"].textContent = toCompactNotation(upg.cost.current);
+        ID[name+"LevelID"].textContent = upg.level;
+        if(upg.typeValue == "auto"){
+            let damage = Math.round(upg.value*upg.level/(value*upg.timeHit)*100)/100;
+            ID[name+"ValueID"].textContent = damage+" hp/s";
             autoHit += damage;
         }
     } 
 }
 
 function upgradesExpFunc(upgrade){
-    for(let i = 0; i < upgradesExp.length; i++){
-        let name = upgradesExp[i].name;
-        let cost = upgradesExp[i].cost;
+    const value = upgrade_cost.value;
+    for(let i = 0, len = upgradesExp.length; i < len; i++){
+        const upExp = upgradesExp[i];
+        const par = upExp.parameter;
+        const name = upExp.name;
+        const cost = upExp.cost;
         if(upgrade == name && exp >= cost){
             expChanges(-Math.floor(cost));
-            upgradesExp[i].cost *= 2;
-            upgradesExp[i].level++;
-            upgradesExp[i].parameter.value += upgradesExp[i].parameter.step;
-            upgradesExp[i].value += upgradesExp[i].valueStep;
+            upExp.cost *= 2;
+            upExp.level++;
+            par.value += par.step;
+            upExp.value += upExp.valueStep;
             if(upgrade == "upgrade_cost"){
-                for(let i = 0; i < upgrades2.length; i++){
-                    upgrades2[i].cost.current = Math.round(upgrades2[i].cost.calc * upgrade_cost.value);
+                for(let j = 0, len2 = upgrades2.length; j < len2; j++){
+                    const upCost = upgrades2[j].cost;
+                    upCost.current = Math.round(upCost.calc * value);
                 }
-            } else if (upgrade == "auto_bonus_duration"){
-                if (!auto_bonus_duration.enabled){auto_bonus_duration.enabled = true;};
-            } 
+            } else if (upgrade == "auto_bonus_duration"){auto_bonus_duration.enabled = true;} 
         } 
-        if (upgradesExp[i].level >= 10){
+        if (upExp.level >= 10){
             ID[name+"ID"].classList.add('disabled');
             ID[name+"BtnID"].disabled = true;
         }
