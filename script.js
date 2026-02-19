@@ -27,7 +27,10 @@ let countAutoHit = 0;
 
 let geodeCount = 1;
 
-
+const wallet = {name: "wallet", value: money};
+const handHitS = {name: "handHitS", value: money};
+const stats = [wallet, handHitS];
+window.stats = stats;
 //C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое) P-Previos(Предыдующий)
 let layer = {
     name: "layer", 
@@ -130,7 +133,8 @@ loadHTMLs().then(()=>{
                 DOMInitialization().then(()=>{
                     loadLangTexts().then(()=>{
                         HTMLLoaded = true; 
-                        textsLoaded = true; 
+                        textsLoaded = true;
+                        myLog(textsLoaded) 
                         changeTextsLang(); 
                         loadedGame();
                         tick(performance.now());
@@ -180,7 +184,7 @@ async function generateHTML(){
                     if(HTMLs[key]?.OnClick?.substring(0, 1) == "$"){
                         onclick = array[i][HTMLs[key].OnClick.substring(1)];
                     }
-                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src: src, OnClick: onclick});   
+                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src: src, OnClick: onclick, Value:HTMLs[key]?.Value});   
                     IDs.push(id);
                 }
             } 
@@ -195,12 +199,12 @@ async function generateHTML(){
                     if(HTMLs[key]?.Id.slice(-1) == "_"){
                         id = HTMLs[key]?.Id.slice(0, -1) + i;
                     }
-                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src: src, OnClick: new Function(HTMLs[key]?.OnClick)});
+                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src: src, OnClick: new Function(HTMLs[key]?.OnClick), Value:HTMLs[key]?.Value});
                     IDs.push(id);   
                 } 
             }
         }else{
-            DOM?.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src:imgCache[HTMLs[key]?.Src]?.src, OnClick: new Function(HTMLs[key]?.OnClick)});
+            DOM?.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src:imgCache[HTMLs[key]?.Src]?.src, OnClick: new Function(HTMLs[key]?.OnClick), Value:HTMLs[key]?.Value});
             IDs.push(key);
         }
     }
@@ -230,7 +234,7 @@ async function startingCreationGUI(){
     return Promise.resolve();
 }
 const ID = {};
-const IDs = ["ret", "counter", "hit", "autoHitInfo", "depthLevel", "langBtn", "coin", "counterReboot", "money"];
+const IDs = ["body", "counter", "hit", "autoHitInfo", "coin", "counterReboot", "money"];
 async function DOMInitialization() {
     IDs.forEach(id => {
         ID[id] = DOM.Id(id);
@@ -281,7 +285,8 @@ function startingValues(){
         toChangeText(skills[i].name + "skillTimeID", numberInTime(skills[i].time, "m:S"));
     }
     ID.depthLevel.textContent = layer.level;
-    upgradesFuncInfo();
+    ID.hit.textContent = handHit;
+    upgrades2.forEach(upg => {upgradesFuncInfo(upg)})
     openingLayerUp();
     skillsUpdate();
     updateInfo();
@@ -369,7 +374,7 @@ function loadLocalStorage(){
     ID.hpBar.style.width = 100/layer.hp.round * layer.hp.current + "%";
     ID.cracks.style.height = 100-(100/layer.hp.round * layer.hp.current) + "%";
     offlineProfit(Math.ceil((new Date() - new Date(localStorage.getItem("exitTime") || new Date()))/1000));
-    ID.ret.style.backgroundPositionY = layer.level*-200+"px";
+    ID.body.style.backgroundPositionY = layer.level*-200+"px";
     dailyGift_F(new Date(localStorage.getItem("lastLogon")), new Date());
     localStorage.setItem("lastLogon", new Date());
     ID.depthLevel.textContent = layer.level;
@@ -454,19 +459,20 @@ function textTimer(){
 function skillTimer(){
     if(HTMLLoaded && !pausescreen && !bossBonus && !offlineBonus && !dailyGiftBonus){
         for(let i = 0; i < skills.length; i++){
-            if(skills[i].value == 2){
-                skills[i].timeCur -= 1;
-                if(skills[i].timeCur <= 0){
-                    skills[i].value = 1;
-                    ID[skills[i].name+"skillID"].classList.remove("backlight");
-                    ID[skills[i].name+"skillTimeID"].classList.remove("timer");
-                    if(skills[i].name == "multiSkill"){
-                        for(let i = 0; i < upgradesAuto.length; i++){
-                            upgradesAuto[i].levelTemp = 0;
-                        }
+            const skill = skills[i];
+            const name = skill.name;
+            const time = name+"skillTimeID";
+            if(skill.value == 2){
+                skill.timeCur -= 1;
+                if(skill.timeCur <= 0){
+                    skill.value = 1;
+                    ID[name+"skillID"].classList.remove("backlight");
+                    ID[time].classList.remove("timer");
+                    if(name == "multiSkill"){
+                        upgradesAuto.forEach(upg => {upg.levelTemp = 0;})
                     }
                 }
-                ID[skills[i].name+"skillTimeID"].textContent = numberInTime(skills[i].timeCur, "m:S")
+                ID[time].textContent = numberInTime(skill.timeCur, "m:S")
             }
         }
         skillSwitch();
@@ -541,11 +547,11 @@ function geodeHit(){
             geodeHit.count == 3
             bonus.remove();
             geodeHit.bool = true;
-        if(result == "money"){finance(Math.floor(money/10)+1);
-        }else if(result == "exp"){expChanges(1);
-        }else{
-            result.count += 1;
-            colorNumbers(ID[result.name+"skillCountID"], "green")};
+            if(result == "money"){finance(Math.floor(money/10)+1);
+            }else if(result == "exp"){expChanges(1);
+            }else{
+                result.count += 1;
+                colorNumbers(ID[result.name+"skillCountID"], "green")};
             geodeCount--;
             skillSwitch();
             updateInfo();
@@ -556,14 +562,11 @@ function geodeHit(){
 }
 
 function skillSwitch(){
-    for(let i = 0; i < skills.length; i++){
-        if(skills[i].autoHit){
-            skills[i].disable = skills[i].count > 0 && autoHit > 0 ? false : true;
-        } else {
-            skills[i].disable = skills[i].count > 0 ? false : true;
-        }
-        ID[skills[i].name+"skillID"].classList.toggle("disabled", skills[i].disable);
-    }
+    skills.forEach(skill => {
+        if(skill.autoHit){skill.disable = skill.count <= 0 && autoHit <= 0;
+        } else {skill.disable = skill.count <= 0}
+        ID[skill.name+"skillID"].classList.toggle("disabled", skill.disable);
+    })
 }
 function skill(id){
     if(id.count > 0 && id.timeCur == 0){
@@ -571,28 +574,19 @@ function skill(id){
         id.count -= 1;
         id.timeCur = id.time;
         if(id.name == "multiSkill"){
-            for(let i = 0; i < skills.length; i++){
-                skills[i].value = 2;
-                if(skills[i].name != "multiSkill"){
-                    skills[i].timeCur += multiSkill.timeCur;
-                }
-            }
-            for(let i = 0; i < upgradesAuto.length; i++){
-                upgradesAuto[i].levelTemp = upgradesAuto[i].level * 2 + 1;
-            }
-        }else{
-            id.value = 2;
-        }
+            skills.forEach(skill => {
+                skill.value = 2;
+                if(skill.name != "multiSkill"){skill.timeCur += multiSkill.timeCur}
+            })
+            upgradesAuto.forEach(upg => {upg.levelTemp = upg.level * 2 + 1;})
+        }else{id.value = 2}
         x2orX4();
-        updateInfo();
     }
 }
 
 function reroll(t){
     pausescreen = true;
-    if(t != "geoda"){
-    rerollTimer = false;
-    }
+    if(t != "geoda"){rerollTimer = false}
     ysdk.adv.showRewardedVideo?.({
         callbacks: {
             onRewarded: () => {
@@ -600,8 +594,9 @@ function reroll(t){
                     geodeCount++;
                 }else{
                     allBonusFree = true;
-                    ID.claimAll.disabled = false;
-                    ID.claimAll.classList.remove("disabled");
+                    const all = ID.claimAll;
+                    all.disabled = false;
+                    all.classList.remove("disabled");
                     ID.bossLevelBonusRerolBtn.hidden = true;
                 }
                 pausescreen = false;
@@ -615,10 +610,7 @@ function finance(m){
     colorNumbers(ID.money, m < 0 ? "red" : "green");
     money += m;
     ID.money.textContent = toCompactNotation(money);
-    if(m != 0){
-        onOffBtn();
-        updateInfo();
-    }
+    if(m != 0){onOffBtn()}
 }
 
 function expChanges(e){
@@ -627,9 +619,7 @@ function expChanges(e){
 
 function expCalc(){
     let expProfit = money*moneyExp + layer.level*layer.expBonus || 0;
-    for(let i = 0, len = upgrades2.length; i < len; i++){
-        expProfit += upgrades2[i].level*upgrades2[i].expBonus;
-    }
+    upgrades2.forEach(upg => {expProfit += upg.level*upg.expBonus})
     expProfit = Math.round(expProfit * xp_gain.value);
     ID.warning.hidden = !(expProfit >=10 || exp >= 10);
     return expProfit;
@@ -646,7 +636,7 @@ function expBonus(){
     startingValues();    
     money = Math.round(money * money_keep.value);
     finance(0);
-    ID.ret.style.backgroundPositionY = "0%";
+    ID.body.style.backgroundPositionY = "0%";
     hpMove();
     ID.counterReboot.textContent = expBonus.count=(expBonus.count || 0) + 1;
     updateInfo();
@@ -677,46 +667,44 @@ function animationAutoHit(autoDamage){
     console.time("animationAutoHit")
     let id = "fallTool" + countAutoHit++;
     let rotate = Math.floor(Math.random()*80)+1060 + autoDamage.rotate;
-        let leftRandom = (Math.floor(Math.random()*94)+1)+"%";
-        let id2, tailMeteor;
-        if(fallSpeedX2.value == 2){
-            id2 = "fallToolTailMeteor" + countAutoHit
-            DOM.Create({Parent: "ret", Tag: "img", Id: id2, Class: "imgTailMeteor", Src: imgCache.tailMeteor.src});
-            tailMeteor = DOM.Id(id2);
-            rotate = Math.floor(Math.random()*80)+700 + autoDamage.rotate;
-            tailMeteor.offsetHeight;
-            tailMeteor.classList.add("imgTailMeteor"+Math.round(Math.random()*1));
-            tailMeteor.style.left = "calc("+leftRandom+" - 40px)";
-            tailMeteor.style.top = "calc(65% - 110px)";
-        }
-        DOM.Create({Parent: "ret", Tag: "img", Id: id, Class: "imgAutoHit", Src: imgCache[autoDamage.autoImg].src});
-        let element = DOM.Id(id);
-        if(fallSpeedX2.value == 2){
-            element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
-        }
-        if(damageX2.value == 2){
-            element.classList.add("redShadow");
-        }
-        element.style.left = leftRandom;
-        element.offsetHeight;
-        element.style.transform = "rotate("+rotate+"deg)";
-        element.style.top = "65%";
-        element.addEventListener('transitionend', function opacity(e){
-            if (e.propertyName === 'top'){
-                if (tailMeteor) {
-                    tailMeteor.style.opacity = "0%";
-                    tailMeteor.classList.add("death");
-                }
-                element.style.opacity = "0%";
-                element.classList.add("death");
-                damage(autoDamage);
-            } else if (e.propertyName === 'opacity'){
-                tailMeteor?.remove();
-                element.remove();
-                element.removeEventListener('transitionend', opacity); 
+    let leftRandom = (Math.floor(Math.random()*94)+1)+"%";
+    let id2, tailMeteor;
+    if(fallSpeedX2.value == 2){
+        id2 = "fallToolTailMeteor" + countAutoHit
+        DOM.Create({Parent: "ret", Tag: "img", Id: id2, Class: "imgTailMeteor", Src: imgCache.tailMeteor.src});
+        tailMeteor = DOM.Id(id2);
+        rotate = Math.floor(Math.random()*80)+700 + autoDamage.rotate;
+        tailMeteor.offsetHeight;
+        tailMeteor.classList.add("imgTailMeteor"+Math.round(Math.random()*1));
+        tailMeteor.style.left = "calc("+leftRandom+" - 40px)";
+        tailMeteor.style.top = "calc(65% - 110px)";
+    }
+    DOM.Create({Parent: "ret", Tag: "img", Id: id, Class: "imgAutoHit", Src: imgCache[autoDamage.autoImg].src});
+    let element = DOM.Id(id);
+    if(fallSpeedX2.value == 2){
+        element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
+    }
+    if(damageX2.value == 2){element.classList.add("redShadow")}
+    element.style.left = leftRandom;
+    element.offsetHeight;
+    element.style.transform = "rotate("+rotate+"deg)";
+    element.style.top = "65%";
+    element.addEventListener('transitionend', function opacity(e){
+        if (e.propertyName === 'top'){
+            if (tailMeteor) {
+                tailMeteor.style.opacity = "0%";
+                tailMeteor.classList.add("death");
             }
-        }, {once: true});
-        console.timeEnd("animationAutoHit")
+            element.style.opacity = "0%";
+            element.classList.add("death");
+            damage(autoDamage);
+        } else if (e.propertyName === 'opacity'){
+            tailMeteor?.remove();
+            element.remove();
+            element.removeEventListener('transitionend', opacity); 
+        }
+    });
+    console.timeEnd("animationAutoHit")
 }
 
 function switchsHit(){
@@ -765,7 +753,7 @@ function layerUp(){
     all.style.transform = mirror;
     all.style.transition = "top 0.4s linear"
     all.style.top = "0px";
-    ID.ret.style.backgroundPositionY = layer.level*-200+"px";
+    ID.body.style.backgroundPositionY = layer.level*-200+"px";
     all.addEventListener('transitionend', (e) => {
         layerAnimat = false;
         switchsHit(); 
@@ -817,22 +805,24 @@ function upgradesFunc(item, bool) {
         item.level++;
         colorNumbers(ID[name+"LevelID"], "green");
     }
-    upgradesFuncInfo()
+    upgradesFuncInfo(item)
     skillSwitch();
 }
-function upgradesFuncInfo(){
+function upgradesFuncInfo(upg){
     const value = auto_mine_speed.parameter.value;
-    for(let i = 0, len = upgrades2.length; i < len; i++){
-        const upg = upgrades2[i];
-        const name = upg.name;
-        ID[name+"CostID"].textContent = toCompactNotation(upg.cost.current);
-        ID[name+"LevelID"].textContent = upg.level;
-        if(upg.typeValue == "auto"){
-            let damage = Math.round(upg.value*upg.level/(value*upg.timeHit)*100)/100;
-            ID[name+"ValueID"].textContent = damage+" hp/s";
-            autoHit += damage;
-        }
-    } 
+    const name = upg.name;
+    ID[name+"CostID"].textContent = toCompactNotation(upg.cost.current);
+    ID[name+"LevelID"].textContent = upg.level;
+    if(upg.typeValue == "auto"){
+        let damage = Math.round(upg.value/(value*upg.timeHit)*100)/100;
+        ID[name+"ValueID"].textContent = Math.round((damage*upg.level)*100)/100+" hp/s";
+        if(upg.level>0){autoHit += damage}
+        ID.autoHitInfo.textContent = Math.round(autoHit*100)/100 + " hp/s";
+    }
+}
+
+function statOpen(bool){
+    ID.menuStatBack.hidden = bool;
 }
 
 function upgradesExpFunc(upgrade){
@@ -1146,8 +1136,6 @@ function updateInfo(){
         ID.geodeIMG.classList.toggle('geode-glow', geodeBool); 
         ID.geodeIMG.classList.toggle('grayScale', !geodeBool); 
         ID.prize.textContent = toCompactNotation(prize.profitC);
-        autoHit = 0;
-        ID.autoHitInfo.textContent = Math.round(autoHit*100)/100 + " hp/s";
         ID.hp.textContent = Math.floor(layer.hp.current);
         ID.rebootExpCost.textContent = expCalc();
     }

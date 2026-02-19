@@ -1,6 +1,113 @@
 {
+"h1": {
+    "Parent": "body",
+    "Tag": "h1",
+    "Text": "MinerGame"
+},
+"h2": {
+    "Parent": "body",
+    "Tag": "h2"
+},
+"stat": {
+    "Parent": "body",
+    "Tag": "div",
+    "Class": "rightText"
+},
+    "coin": {
+        "Parent": "stat",
+        "Tag": "img",
+        "Src": "coin",
+        "Class": "coinCl"
+    },
+    "money": {
+        "Parent": "stat",
+        "Tag": "span"
+    },
+    "handDamage": {
+        "Parent": "stat",
+        "Tag": "img",
+        "Src": "pickaxe",
+        "Class": "coinCl"
+    },
+    "hit": {
+        "Parent": "stat",
+        "Tag": "span"
+    },
+    "autoDamage": {
+        "Parent": "stat",
+        "Tag": "img",
+        "Src": "minerPickaxe",
+        "Class": "coinCl"
+    },
+    "autoHitInfo": {
+        "Parent": "stat",
+        "Tag": "span"
+    },
+"currentDepth": {
+    "Parent": "h2",
+    "Tag": "span"
+},
+"depthLevel": {
+    "Parent": "h2",
+    "Tag": "span"
+},
+"langBtn": {
+    "Parent": "body",
+    "Tag": "button",
+    "Class": "btnCloseCircule",
+    "Value": "ru",
+    "OnClick": "changeLang(this.value)"
+},
+"statBtn": {
+    "Parent": "body",
+    "Tag": "button",
+    "Class": "btnCloseCircule",
+    "Text": "☷",
+    "OnClick": "statOpen(false)"
+},
+"menuStatBack": {
+    "Parent": "body",
+    "Class": "centralMenuBackground",
+    "Hidden": "true"
+},
+    "menuStat": {
+        "Parent": "menuStatBack",
+        "Class": "centralMenu"
+    },
+        "menuStatClose": {
+            "Parent": "menuStat",
+            "Tag": "button",
+            "Class": "btnCloseCircule",
+            "Text": "X",
+            "OnClick": "statOpen(true)"
+        },
+        "infoStatID": {
+            "Parent": "menuStat",
+            "Class": "centralMenuInfo"
+        },
+            "$_InfoID3":{
+                "arrayName$": "stats",
+                "Parent": "infoID",
+                "Id": "_InfoID",
+                "Class": "centralMenuInfoElement"
+            },
+                "$_3":{
+                    "arrayName$": "stats",
+                    "Parent": "_InfoID",
+                    "Id": "_",
+                    "Tag": "span",
+                    "Class": "centralMenuInfoElementValue"
+                },
+                "$_InfoValueID3":{
+                    "arrayName$": "stats",
+                    "Parent": "_InfoID",
+                    "Id": "_InfoValueID",
+                    "Tag": "span",
+                    "Class": "centralMenuInfoElementValue"
+                },
 "menuForCoins": {
-    "Parent": "ret",
+    "Parent": "body",
+    "Value": "ru",
     "Class": "sideMenuLeft"
 },
     "upgrades": {
@@ -83,7 +190,7 @@
                 "Class": "sideMenuElementDescription" 
             },
 "menuForExpBack": {
-    "Parent": "ret",
+    "Parent": "body",
     "Class": "centralMenuBackground",
     "Hidden": "true"
 },
@@ -216,7 +323,7 @@
                     "Class": "inline-block cost"
                 },
 "bossLevelBonus": {
-    "Parent": "ret",
+    "Parent": "body",
     "Hidden": "true",
     "Class": "bonusMenu"
 },
@@ -282,7 +389,7 @@
                 "Src": "ad"
             },
 "offlineBonus": {
-    "Parent": "ret",
+    "Parent": "body",
     "Hidden": "true",
     "Class": "bonusMenu"
 },
@@ -321,7 +428,7 @@
             "OnClick": "offlineProfit2()"
         },
 "skillpanel": {
-    "Parent": "ret"
+    "Parent": "body"
 },
     "$_skillID":{
         "arrayName$": "skills",
@@ -353,7 +460,7 @@
             "Class": "skillValue"
         },
 "dailyGiftMenu": {
-    "Parent": "ret",
+    "Parent": "body",
     "Hidden": "true",
     "Class": "bonusMenu"
 },
@@ -384,7 +491,7 @@
             "Class": "bossLevelBonusCls"
         },
 "leftTopMenu":{
-    "Parent": "ret"
+    "Parent": "body"
 },
     "menu":{
         "Parent": "leftTopMenu",
@@ -436,7 +543,7 @@
                 "Src": "ad"
             },
 "hpTitleID":{
-    "Parent": "ret",
+    "Parent": "body",
     "Text": "Ударов до победы:",
     "Hidden": "true"
 },
@@ -445,7 +552,7 @@
         "Class": "inline-block"
     },
 "hpBarBorderID":{
-    "Parent": "ret"
+    "Parent": "body"
 },
     "prifitLayerID":{
         "Parent": "hpBarBorderID"
@@ -476,7 +583,7 @@
             "Parent": "hpBarBorderID"
     },
 "layer":{
-    "Parent": "ret"
+    "Parent": "body"
 },
     "layerAll":{
         "Parent": "layer"
@@ -498,7 +605,7 @@
         "Src": "cracks"
     },
 "hitZoneID":{
-    "Parent": "ret",
+    "Parent": "body",
     "OnClick": "hit(shovel)"
 }
 }

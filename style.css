@@ -336,9 +336,15 @@ body {
 }
 #langBtn {
    position: absolute;
-   right: 15px;
+   right: 10px;
    top: 15px;
    width: 40px;
+}
+#statBtn{
+   position: absolute;
+   right: 50px;
+   top: 15px;
+   width: 35px;
 }
 #rebootExpBtnID {
    position: absolute;
@@ -778,4 +784,7 @@ max-width: 100%;
    position: fixed; 
    height: 100%; 
    width: 100%;
+}
+#handDamage, #autoDamage{
+   margin-left: 6px;
 }
