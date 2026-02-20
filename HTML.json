@@ -87,21 +87,21 @@
         },
             "$_InfoID3":{
                 "arrayName$": "stats",
-                "Parent": "infoID",
+                "Parent": "infoStatID",
                 "Id": "_InfoID",
                 "Class": "centralMenuInfoElement"
             },
-                "$_3":{
+                "$_InfoName":{
                     "arrayName$": "stats",
                     "Parent": "_InfoID",
-                    "Id": "_",
+                    "Id": "_InfoName",
                     "Tag": "span",
                     "Class": "centralMenuInfoElementValue"
                 },
-                "$_InfoValueID3":{
+                "$_InfoValue":{
                     "arrayName$": "stats",
                     "Parent": "_InfoID",
-                    "Id": "_InfoValueID",
+                    "Id": "_InfoValue",
                     "Tag": "span",
                     "Class": "centralMenuInfoElementValue"
                 },

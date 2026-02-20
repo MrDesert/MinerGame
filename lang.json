@@ -11,23 +11,23 @@
     "ru": "Прибыль",
     "en": "Profit"
   },
-   "wallet": {
+   "walletInfoName": {
     "ru": "Кошелёк: ",
     "en": "Wallet: "
   },
-  "clicks": {
+  "clickSInfoName": {
     "ru": "Кликов: ",
     "en": "Clicks: "
   },
-  "resets": {
+  "resetSInfoName": {
     "ru": "Перезапусков: ",
     "en": "Resets: "
   },
-  "hand_damage": {
+  "handHitSInfoName": {
     "ru": "Сила удара: ",
     "en": "Damage: "
   },
-  "auto_mine": {
+  "autoHitSInfoName": {
     "ru": "Автоудар: ",
     "en": "Auto-Mine: "
   },

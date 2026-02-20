@@ -8,6 +8,7 @@
         <script src="math.js" onerror="this.onerror=null; const newScript = document.createElement('script'); newScript.src = 'https://mrdesert.github.io/Tools/math.js'; document.head.appendChild(newScript);"></script><!-- Локальный файл для релиза, сетевой для разработки -->
         <script src="DOM.js" onerror="this.onerror=null; const newScript = document.createElement('script'); newScript.src = 'https://mrdesert.github.io/Tools/DOM.js'; document.head.appendChild(newScript);"></script><!-- Локальный файл для релиза, сетевой для разработки -->
         <script src="main.js" onerror="this.onerror=null; const newScript = document.createElement('script'); newScript.src = 'https://mrdesert.github.io/Tools/main.js'; document.head.appendChild(newScript);"></script><!-- Локальный файл для релиза, сетевой для разработки -->
+        <script src="HTML.js" onerror="this.onerror=null; const newScript = document.createElement('script'); newScript.src = 'https://mrdesert.github.io/Tools/HTML.js'; document.head.appendChild(newScript);"></script><!-- Локальный файл для релиза, сетевой для разработки -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta charset="utf-8">
     </head>
@@ -25,82 +26,20 @@
                 document.body.appendChild(newScript);">
         </script>
         <!-- Локальный файл для релиза, сетевой для разработки -->
+        <script src="YSDK.js" 
+            onload="useSDK(false)" 
+            onerror="
+                this.onerror=null; 
+                const newScript = document.createElement('script'); 
+                newScript.src = 'https://mrdesert.github.io/Tools/YSDK.js'; 
+                newScript.onload = function(){useSDK(false)};
+                newScript.onerror=function(){console.log('НетСетевогоФайла')}
+                document.head.appendChild(newScript);">
+        </script>
 
         <div id="preloaderID"><div id="preloaderCentr"><span id="loading"></span><span id="preloaderTextID">...</span></div></div>
-        
-        <div id="stat" class="rightText">
-            <div hidden><span id="clicks">Кликов: </span><span id="counter">0</span></div>
-            <div hidden><span id="resets">Перезапусков: </span><span id="counterReboot">0</span></div>
-            <span id="wallet" hidden>Кошелёк: </span><!-- <span id="money">0</span> -->
-            <span id="hand_damage" hidden>Сила удара: </span><!-- <span id="hit">1</span> -->
-            <span id="auto_mine" hidden>Автоудар: </span><!-- <span id="autoHitInfo">0</span> -->
-        </div>
         <div id="blurID" hidden><span id="continue">Продолжить</span></div>
-        <footer style="z-index: 4;">© by MrDesert - beta v0.4.0.7.7</footer>
-<script>
-    const useYSDK = false; //Установить true перед релизом
-    let resurses = false;
-    let sdkLoad = false;
-
-    // const script = document.createElement('script');
-    // script.src = "https://yandex.ru/games/sdk/v2";
-    // script.async = true;
-
-    // document.getElementsByTagName('footer')[0].innerHTML = "© MrDesert - v0.4.0.0"; //Заменяю версию для яндекса
-    // document.head.appendChild(script);
-    
-    // script.onload = function(){
-    //     myLog?.("script.onload");
-    //     YaGames.init()
-    //         .then(ysdk => {
-    //             const langSDK = ysdk.environment?.i18n?.lang; //Запрашиваем язык у YSDK
-    //             if(langSDK == "ru"){document.getElementById("loading").textContent = "Загрузка"}
-    //             else{document.getElementById("loading").textContent = "Loading"};
-    //             myLog?.("язык - " + ysdk.environment?.i18n?.lang);
-    //             changeLang(langSDK);
-    //             document.documentElement.lang = langSDK;
-    //             window.ysdk = ysdk;
-    //             if(window.ysdk){
-    //                 sdkLoad = true;
-    //                 myLog?.("SDK загружен - " + sdkLoad);
-    //             }
-    //         })
-    //         .then(()=>{
-    //             return new Promise((resolve)=>{
-    //                 const chekcInterval = setInterval(()=>{
-    //                     if (sdkLoad && resurses){
-    //                         myLog?.("Загруженны ресурсы и SDK");
-    //                         ysdk.features?.GameplayAPI?.start?.();
-    //                         clearInterval(chekcInterval);
-    //                         resolve();
-    //                     }
-    //                     else if(sdkLoad){myLog?.("Ожидание ресурсов - " + resurses)}
-    //                     else if (resurses){myLog?.("Ожидание SDK - " + sdkLoad)}
-    //                     else{myLog?.("Ожидание ресурсов и CDK");}
-    //                 }, 400);
-    //             })
-    //         })
-    //         .then(()=>{                 
-    //             ysdk.features.LoadingAPI.ready();
-    //         })
-    //         .then(()=>{
-    //             setTimeout(function(){
-    //                 loadedGame();
-    //             }, 30);
-    //         })
-    //         .catch(console.error);
-    // };
-    // window.addEventListener('load', function(){
-    //     resurses = true;
-    //     myLog?.("Ресурсы загруженны - " + resurses);
-    // }) 
-
-
-if(!useYSDK){
-     setTimeout(function(){ sdkLoad =true; resurses=true; loadedGame();}, 1000);
-} 
-
-</script>
+        <footer style="z-index: 4;">© MrDesert - v0.4.0.8</footer>
         <script src="script.js"></script>
     </body>
 </html>

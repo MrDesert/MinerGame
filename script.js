@@ -1,9 +1,3 @@
-let langGame = "en";
-const langTexts = {};
-let textsLoaded = false;
-const HTMLs = {};
-const IMGs = {};
-let HTMLLoaded = false;
 let loadImgs = false;
 let DOMContentLoaded = false;
 let offBonus = 0;
@@ -24,12 +18,14 @@ let dailyGiftBonus = false
 let pausescreen = false;
 
 let countAutoHit = 0;
-
 let geodeCount = 1;
 
-const wallet = {name: "wallet", value: money};
-const handHitS = {name: "handHitS", value: money};
-const stats = [wallet, handHitS];
+const wallet = {name: "wallet", get value(){return money;}};
+const handHitS = {name: "handHitS", get value(){return handHit;}};
+const autoHitS = {name: "autoHitS", get value(){return autoHit + " hp/s";}};
+const resetS = {name: "resetS", get value(){return expBonus.count || 0;}};
+const clickS = {name: "clickS", get value(){return hit.count;}};
+const stats = [wallet, handHitS, autoHitS, resetS, clickS];
 window.stats = stats;
 //C-Current(текущий) R-Ratio(коэффициент) S-Start(стартовое) P-Previos(Предыдующий)
 let layer = {
@@ -125,105 +121,17 @@ const bossLevelRatio = 10;
 let moneyBonus, trw;
 let layerUpIntervalID;
 
-console.time("game")
-loadHTMLs().then(()=>{
-    loadIMG().then(()=>{
-        generateHTML().then(()=>{
-            startingCreationGUI().then(()=>{
-                DOMInitialization().then(()=>{
-                    loadLangTexts().then(()=>{
-                        HTMLLoaded = true; 
-                        textsLoaded = true;
-                        myLog(textsLoaded) 
-                        changeTextsLang(); 
-                        loadedGame();
-                        tick(performance.now());
-                        skillSwitch()
-                        upgradesExpFuncInfo();
-                    });
-                })
-            })
-        })
-    })
-});
-console.timeEnd("game");
-const imgCache = {};
-async function loadIMG(){
-    const load = await fetch('IMG.json').then(r => r.json());
-    Object.assign(IMGs, load);
-    for (const key in IMGs) {
-        const img = new Image();  // Создаем объект Image (быстро)
-        img.src = IMGs[key];      // Начинаем загрузку (не ждем!)
-        imgCache[key] = img;     // Сохраняем в кэш (быстро)
-    }
-}
-async function loadHTMLs(){ //загрузка HTML.json
-    const load = await fetch('HTML.json').then(r => r.json());
-    Object.assign(HTMLs, load);
-}
-async function generateHTML(){
-    for(const key in HTMLs){
-        let isСycle = key.substring(0, 1);
-        if(isСycle == "$"){
-            if(isNaN(HTMLs[key].arrayName$)){
-                const array = window[HTMLs[key].arrayName$];
-                let id = key.substring(1);
-                let parent = HTMLs[key]?.Parent;
-                let src = imgCache[HTMLs[key]?.Src]?.src;
-                let onclick = new Function(HTMLs[key]?.OnClick);
-                for(let i = 0; i < array.length; i++){
-                    if(HTMLs[key]?.Parent.substring(0, 1) == "_"){
-                        parent = array[i].name + HTMLs[key]?.Parent.substring(1);
-                    } 
-                    if(HTMLs[key]?.Id.substring(0, 1) == "_"){
-                        id = array[i].name + HTMLs[key]?.Id.substring(1); //Не нравиться что используеться .name не универсально скорее всего надо переходить  на глобальный объект и тогда можно получать их имена через key
-                    }
-                    if(HTMLs[key]?.Src?.substring(0, 1) == "_"){
-                        src = imgCache[array[i].name + HTMLs[key]?.Src.substring(1)]?.src;
-                    }
-                    if(HTMLs[key]?.OnClick?.substring(0, 1) == "$"){
-                        onclick = array[i][HTMLs[key].OnClick.substring(1)];
-                    }
-                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src: src, OnClick: onclick, Value:HTMLs[key]?.Value});   
-                    IDs.push(id);
-                }
-            } 
-            else{
-                let id = key.slice(0, -1);
-                let parent = HTMLs[key]?.Parent;
-                let src = imgCache[HTMLs[key]?.Src]?.src;
-                for(let i = 0; i < HTMLs[key].arrayName$; i++){
-                    if(HTMLs[key]?.Parent.slice(-1) == "_"){
-                        parent = HTMLs[key]?.Parent.slice(0, -1) + i;
-                    }
-                    if(HTMLs[key]?.Id.slice(-1) == "_"){
-                        id = HTMLs[key]?.Id.slice(0, -1) + i;
-                    }
-                    DOM.Create({Parent: parent, Id: id, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src: src, OnClick: new Function(HTMLs[key]?.OnClick), Value:HTMLs[key]?.Value});
-                    IDs.push(id);   
-                } 
-            }
-        }else{
-            DOM?.Create({Parent: HTMLs[key]?.Parent, Id: key, Tag: HTMLs[key]?.Tag, Class: HTMLs[key]?.Class, Hidden: HTMLs[key]?.Hidden, Text:HTMLs[key]?.Text, Src:imgCache[HTMLs[key]?.Src]?.src, OnClick: new Function(HTMLs[key]?.OnClick), Value:HTMLs[key]?.Value});
-            IDs.push(key);
-        }
-    }
-}
 async function startingCreationGUI(){
     //Ежедневный подарок меню
     DOM.Id("claim_dailyGift").onclick = function(){claimDailyGift();};
     for(let i = 0; i < 7; i++){
         const keys = Object.keys(dailyGift["day"+(i+1)]);
-        console.log(keys.length)
         for (let j = 0; j < keys.length; j++){
             DOM.Create({Parent: "dailyGiftDayContID"+i, Id: "dailyGiftDaySkillContID"+i+j, Class: "dailySkill"});
-                IDs.push("dailyGiftDaySkillContID"+i+j); 
             for (let k = 0; k < skills.length; k++){
                 if(skills[k].name == keys[j]){
-                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillIMGID"+DailyGiftCreate, Tag: "img", Class: "skillIMG", Src: imgCache[skills[k].name].src});
-                        IDs.push("dailyGiftDaySkillIMGID"+DailyGiftCreate);
-                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillCountID"+DailyGiftCreate, Tag: "span", Class: "skillValue", Text: (dailyGift["day"+(i+1)][keys[j]]*weeksDailyGift)})
-                        IDs.push("dailyGiftDaySkillCountID"+DailyGiftCreate);
+                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillIMGID"+DailyGiftCreate, Tag: "img", Class: "skillIMG", Src: IMG[skills[k].name].src});
+                    DOM.Create({Parent: "dailyGiftDaySkillContID"+i+j, Id: "dailyGiftDaySkillCountID"+DailyGiftCreate, Tag: "span", Class: "skillValue", Text: (dailyGift["day"+(i+1)][keys[j]]*weeksDailyGift)});
                     DailyGiftCreate++;
                     break;
                 }
@@ -233,34 +141,18 @@ async function startingCreationGUI(){
     await new Promise(r => setTimeout(r, 0));
     return Promise.resolve();
 }
-const ID = {};
-const IDs = ["body", "counter", "hit", "autoHitInfo", "coin", "counterReboot", "money"];
-async function DOMInitialization() {
-    IDs.forEach(id => {
-        ID[id] = DOM.Id(id);
-    })
-    await new Promise(r => setTimeout(r, 0));
-    return Promise.resolve();
-}
-async function loadLangTexts(){
-    const texts = await fetch('lang.json').then(r => r.json());
-    Object.assign(langTexts, texts);
-}
-function changeTextsLang(){
-    for(const key in langTexts){
-        toChangeText(key, getText(key));
-    }
-    function getText(key) {
-        return langTexts[key]?.[langGame];
-    }
-}
-function loadedGame() {
-    if(sdkLoad && resurses && HTMLLoaded && textsLoaded){
+
+function startGame() {
+    if(sdkLoad && resurses && HTMLLoaded){
+        startingCreationGUI()
         document.getElementById("preloaderID").hidden = "hidden";
         loadImgs = true;
         startingValues();
         loadLocalStorage();
         finance(0);
+        skillSwitch()
+        upgradesExpFuncInfo();
+        tick(performance.now());
     }
 }
 function startingValues(){
@@ -274,7 +166,7 @@ function startingValues(){
     allBonusFree = true;
     ID.claimAll.disabled = false;
     ID.claimAll.classList.remove("disabled");
-
+    ID.prize.textContent = toCompactNotation(prize.profitC);
     for (let i = 0; i < upgrades2.length; i++){
         upgrades2[i].level = 0;
         upgrades2[i].cost.current = upgrades2[i].cost.calc = upgrades2[i].cost.base;
@@ -286,21 +178,11 @@ function startingValues(){
     }
     ID.depthLevel.textContent = layer.level;
     ID.hit.textContent = handHit;
-    upgrades2.forEach(upg => {upgradesFuncInfo(upg)})
+    upgrades2.forEach(upg => {upgradesFuncInfo(upg)});
+    finance(0);
     openingLayerUp();
     skillsUpdate();
     updateInfo();
-}
-
-function changeLang(lang){
-    if(lang != undefined){
-        langGame = lang;
-        ID.langBtn.value = lang == "ru" ? "en" : "ru";
-    } else{
-        langGame = langGame == "ru" ? "en" : "ru";
-    }
-    ID.langBtn.textContent = langGame;
-    changeTextsLang() 
 }
 
 consoleCreateBtnsCP(["coins", "exp", "hit", "autohit"])//создание панели управления в консоле
@@ -354,9 +236,7 @@ function loadLocalStorage(){
     ID.exp.textContent = toCompactNotation(exp);
     handHit = Number(localStorage.getItem("handHit")) || 1;
     hit.count = Number(localStorage.getItem("hit.count")) || 0;
-    ID.counter.textContent = hit.count;
     expBonus.count = Number(localStorage.getItem("expBonus.count")) || 0;
-    ID.counterReboot.textContent = expBonus.count;
     autoHit = Number(localStorage.getItem("autoHit")) || 0;
     bossLevel = Number(localStorage.getItem("bossLevel")) || 1;
     allBonusFree = localStorage.getItem("allBonusFree") === 'false' ? false : true;
@@ -518,16 +398,16 @@ function geodeHit(){
         let result = geodeBonus[Math.ceil(mathTriangularNumberInverse(choice))-1];
         let srcImg, target;
         if(result == "money"){
-            srcImg = imgCache.coin.src;
+            srcImg = IMG.coin.src;
             target = ID.coin;
         }else if(result == "exp"){
-            srcImg = imgCache.exp.src;
+            srcImg = IMG.exp.src;
             target = ID.menu;
         }else{
-            srcImg = imgCache[result.name].src;
+            srcImg = IMG[result.name].src;
             target = ID[result.name+"skillIMGID"];
         }
-        DOM.Create({Parent: "ret", Id: "geodeBonusIMGID", Tag: "img", Hidden: "true", Src: srcImg})
+        DOM.Create({Parent: "body", Id: "geodeBonusIMGID", Tag: "img", Hidden: "true", Src: srcImg})
         const object = ID.geodeIMG.getBoundingClientRect();
         const bonus = DOM.Id("geodeBonusIMGID");
                 bonus.style.left = object.left+object.width/5 +"px";
@@ -638,7 +518,7 @@ function expBonus(){
     finance(0);
     ID.body.style.backgroundPositionY = "0%";
     hpMove();
-    ID.counterReboot.textContent = expBonus.count=(expBonus.count || 0) + 1;
+    expBonus.count=(expBonus.count || 0) + 1;
     updateInfo();
     ysdk?.adv?.showFullscreenAdv?.();
 }
@@ -647,7 +527,7 @@ function hit(obj) {
     if (switchHit){
         if(obj.typeValue == "hit"){
             damage(obj);
-            ID.counter.textContent = hit.count=(hit.count || 0) + 1;
+            hit.count=(hit.count || 0) + 1;
         }
         else if((obj.level + obj.levelTemp) > 0){animationAutoHit(obj)}
     }
@@ -671,7 +551,7 @@ function animationAutoHit(autoDamage){
     let id2, tailMeteor;
     if(fallSpeedX2.value == 2){
         id2 = "fallToolTailMeteor" + countAutoHit
-        DOM.Create({Parent: "ret", Tag: "img", Id: id2, Class: "imgTailMeteor", Src: imgCache.tailMeteor.src});
+        DOM.Create({Parent: "body", Tag: "img", Id: id2, Class: "imgTailMeteor", Src: IMG.tailMeteor.src});
         tailMeteor = DOM.Id(id2);
         rotate = Math.floor(Math.random()*80)+700 + autoDamage.rotate;
         tailMeteor.offsetHeight;
@@ -679,7 +559,7 @@ function animationAutoHit(autoDamage){
         tailMeteor.style.left = "calc("+leftRandom+" - 40px)";
         tailMeteor.style.top = "calc(65% - 110px)";
     }
-    DOM.Create({Parent: "ret", Tag: "img", Id: id, Class: "imgAutoHit", Src: imgCache[autoDamage.autoImg].src});
+    DOM.Create({Parent: "body", Tag: "img", Id: id, Class: "imgAutoHit", Src: IMG[autoDamage.autoImg].src});
     let element = DOM.Id(id);
     if(fallSpeedX2.value == 2){
         element.style.transition = "top 1.5s ease-in, transform 1.5s ease-in, opacity 3s ease-in";
@@ -747,6 +627,7 @@ function layerUp(){
     const all = ID.layerAll;
     gold.hidden = Math.floor(Math.random()*15) != 0;
     gold.style.transform = mirror;
+    ID.prize.textContent = toCompactNotation(prize.profitC);
     x2orX4();
     ID.cracks.style.transform = mirror;
     all.offsetHeight;
@@ -817,12 +698,17 @@ function upgradesFuncInfo(upg){
         let damage = Math.round(upg.value/(value*upg.timeHit)*100)/100;
         ID[name+"ValueID"].textContent = Math.round((damage*upg.level)*100)/100+" hp/s";
         if(upg.level>0){autoHit += damage}
-        ID.autoHitInfo.textContent = Math.round(autoHit*100)/100 + " hp/s";
+        ID.autoHitInfo.textContent = autoHit;
     }
 }
 
 function statOpen(bool){
     ID.menuStatBack.hidden = bool;
+    if(!bool){
+        stats.forEach(stat => {
+            ID[stat.name+"InfoValue"].textContent = stat.value;
+        })
+    }
 }
 
 function upgradesExpFunc(upgrade){
@@ -898,7 +784,7 @@ function bossLevelBonus(){
         const btn = bool ? "moneyBonus" : name;
         const level = bool ? "" : Math.floor(Math.random()*(trwI.level/20)) + 1;
         const title = bool ? "+"+toCompactNotation(trwI) : "+" + level;
-        const img = bool ? imgCache.coin.src : imgCache[name].src;
+        const img = bool ? IMG.coin.src : IMG[name].src;
         ID["bossLevelBonusIMGID"+i].src = img;
         ID["bossLevelBonusContainerID"+i].onclick = ()=> bossLevelBonusBtn(btn, level);
         ID["bossLevelBonusValueID"+i].textContent = title;
@@ -1010,12 +896,12 @@ function dailyGift_F(lastLogon, currentLogon){
             dailyGiftBonus = true;
             ID.offlineBonus.hidden = true;
             for(let i = 0; i < DailyGiftCreate; i++){
-                const count = ID["dailyGiftDaySkillCountID"+i];
+                const count = document.getElementById("dailyGiftDaySkillCountID"+i);
                 count.textContent = Number(count.textContent)*weeksDailyGift;
             }
             ID.dailyGiftMenu.hidden = false;
             for(let i = 0; i < 7; i++){
-                const day = ID["dailyGiftDayContID"+i];
+                const day = document.getElementById("dailyGiftDayContID"+i);
                 if(i+1 == daysdDailyGift){day.classList.add("backlight");break} 
                 else if (i <= daysdDailyGift){day.classList.add("disabled")}
             }
@@ -1052,7 +938,7 @@ function interectiveBonusCreate(){
     if(!interectiveBonusCreate.bool && Math.floor(Math.random()*15) == 0){
             interectiveBonusCreate.bool = true;
             interectiveBonusCreate.time = 30;
-        DOM.Create({Parent: "ret", Id: "inerectiveBonusContID2", OnClick: function(){interectiveBonus()}})
+        DOM.Create({Parent: "body", Id: "inerectiveBonusContID2", OnClick: function(){interectiveBonus()}})
         const id = DOM.Id("inerectiveBonusContID2");
         id.classList.add("highlight");
         id.style.transform = "rotate("+Math.floor(Math.random()*360)+"deg)";
@@ -1061,7 +947,7 @@ function interectiveBonusCreate(){
         id.offsetHeight;
         id.style.opacity = "100%";
         id.style.scale = 1;
-        DOM.Create({Parent: "inerectiveBonusContID2", Id: "inerectiveBonusID", Tag: "img", Src: imgCache.nugget.src})
+        DOM.Create({Parent: "inerectiveBonusContID2", Id: "inerectiveBonusID", Tag: "img", Src: IMG.nugget.src})
     } else {
         const nugget = DOM.Id("inerectiveBonusContID2");
         if(interectiveBonusCreate.time <= 0){
@@ -1128,30 +1014,11 @@ function skillsUpdate(){
         }
 }
 function updateInfo(){
-    console.time('update');
-    if(HTMLLoaded){
         const geodeBool = geodeCount > 0;
         ID.geodeValue.textContent = geodeCount;
         ID.geodeRerolBtn.hidden = geodeBool;
         ID.geodeIMG.classList.toggle('geode-glow', geodeBool); 
         ID.geodeIMG.classList.toggle('grayScale', !geodeBool); 
-        ID.prize.textContent = toCompactNotation(prize.profitC);
         ID.hp.textContent = Math.floor(layer.hp.current);
         ID.rebootExpCost.textContent = expCalc();
-    }
-    console.timeEnd('update'); // ~1-3ms
 }
-// tets();for(let i = 0, len = skills.length; i < len; i++){
-// function tets(){
-//     const array = [1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0]
-//     console.time("notCashe")
-//     for(let i = 0; i<array.length; i++){
-
-//     }
-//     console.timeEnd("notCashe")
-//     console.time("Cashe")
-//     for(let i = 0, len = array.length ; i<array.length; i++){
-        
-//     }
-//     console.timeEnd("Cashe")
-// }
