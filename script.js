@@ -214,6 +214,7 @@ function loadLocalStorage(){
         if(localStorage.getItem(upgrades2[i].name)){
             Object.assign(upgrades2[i], JSON.parse(localStorage.getItem(upgrades2[i].name)));
         }
+        upgradesFuncInfo(upgrades2[i]);
     }
     for(let i = 0; i < upgradesExp.length; i++){
         if(localStorage.getItem(upgradesExp[i].name)){
@@ -316,9 +317,11 @@ function tick(time){
         if(tick.count % 50 === 0){interectiveBonusCreate();}
         if(!loadImgs && tick.count % 8 === 0){preloaderTextChange();}
         tick.count++;
-        for(let i = 0; i < upgradesAuto.length; i++){
-            if(tick.count / (Math.round(upgradesAuto[i].timeHit*10 - auto_mine_speed.value*(i+1)*10)/10)*emergenceSpeedX2.value % 10 === 0){
-                hit(upgradesAuto[i]);
+        const speedX2 = emergenceSpeedX2.value;
+        for(let i = 0, len = upgradesAuto.length; i < len; i++){
+            const upg = upgradesAuto[i];
+            if(tick.count / upg.timeHit*speedX2 % 10 === 0){
+                hit(upg);
             }
         }
         tick.lastTime = time;
@@ -341,18 +344,20 @@ function skillTimer(){
         for(let i = 0; i < skills.length; i++){
             const skill = skills[i];
             const name = skill.name;
-            const time = name+"skillTimeID";
+            const time = ID[name+"skillTimeID"];
             if(skill.value == 2){
                 skill.timeCur -= 1;
+                time.textContent = numberInTime(skill.timeCur, "m:S")
                 if(skill.timeCur <= 0){
                     skill.value = 1;
                     ID[name+"skillID"].classList.remove("backlight");
-                    ID[time].classList.remove("timer");
+                    time.classList.remove("timer");
                     if(name == "multiSkill"){
                         upgradesAuto.forEach(upg => {upg.levelTemp = 0;})
                     }
+                    x2orX4();
+                    time.textContent = numberInTime(skill.time, "m:S")
                 }
-                ID[time].textContent = numberInTime(skill.timeCur, "m:S")
             }
         }
         skillSwitch();
@@ -602,6 +607,7 @@ function finishLevel(){
         const death = document.querySelectorAll(".death");
             death.forEach( det => {det.remove()});
         ID.cracks.style.height = "0%";
+        console.log(gold_layer + " - gold")
         finance(Math.floor(prize.profitC * profitX2.value * (gold_layer == 0 ? 2 : 1)));
         const hp = layer.hp;
         hp.calc = softProgress(hp.calc, -1);
@@ -625,7 +631,8 @@ function layerUp(){
     const mirror = "scaleX("+ (Math.random() > 0.5 ? 1 : -1) +")";
     const gold = ID.layerGold;
     const all = ID.layerAll;
-    gold.hidden = Math.floor(Math.random()*15) != 0;
+    gold_layer = Math.floor(Math.random()*15);
+    gold.hidden = gold_layer != 0;
     gold.style.transform = mirror;
     ID.prize.textContent = toCompactNotation(prize.profitC);
     x2orX4();
@@ -668,9 +675,11 @@ function upgradesFunc(item, bool) {
     const cost = item.cost;
     const cur = cost.current;
     const calc = cost.calc;
-    if(bool){up();
+    if(bool == true){up();
+        console.log("up - " + bool)
     } else if(money >= cur){
         up();
+        console.log(-Math.floor(cur) +" - money")
         finance(-Math.floor(cur));
         cost.calc = Math.round(softProgress(calc, upgrades2.indexOf(item)-1));
         cost.current = Math.round(calc * upgrade_cost.value);
@@ -697,7 +706,7 @@ function upgradesFuncInfo(upg){
     if(upg.typeValue == "auto"){
         let damage = Math.round(upg.value/(value*upg.timeHit)*100)/100;
         ID[name+"ValueID"].textContent = Math.round((damage*upg.level)*100)/100+" hp/s";
-        if(upg.level>0){autoHit += damage}
+        if(upg.level>0){autoHit = Math.round((autoHit + damage)*100)/100}
         ID.autoHitInfo.textContent = autoHit;
     }
 }
@@ -729,7 +738,12 @@ function upgradesExpFunc(upgrade){
                     const upCost = upgrades2[j].cost;
                     upCost.current = Math.round(upCost.calc * value);
                 }
-            } else if (upgrade == "auto_bonus_duration"){auto_bonus_duration.enabled = true;} 
+            } else if (upgrade == "auto_bonus_duration"){auto_bonus_duration.enabled = true;     
+            } else if (upgrade == "auto_mine_speed"){
+                upgradesAuto.forEach((upg, i) => {
+                    upg.timeHit = Math.round((upg.timeHit - auto_mine_speed.valueStep*(i+1))*10)/10
+                })
+            }
         } 
         if (upExp.level >= 10){
             ID[name+"ID"].classList.add('disabled');
@@ -952,8 +966,8 @@ function interectiveBonusCreate(){
         const nugget = DOM.Id("inerectiveBonusContID2");
         if(interectiveBonusCreate.time <= 0){
             interectiveBonusCreate.bool = false;
-            nugget.remove();
-        } else if (interectiveBonusCreate.time <= 5){
+            nugget?.remove();
+        } else if (interectiveBonusCreate.time <= 5 && nugget){
             nugget.style.opacity = "0%";
         }
     }
