@@ -143,8 +143,14 @@ async function startingCreationGUI(){
 }
 
 function startGame() {
+    myLog("start");
+    myLog("sdkLoad - " + sdkLoad);
+    myLog("resurses - " + resurses);
+    myLog("HTMLLoaded - " + HTMLLoaded);
     if(sdkLoad && resurses && HTMLLoaded){
-        startingCreationGUI()
+        
+        startingCreationGUI();
+        changeLang(langSDK);
         document.getElementById("preloaderID").hidden = "hidden";
         loadImgs = true;
         startingValues();
@@ -153,6 +159,7 @@ function startGame() {
         skillSwitch()
         upgradesExpFuncInfo();
         tick(performance.now());
+        myLog("startEnd");
     }
 }
 function startingValues(){
