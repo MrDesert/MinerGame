@@ -788,3 +788,6 @@ max-width: 100%;
 #handDamage, #autoDamage{
    margin-left: 6px;
 }
+#menuStat {
+   height: clamp(130px, 15%, 400px);
+}

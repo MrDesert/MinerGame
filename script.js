@@ -143,21 +143,26 @@ async function startingCreationGUI(){
 }
 
 function startGame() {
-    myLog("start");
-    myLog("sdkLoad - " + sdkLoad);
-    myLog("resurses - " + resurses);
-    myLog("HTMLLoaded - " + HTMLLoaded);
     if(sdkLoad && resurses && HTMLLoaded){
-        
+        myLog("start");
         startingCreationGUI();
-        changeLang(langSDK);
+        myLog("lang - " + document.documentElement.lang);
+        changeLang(document.documentElement.lang);
+        myLog("3line");
         document.getElementById("preloaderID").hidden = "hidden";
+        myLog("4line");
         loadImgs = true;
+        myLog("5line");
         startingValues();
+        myLog("6line");
         loadLocalStorage();
+        myLog("7line");
         finance(0);
+        myLog("8line");
         skillSwitch()
+        myLog("9line");
         upgradesExpFuncInfo();
+        myLog("10line");
         tick(performance.now());
         myLog("startEnd");
     }
