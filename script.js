@@ -144,27 +144,16 @@ async function startingCreationGUI(){
 
 function startGame() {
     if(sdkLoad && resurses && HTMLLoaded){
-        myLog("start");
         startingCreationGUI();
-        myLog("lang - " + document.documentElement.lang);
         changeLang(document.documentElement.lang);
-        myLog("3line");
         document.getElementById("preloaderID").hidden = "hidden";
-        myLog("4line");
         loadImgs = true;
-        myLog("5line");
         startingValues();
-        myLog("6line");
         loadLocalStorage();
-        myLog("7line");
         finance(0);
-        myLog("8line");
         skillSwitch()
-        myLog("9line");
         upgradesExpFuncInfo();
-        myLog("10line");
         tick(performance.now());
-        myLog("startEnd");
     }
 }
 function startingValues(){
@@ -460,7 +449,7 @@ function geodeHit(){
 
 function skillSwitch(){
     skills.forEach(skill => {
-        if(skill.autoHit){skill.disable = skill.count <= 0 && autoHit <= 0;
+        if(skill.autoHit){skill.disable = skill.count <= 0 || autoHit <= 0;
         } else {skill.disable = skill.count <= 0}
         ID[skill.name+"skillID"].classList.toggle("disabled", skill.disable);
     })
@@ -867,13 +856,6 @@ function menuTreePump(open){
 function offlineProfit(offlineSeconds){
     offlineSeconds = offlineSeconds > 43200 ? 43200 : offlineSeconds;
     ID.timeOffline.textContent = numberInTime(offlineSeconds);
-    // const h = Math.floor(offlineSeconds/3600);
-    // const m = Math.floor((offlineSeconds - h*3600) /60);
-    // const s = offlineSeconds - h*3600 - m*60
-    // const H = h > 0 ? h + "h " : "" ;
-    // const M = m > 0 ? m + "m " : "" ;
-    // const S = s > 0 ? s + "s" : "";
-    // ID.timeOffline.textContent = H + M + S;
     const hours = Math.ceil(offlineSeconds/3600)
     const hourlyRate = [null, 1, 0.9, 0.81, 0.73, 0.66, 0.59, 0.53, 0.48, 0.43, 0.39, 0.35, 0.31];
     const damage = autoHit + handHit/10; //Офлайн урон
