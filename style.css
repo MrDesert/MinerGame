@@ -334,6 +334,10 @@ body {
    margin: 10px;
    width: 100% - 20px;
 }
+#menuStatClose{
+   right: 5px;
+   top: 5px;
+}
 #langBtn {
    position: absolute;
    right: 10px;
@@ -790,4 +794,14 @@ max-width: 100%;
 }
 #menuStat {
    height: clamp(130px, 15%, 400px);
+}
+#infoStatID{
+   position: absolute;
+   top: 25px ;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+}
+.statInfo{
+   min-width: 170px;
 }

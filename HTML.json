@@ -89,7 +89,7 @@
                 "arrayName$": "stats",
                 "Parent": "infoStatID",
                 "Id": "_InfoID",
-                "Class": "centralMenuInfoElement"
+                "Class": "centralMenuInfoElement statInfo"
             },
                 "$_InfoName":{
                     "arrayName$": "stats",

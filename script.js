@@ -80,14 +80,15 @@ const layer_hardness = {
     },
     cost: 10, 
     level: 0, 
+    enabled: true,
     func: () => upgradesExpFunc("layer_hardness")
 };
-const mining_profit = {name: "mining_profit", value: 1, valueStep: 0.01, parameter:{type: "%", step: 1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("mining_profit")};
-const upgrade_cost = {name: "upgrade_cost", value: 1, valueStep: -0.01, parameter:{type: "%", step: -1, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("upgrade_cost")};
+const mining_profit = {name: "mining_profit", value: 1, valueStep: 0.01, parameter:{type: "%", step: 1, value: 100}, cost: 10, level: 0, enabled: true, func: () => upgradesExpFunc("mining_profit")};
+const upgrade_cost = {name: "upgrade_cost", value: 1, valueStep: -0.01, parameter:{type: "%", step: -1, value: 100}, cost: 10, level: 0, enabled: true, func: () => upgradesExpFunc("upgrade_cost")};
 const auto_bonus_duration = {name: "auto_bonus_duration", value: 11, valueStep: -1, parameter:{type: "s", step: -1, value: 11}, cost: 10, level: 0, enabled: false, func: () => upgradesExpFunc("auto_bonus_duration")};
-const money_keep = {name: "money_keep", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, func: () => upgradesExpFunc("money_keep")};
-const auto_mine_speed = {name: "auto_mine_speed", value: 0, valueStep: 0.1, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, func: () => upgradesExpFunc("auto_mine_speed")};
-const xp_gain = {name: "xp_gain", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, func: () => upgradesExpFunc("xp_gain")};
+const money_keep = {name: "money_keep", value: 0, valueStep: 0.01, parameter:{type: "%", step: 1, value: 0}, cost: 10, level: 0, enabled: true, func: () => upgradesExpFunc("money_keep")};
+const auto_mine_speed = {name: "auto_mine_speed", value: 0, valueStep: 0.1, parameter:{type: "s", step: -0.05, value: 1}, cost: 10, level: 0, enabled: true, func: () => upgradesExpFunc("auto_mine_speed")};
+const xp_gain = {name: "xp_gain", value: 1, valueStep: 0.1, parameter:{type: "%", step: 10, value: 100}, cost: 10, level: 0, enabled: true, func: () => upgradesExpFunc("xp_gain")};
 const lycki = true;
 
 const upgradesExp = [layer_hardness, mining_profit, upgrade_cost, auto_bonus_duration, money_keep, auto_mine_speed, xp_gain];
@@ -152,7 +153,6 @@ function startGame() {
         loadLocalStorage();
         finance(0);
         skillSwitch()
-        upgradesExpFuncInfo();
         tick(performance.now());
     }
 }
@@ -179,10 +179,12 @@ function startingValues(){
     }
     ID.depthLevel.textContent = layer.level;
     ID.hit.textContent = handHit;
+    ID.autoHitInfo.textContent = autoHit;
     upgrades2.forEach(upg => {upgradesFuncInfo(upg)});
     finance(0);
     openingLayerUp();
     skillsUpdate();
+    upgradesExpFuncInfo()
     updateInfo();
 }
 
@@ -209,7 +211,6 @@ document.addEventListener('DOMContentLoaded', function() {
 }, {once: true});
 
 function loadLocalStorage(){
-    console.time("load")
     if(DOMContentLoaded && HTMLLoaded){
     for(let i = 0; i < upgrades2.length; i++){
         if(localStorage.getItem(upgrades2[i].name)){
@@ -243,7 +244,6 @@ function loadLocalStorage(){
     bossLevel = Number(localStorage.getItem("bossLevel")) || 1;
     allBonusFree = localStorage.getItem("allBonusFree") === 'false' ? false : true;
     daysdDailyGift = Number(localStorage.getItem("daysdDailyGift"));
-    myLog(daysdDailyGift+" daysdDailyGift")
     weeksDailyGift = Number(localStorage.getItem("weeksDailyGift")) || 1;
     geodeCount = Number(localStorage.getItem("geodeCount"));
     if(!allBonusFree){
@@ -260,9 +260,13 @@ function loadLocalStorage(){
     dailyGift_F(new Date(localStorage.getItem("lastLogon")), new Date());
     localStorage.setItem("lastLogon", new Date());
     ID.depthLevel.textContent = layer.level;
+    ID.prize.textContent = toCompactNotation(prize.profitC);
+    ID.hit.textContent = handHit;
+    ID.autoHitInfo.textContent = autoHit;
     updateInfo();
+    upgradesExpFuncInfo()
+    skillsUpdate();
     }
-    console.timeEnd("load")
 }
 
 window.addEventListener('beforeunload', () => {
@@ -550,7 +554,6 @@ function damage(obj){
 }
 
 function animationAutoHit(autoDamage){
-    console.time("animationAutoHit")
     let id = "fallTool" + countAutoHit++;
     let rotate = Math.floor(Math.random()*80)+1060 + autoDamage.rotate;
     let leftRandom = (Math.floor(Math.random()*94)+1)+"%";
@@ -590,7 +593,6 @@ function animationAutoHit(autoDamage){
             element.removeEventListener('transitionend', opacity); 
         }
     });
-    console.timeEnd("animationAutoHit")
 }
 
 function switchsHit(){
@@ -608,7 +610,6 @@ function finishLevel(){
         const death = document.querySelectorAll(".death");
             death.forEach( det => {det.remove()});
         ID.cracks.style.height = "0%";
-        console.log(gold_layer + " - gold")
         finance(Math.floor(prize.profitC * profitX2.value * (gold_layer == 0 ? 2 : 1)));
         const hp = layer.hp;
         hp.calc = softProgress(hp.calc, -1);
@@ -677,10 +678,8 @@ function upgradesFunc(item, bool) {
     const cur = cost.current;
     const calc = cost.calc;
     if(bool == true){up();
-        console.log("up - " + bool)
     } else if(money >= cur){
         up();
-        console.log(-Math.floor(cur) +" - money")
         finance(-Math.floor(cur));
         cost.calc = Math.round(softProgress(calc, upgrades2.indexOf(item)-1));
         cost.current = Math.round(calc * upgrade_cost.value);
